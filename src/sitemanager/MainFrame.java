@@ -20,7 +20,7 @@ public class MainFrame extends JFrame {
 	/**
 	 * the controller to use for the application
 	 */
-	private Controller controller;
+	private AccountsController controller;
 	/**
 	 * the panel used to notify the user without interrupting
 	 */
@@ -45,8 +45,9 @@ public class MainFrame extends JFrame {
 		int x = (mainSize.width - getWidth()) / 2, y = (mainSize.height - getHeight()) / 2;
 		setLocation(x, y);
 		setTitle("Account Manager");
-		setLayout(new BorderLayout(10, 10));
-		controller = new Controller();
+		BorderLayout layout = new BorderLayout(10, 10);
+		setLayout(layout);
+		controller = new AccountsController();
 		initMenuBar();
 		initMainPanel();
 		initNotificationArea();
