@@ -1,7 +1,13 @@
 package masterDetail;
 
+import java.awt.Color;
+import java.awt.Component;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableRowSorter;
 
 /**
  * This class embeds a Master-Detail view JSplitPane.
@@ -12,6 +18,10 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 	 * the left panel with the jtable
 	 */
 	private JScrollPane tableScroller;
+	/**
+	 * the JTable used in this pane
+	 */
+	private JTable masterTable;
 	/**
 	 * the controller model for this Pane
 	 */
@@ -27,10 +37,46 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 		setupTable();
 	}
 	/**
-	 * sets up the table for this Pane
+	 * sets up the table for this Pane, and sets it as the left component of the pane
 	 */
 	private void setupTable() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		masterTable = new JTable(new MasterTable(controller)) {
+			/**
+			 * Create alternating, colored rows, with the active row a different color
+			 * @return returns a renderer that creates alternating row colors, with the
+			 *         active row a third color
+			 */
+			@Override
+			public Component prepareRenderer(TableCellRenderer renderer, int row,
+											 int column) {
+				Component c = super.prepareRenderer(renderer, row, column);
+
+				//  Alternate row color, set active row to med Gray
+				if (!isRowSelected(row)) {
+					c.setBackground((row % 2) == 0 ? getBackground() : Color.LIGHT_GRAY);
+				} else {
+					c.setBackground(Color.GRAY);
+				}
+				return c;
+			}
+
+		};
+		masterTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		//movieTable.setCellSelectionEnabled(true);
+		masterTable.setRowSelectionAllowed(true);
+		masterTable.setUpdateSelectionOnSort(true);
+		masterTable.setFocusable(true);
+		masterTable.setShowGrid(true);
+		masterTable.setFillsViewportHeight(true);
+		masterTable.setColumnSelectionAllowed(false);
+		masterTable.setAutoCreateRowSorter(true);
+		masterTable.getTableHeader().setReorderingAllowed(false);
+		//resultsTable.setRowSelectionInterval(0, 0); //set selection to origin
+		//movieTable.setColumnSelectionInterval(0, 0);
+		TableRowSorter<MasterTable> sorter = new TableRowSorter<>((MasterTable) masterTable.getModel());
+		masterTable.setRowSorter(sorter);
+		tableScroller = new JScrollPane(masterTable);
+		setLeftComponent(tableScroller);
 	}
 
 }
