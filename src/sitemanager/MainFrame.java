@@ -1,6 +1,11 @@
 package sitemanager;
 
+import help.HelpClass;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Menu;
+import java.awt.MenuBar;
+import java.awt.MenuItem;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -11,8 +16,11 @@ import javax.swing.UnsupportedLookAndFeelException;
  * the main application window
  * @author Richard Luby, Copyright 2015
  */
-class MainFrame extends JFrame {
-
+public class MainFrame extends JFrame {
+	/**
+	 * the controller to use for the application
+	 */
+	private Controller controller;
 	/**
 	 * creates the main application window
 	 */
@@ -33,8 +41,38 @@ class MainFrame extends JFrame {
 		int x = (mainSize.width - getWidth()) / 2, y = (mainSize.height - getHeight()) / 2;
 		setLocation(x, y);
 		setTitle("Account Manager");
-
+		setLayout(new BorderLayout(10, 10));
+		controller = new Controller();
+		initMenuBar();
+		initMainPanel();
+		initNotificationArea();
 		setVisible(true);
+	}
+	/**
+	 * generates a menu bar and adds it to the program
+	 */
+	private void initMenuBar() {
+		MenuBar menuBar = new MenuBar();
+		//set up Help menu
+		Menu helpMenu = new Menu("Help");
+		MenuItem viewHelp = new MenuItem("Help...");
+		viewHelp.addActionListener(HelpClass.createNewHelpWindowListener(this));
+		helpMenu.add(viewHelp);
+		menuBar.add(helpMenu);
+		setMenuBar(menuBar);
+	}
+	/**
+	 * generates and adds the main panel to the application
+	 */
+	private void initMainPanel() {
+		add(new MainPanel(), BorderLayout.CENTER);
+	}
+	/**
+	 * generates and places a JPanel at the base of the program window to display
+	 * notifications to the user
+	 */
+	private void initNotificationArea() {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 }
