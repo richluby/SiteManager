@@ -13,13 +13,25 @@ public class NotificationPanel extends JPanel {
 	/**
 	 * the label used to display messages for the user
 	 */
-	private JLabel messageLable;
+	private JLabel messageLabel;
+
+	/**
+	 * initializes the message area with no message
+	 */
+	public NotificationPanel() {
+		super();
+		messageLabel = new JLabel();
+		add(messageLabel);
+	}
 	/**
 	 * sets the message to be displayed. if the message is the same as the current one,
 	 * then the area will blink. The default number of blinks is 1.
 	 * @param message the message to display
 	 */
 	public void setMessage(String message) {
-
+		messageLabel.invalidate();
+		messageLabel.setText(message);
+		messageLabel.revalidate();
+		messageLabel.repaint();
 	}
 }

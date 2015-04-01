@@ -22,6 +22,10 @@ public class MainFrame extends JFrame {
 	 */
 	private Controller controller;
 	/**
+	 * the panel used to notify the user without interrupting
+	 */
+	private NotificationPanel notifPanel;
+	/**
 	 * creates the main application window
 	 */
 	public MainFrame() {
@@ -72,7 +76,9 @@ public class MainFrame extends JFrame {
 	 * notifications to the user
 	 */
 	private void initNotificationArea() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		notifPanel = new NotificationPanel();
+		notifPanel.setMessage("Welcome...");
+		add(notifPanel, BorderLayout.SOUTH);
 	}
 
 }
