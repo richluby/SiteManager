@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
+import masterDetail.MasterDetailPane;
 
 /**
  * the main application window
@@ -20,7 +21,7 @@ public class MainFrame extends JFrame {
 	/**
 	 * the controller to use for the application
 	 */
-	private AccountsController controller;
+	private AccountsController accountController;
 	/**
 	 * the panel used to notify the user without interrupting
 	 */
@@ -47,7 +48,7 @@ public class MainFrame extends JFrame {
 		setTitle("Account Manager");
 		BorderLayout layout = new BorderLayout(10, 10);
 		setLayout(layout);
-		controller = new AccountsController();
+		accountController = new AccountsController();
 		initMenuBar();
 		initMainPanel();
 		initNotificationArea();
@@ -70,7 +71,7 @@ public class MainFrame extends JFrame {
 	 * generates and adds the main panel to the application
 	 */
 	private void initMainPanel() {
-		add(new MainPanel(), BorderLayout.CENTER);
+		add(new MasterDetailPane(accountController), BorderLayout.CENTER);
 	}
 	/**
 	 * generates and places a JPanel at the base of the program window to display

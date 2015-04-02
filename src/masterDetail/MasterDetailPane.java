@@ -6,6 +6,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
@@ -28,7 +29,7 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 	private T controller;
 
 	/**
-	 * initializes the class
+	 * initializes the JTable for the class. the RIGHT component must be set manually
 	 * @param controller the object controller for this Pane
 	 */
 	public MasterDetailPane(T controller) {
@@ -79,4 +80,10 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 		setLeftComponent(tableScroller);
 	}
 
+	/**
+	 * tells the pane to update the table due to data modification
+	 */
+	public void fireTableDataChanged() {
+		((DefaultTableModel) masterTable.getModel()).fireTableDataChanged();
+	}
 }

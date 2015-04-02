@@ -48,6 +48,9 @@ public class MasterTable<T extends Tabulate> extends DefaultTableModel {
 	 */
 	@Override
 	public int getRowCount() {
+		if (controller == null) {
+			return 0;
+		}
 		return controller.getNumberOfRows();
 	}
 

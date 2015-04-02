@@ -4,9 +4,8 @@ package masterDetail;
  * this interface is designed to be implemented by an object, most likely a Model or
  * Controller object. The interface allows an * object to be applied directly to the master-detail pane.
  * @author Richard Luby, Copyright 2015
- * @param <T> the object class being tabulated
  */
-public interface Tabulate<T> {
+public interface Tabulate {
 
 	/**
 	 * retrieves the data for use in the master-detail pan
@@ -36,4 +35,10 @@ public interface Tabulate<T> {
 	 * @return the class type for this cell
 	 */
 	public Class<?> getColumnClass(int col);
+
+	/**
+	 * instructs the controller to remove the element at the specified row index
+	 * @param rowIndex the row index selected for removal
+	 */
+	public void removeElement(int rowIndex);
 }
