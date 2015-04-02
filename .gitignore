@@ -2,3 +2,4 @@
 *.properties
 *.mf
 /build/
+/dist/

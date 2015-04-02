@@ -1,8 +1,9 @@
 package masterDetail;
 
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.JTable;
+import javax.swing.event.MouseInputListener;
 
 /**
  * this class contains the listeners used throughout the detail pane
@@ -14,13 +15,18 @@ public class Listener<T extends Tabulate> {
 	 * the controller for this instance
 	 */
 	private final T controller;
-
+	/**
+	 * the Jtable associated with this listener object
+	 */
+	private final JTable dataTable;
 	/**
 	 * initializes the class
 	 * @param controller the controller from the master-detail view
+	 * @param dataJTable the jtable that contains the data
 	 */
-	public Listener(T controller) {
+	public Listener(T controller, JTable dataJTable) {
 		this.controller = controller;
+		this.dataTable = dataJTable;
 	}
 
 	/**
@@ -28,17 +34,13 @@ public class Listener<T extends Tabulate> {
 	 * @return returns a listener that instructs the controller to add an element
 	 */
 	public MouseListener mouseCreateAddElement() {
-		return new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON1 && controller != null) {//check for right click
-
-				}
-			}
+		return new MouseInputListener() {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON1 && controller != null) {//check for left click
 
+				}
 			}
 
 			@Override
@@ -54,23 +56,42 @@ public class Listener<T extends Tabulate> {
 			@Override
 			public void mouseExited(MouseEvent e) {
 
+			}
+
+			@Override
+			public void mouseDragged(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
 			}
 
 		};
 	}
 
 	MouseListener mouseCreateRemoveElement() {
-		return new MouseAdapter() {
+		return new MouseInputListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON1 && controller != null) {//check for right click
-
-				}
+				
 			}
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-
+				if (e.getButton() == MouseEvent.BUTTON1 && controller != null) {//check for left click
+					int rowIndex = dataTable.getSelectedRow();
+					//int correctRow = dataTable.convertColumnIndexToModel(rowIndex);
+					if (rowIndex >= 0) {
+						controller.removeElement(rowIndex);
+					}
+				}
 			}
 
 			@Override
@@ -85,6 +106,16 @@ public class Listener<T extends Tabulate> {
 
 			@Override
 			public void mouseExited(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseDragged(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
 
 			}
 

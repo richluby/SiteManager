@@ -41,7 +41,6 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 	public MasterDetailPane(T controller) {
 		super();
 		this.controller = controller;
-		listener = new Listener(controller);
 		setupTable();
 	}
 	/**
@@ -97,13 +96,17 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 	}
 
 	private void setupPopupMenu() {
+		listener = new Listener(controller, masterTable);
 		JPopupMenu rightClick = new JPopupMenu();
+		//create add element menu item
 		JMenuItem addElement = new JMenuItem("Add...");
 		addElement.addMouseListener(listener.mouseCreateAddElement());
 		rightClick.add(addElement);
+		//create remove element menu item
 		JMenuItem removeElement = new JMenuItem("Remove...");
 		removeElement.addMouseListener(listener.mouseCreateRemoveElement());
 		rightClick.add(removeElement);
+		//add the popup menu to the jtable
 		masterTable.setComponentPopupMenu(rightClick);
 	}
 }

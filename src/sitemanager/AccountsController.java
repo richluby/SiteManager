@@ -20,7 +20,7 @@ public class AccountsController implements Tabulate {
 
 	@Override
 	public int getNumberOfRows() {
-		return 50;
+		return 10;
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class AccountsController implements Tabulate {
 
 	@Override
 	public void removeElement(int rowIndex) {
-		//TODO Remove crap
+		System.out.println("Row " + rowIndex + " removed.");
 	}
 
 }
