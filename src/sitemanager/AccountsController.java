@@ -20,7 +20,7 @@ public class AccountsController implements Tabulate {
 
 	@Override
 	public int getNumberOfRows() {
-		return 10;
+		return 50;
 	}
 
 	@Override

@@ -2,6 +2,8 @@ package masterDetail;
 
 import java.awt.Color;
 import java.awt.Component;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
@@ -24,6 +26,10 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 	 */
 	private JTable masterTable;
 	/**
+	 * the listener object used for this pane
+	 */
+	private Listener listener;
+	/**
 	 * the controller model for this Pane
 	 */
 	private T controller;
@@ -35,6 +41,7 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 	public MasterDetailPane(T controller) {
 		super();
 		this.controller = controller;
+		listener = new Listener(controller);
 		setupTable();
 	}
 	/**
@@ -65,6 +72,7 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 		masterTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		//movieTable.setCellSelectionEnabled(true);
 		masterTable.setRowSelectionAllowed(true);
+		masterTable.setRowSelectionInterval(0, 0);
 		masterTable.setUpdateSelectionOnSort(true);
 		masterTable.setFocusable(true);
 		masterTable.setShowGrid(true);
@@ -76,6 +84,7 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 		//movieTable.setColumnSelectionInterval(0, 0);
 		TableRowSorter<MasterTable> sorter = new TableRowSorter<>((MasterTable) masterTable.getModel());
 		masterTable.setRowSorter(sorter);
+		setupPopupMenu();
 		tableScroller = new JScrollPane(masterTable);
 		setLeftComponent(tableScroller);
 	}
@@ -85,5 +94,16 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 	 */
 	public void fireTableDataChanged() {
 		((DefaultTableModel) masterTable.getModel()).fireTableDataChanged();
+	}
+
+	private void setupPopupMenu() {
+		JPopupMenu rightClick = new JPopupMenu();
+		JMenuItem addElement = new JMenuItem("Add...");
+		addElement.addMouseListener(listener.mouseCreateAddElement());
+		rightClick.add(addElement);
+		JMenuItem removeElement = new JMenuItem("Remove...");
+		removeElement.addMouseListener(listener.mouseCreateRemoveElement());
+		rightClick.add(removeElement);
+		masterTable.setComponentPopupMenu(rightClick);
 	}
 }
