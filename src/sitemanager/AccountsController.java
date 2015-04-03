@@ -1,5 +1,6 @@
 package sitemanager;
 
+import javax.swing.JPanel;
 import masterDetail.Tabulate;
 
 /**
@@ -31,6 +32,26 @@ public class AccountsController implements Tabulate {
 	@Override
 	public void removeElement(int rowIndex) {
 		System.out.println("Row " + rowIndex + " removed.");
+	}
+
+	@Override
+	public void addElement() {
+
+	}
+
+	@Override
+	public void updateElement(int rowIndex) {
+
+	}
+
+	@Override
+	public JPanel initDetailComponent() {
+		return null;
+	}
+
+	@Override
+	public void updateDisplayForElement(int rowIndex) {
+
 	}
 
 }
