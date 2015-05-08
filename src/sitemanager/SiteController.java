@@ -46,6 +46,10 @@ public class SiteController implements Tabulate, Runnable {
 	 * ensuring that it has the controller for the currently selected album
 	 */
 	private MasterDetailPane<PhotoController> photoPane;
+	/**
+	 * the index of the currently selected album
+	 */
+	private int indexOfCurrentAlbum;
 
 	/**
 	 * initializes the controller with relevant data
@@ -55,6 +59,7 @@ public class SiteController implements Tabulate, Runnable {
 		this.mainFrame = mainFrame;
 		albumList = new ArrayList<>(30);
 		rootAlbumFolder = null;
+		indexOfCurrentAlbum = 0;
 	}
 
 	/**
@@ -109,6 +114,7 @@ public class SiteController implements Tabulate, Runnable {
 
 	@Override
 	public void updateDisplayForElement(int rowIndex) {
+		indexOfCurrentAlbum = rowIndex;
 	}
 
 	@Override
@@ -143,6 +149,12 @@ public class SiteController implements Tabulate, Runnable {
 		mainFrame.setNotification(
 					"Album data from \"" + rootAlbumFolder.getAbsolutePath() + "\" has been loaded into memory.");
 		}
+	}
+	/**
+	 * sets the location of the currently active album, and updates the text field
+	 */
+	void setAlbumLocation(File albumFolder) {
+		albumList.get(indexOfCurrentAlbum).setAlbumFolder(albumFolder);
 	}
 
 }

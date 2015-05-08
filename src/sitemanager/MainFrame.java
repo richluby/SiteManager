@@ -165,7 +165,7 @@ public class MainFrame extends JFrame {
 	 * @param albumFolder the folder to set as the location for the active album
 	 */
 	void setAlbumLocation(File albumFolder) {
-
+		siteController.setAlbumLocation(albumFolder);
 	}
 
 }
