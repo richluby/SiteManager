@@ -28,7 +28,7 @@ public class SiteController implements Tabulate, Runnable {
 	/**
 	 * the jpanel that handles the album information
 	 */
-	private JPanel albumPanel;
+	private InformationPanel albumPanel;
 	/**
 	 * the frame in charge of this controller. this is used to allow the controller to
 	 * display notifications
@@ -106,7 +106,7 @@ public class SiteController implements Tabulate, Runnable {
 
 	@Override
 	public JPanel initDetailComponent() {
-		albumPanel = new JPanel();
+		albumPanel = new InformationPanel();
 		return albumPanel;
 	}
 

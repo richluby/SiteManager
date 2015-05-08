@@ -24,6 +24,10 @@ class PhotoController implements Tabulate {
 	 */
 	private ArrayList<Photo> photoList;
 	/**
+	 * the information panel to be displayed in the detail pane
+	 */
+	private InformationPanel informationPanel;
+	/**
 	 * initializes the controller
 	 */
 	public PhotoController() {
@@ -76,6 +80,7 @@ class PhotoController implements Tabulate {
 
 	@Override
 	public JPanel initDetailComponent() {
-		return new InformationPanel();
+		informationPanel = new InformationPanel();
+		return informationPanel;
 	}
 }
