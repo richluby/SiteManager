@@ -43,7 +43,12 @@ public class Album {
 		albumCover = null;
 		photoController = new PhotoController();
 	}
-
+	/**
+	 * returns the photoController that handles the photos for this album
+	 */
+	public PhotoController getPhotoController() {
+		return photoController;
+	}
 	/**
 	 * returns the album name
 	 * <p>
