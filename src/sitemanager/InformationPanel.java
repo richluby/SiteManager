@@ -1,5 +1,6 @@
 package sitemanager;
 
+import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -29,18 +30,29 @@ class InformationPanel extends JPanel {
 	 * initializes the class
 	 */
 	public InformationPanel() {
-		titleField = new JTextField();
-		locationField = new JTextField();
-		descriptionArea = new JTextArea();
+		titleField = new JTextField(30);
+		locationField = new JTextField(30);
+		descriptionArea = new JTextArea(10, 30);
+		GridLayout thisLayout = new GridLayout(3, 2, 10, 10);
+		setLayout(thisLayout);
+
 		JLabel tempLabel = new JLabel("Title: ");
-		add(tempLabel);
-		add(titleField);
+		JPanel tempPanel = new JPanel();
+		tempPanel.add(tempLabel);
+		tempPanel.add(titleField);
+		add(tempPanel);
+
 		tempLabel = new JLabel("Location: ");
-		add(tempLabel);
-		add(locationField);
+		tempPanel = new JPanel();
+		tempPanel.add(tempLabel);
+		tempPanel.add(locationField);
+		add(tempPanel);
+
 		tempLabel = new JLabel("Description: ");
-		add(tempLabel);
-		add(descriptionArea);
+		tempPanel = new JPanel();
+		tempPanel.add(tempLabel);
+		tempPanel.add(descriptionArea);
+		add(tempPanel);
 	}
 	/**
 	 * sets the title of this item

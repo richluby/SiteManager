@@ -5,6 +5,7 @@
  */
 package sitemanager;
 
+import java.awt.BorderLayout;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JPanel;
@@ -106,8 +107,11 @@ public class SiteController implements Tabulate, Runnable {
 
 	@Override
 	public JPanel initDetailComponent() {
+		JPanel detailPanel = new JPanel(new BorderLayout());
 		albumPanel = new InformationPanel();
-		return albumPanel;
+		detailPanel.add(albumPanel, BorderLayout.NORTH);
+
+		return detailPanel;
 	}
 
 	/**
