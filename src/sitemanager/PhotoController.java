@@ -80,7 +80,7 @@ class PhotoController implements Tabulate {
 
 	@Override
 	public JPanel initDetailComponent() {
-		informationPanel = new InformationPanel();
+		informationPanel = new InformationPanel("Photo Information");
 		return informationPanel;
 	}
 }

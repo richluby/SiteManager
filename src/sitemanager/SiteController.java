@@ -5,10 +5,12 @@
  */
 package sitemanager;
 
-import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+import masterDetail.MasterDetailPane;
 import masterDetail.Tabulate;
 
 /**
@@ -16,12 +18,10 @@ import masterDetail.Tabulate;
  * @author RLuby
  */
 public class SiteController implements Tabulate, Runnable {
-
 	/**
 	 * the array containing the column names for this class
 	 */
 	private static final String COLUMN_NAMES[] = new String[]{"Album Name", "Album Date"};
-
 	/**
 	 * contains the list of albums
 	 */
@@ -41,6 +41,11 @@ public class SiteController implements Tabulate, Runnable {
 	 * separate folder
 	 */
 	private File rootAlbumFolder;
+	/**
+	 * the master detail pane for the photos. The siteController is responsible for
+	 * ensuring that it has the controller for the currently selected album
+	 */
+	private MasterDetailPane<PhotoController> photoPane;
 
 	/**
 	 * initializes the controller with relevant data
@@ -107,10 +112,19 @@ public class SiteController implements Tabulate, Runnable {
 
 	@Override
 	public JPanel initDetailComponent() {
-		JPanel detailPanel = new JPanel(new BorderLayout());
-		albumPanel = new InformationPanel();
-		detailPanel.add(albumPanel, BorderLayout.NORTH);
+		JPanel detailPanel = new JPanel(new GridBagLayout());
+		albumPanel = new InformationPanel("Album Information");
+		GridBagConstraints gbConstraints = new GridBagConstraints();
+		gbConstraints.weighty = .2;
+		gbConstraints.gridy = 0;
+		gbConstraints.weightx = 1;
+		gbConstraints.fill = GridBagConstraints.BOTH;
+		detailPanel.add(albumPanel, gbConstraints);
 
+		photoPane = new MasterDetailPane<>(new PhotoController());
+		gbConstraints.weighty = .8;
+		gbConstraints.gridy = 1;
+		detailPanel.add(photoPane, gbConstraints);
 		return detailPanel;
 	}
 

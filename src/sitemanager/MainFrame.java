@@ -9,6 +9,7 @@ import java.awt.MenuItem;
 import java.awt.Toolkit;
 import java.io.File;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -21,7 +22,10 @@ import masterDetail.MasterDetailPane;
  * @author Richard Luby, Copyright 2015
  */
 public class MainFrame extends JFrame {
-
+	/**
+	 * the location at which to start the divided
+	 */
+	public final static double DIVIDER_LOCATION = .4;
 	/**
 	 * the controller to use for the application
 	 */
@@ -109,7 +113,10 @@ public class MainFrame extends JFrame {
 	private void initSitePanel(JTabbedPane tabbedPane) {
 		siteController = new SiteController(this);
 		siteMasterDetailPane = new MasterDetailPane(siteController);
+		siteMasterDetailPane.setDividerLocation((int) (getWidth() * DIVIDER_LOCATION));
 		tabbedPane.addTab("Site", siteMasterDetailPane);
+
+		tabbedPane.addTab("Accounts", new JPanel());
 	}
 
 	/**
