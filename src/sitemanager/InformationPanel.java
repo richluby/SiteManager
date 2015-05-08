@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
@@ -55,7 +56,7 @@ class InformationPanel extends JPanel {
 		locationField = new JTextField(10);
 		locationField.setFocusable(false);
 
-		descriptionArea = new JTextArea(10, 5);
+		descriptionArea = new JTextArea(3, 5);
 		descriptionArea.setWrapStyleWord(true);
 		descriptionArea.setLineWrap(true);
 		//init layout
@@ -80,7 +81,10 @@ class InformationPanel extends JPanel {
 
 		tempLabel = new JLabel("Description: ");
 		add(tempLabel);
-		add(descriptionArea, "span, grow, wrap");
+		JScrollPane scroller = new JScrollPane(descriptionArea);
+		scroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		add(scroller, "span, grow, wrap");
 		//add(tempPanel);
 		if (saveListener != null) {
 		button = new JButton("Save");
