@@ -7,6 +7,7 @@ import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
 import java.awt.Toolkit;
+import java.io.File;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
@@ -29,6 +30,20 @@ public class MainFrame extends JFrame {
 	 * the panel used to notify the user without interrupting
 	 */
 	private NotificationPanel notifPanel;
+	/**
+	 * the root folder of the site. this folder must follow the correct directory
+	 * structure.
+	 * <p>
+	 * All album data is under "/albumData"
+	 * <p>
+	 * All files loaded in the index page are under "/indexData/", except for album cover
+	 * images
+	 * <p>
+	 * <tt>main.css</tt> is in "/"
+	 * <p>
+	 * <tt>album.css</tt> is in "/albumData/"
+	 */
+	private File rootSiteFolder;
 	/**
 	 * the master-detail panel for the site management
 	 */
@@ -55,6 +70,7 @@ public class MainFrame extends JFrame {
 		setLocation(x, y);
 		setTitle("Account Manager");
 		BorderLayout layout = new BorderLayout(10, 10);
+		rootSiteFolder = null;
 		setLayout(layout);
 		initMenuBar();
 		initMainPanel();
@@ -91,7 +107,7 @@ public class MainFrame extends JFrame {
 	 * @param pane the pane to which to add the site managing layout
 	 */
 	private void initSitePanel(JTabbedPane tabbedPane) {
-		siteController = new SiteController();
+		siteController = new SiteController(this);
 		siteMasterDetailPane = new MasterDetailPane(siteController);
 		tabbedPane.addTab("Site", siteMasterDetailPane);
 	}
@@ -102,8 +118,24 @@ public class MainFrame extends JFrame {
 	 */
 	private void initNotificationArea() {
 		notifPanel = new NotificationPanel();
-		notifPanel.setMessage("Welcome...");
+		notifPanel.setMessage("Welcome to the Site Manager Application");
 		add(notifPanel, BorderLayout.SOUTH);
 	}
+	/**
+	 * sets the notification to the user
+	 * @param message the message to send to the user
+	 */
+	public void setNotification(String message) {
+		notifPanel.setMessage(message);
+	}
 
+	/**
+	 * loads the site controller with data from the currently selected root folder
+	 */
+	public void loadSiteControllerData() {
+		siteController.setRootAlbumFolder(new File(
+				rootSiteFolder.getAbsoluteFile() + File.separator + "albumData"));
+		Thread thread = new Thread(siteController, "initSiteControllerData");
+		thread.start();
+	}
 }

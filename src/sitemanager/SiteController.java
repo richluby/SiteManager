@@ -5,6 +5,7 @@
  */
 package sitemanager;
 
+import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import masterDetail.Tabulate;
@@ -13,7 +14,7 @@ import masterDetail.Tabulate;
  *
  * @author RLuby
  */
-public class SiteController implements Tabulate {
+public class SiteController implements Tabulate, Runnable {
 
 	/**
 	 * the array containing the column names for this class
@@ -24,20 +25,48 @@ public class SiteController implements Tabulate {
 	 * contains the list of albums
 	 */
 	private ArrayList<Album> albumList;
+	/**
+	 * the jpanel that handles the album information
+	 */
+	private JPanel albumPanel;
+	/**
+	 * the frame in charge of this controller. this is used to allow the controller to
+	 * display notifications
+	 */
+	private MainFrame mainFrame;
+
+	/**
+	 * the folder for the website. The controller expects album data to be organized in a
+	 * separate folder
+	 */
+	private File rootAlbumFolder;
 
 	/**
 	 * initializes the controller with relevant data
+	 * @param mainFrame the application window responsible for this controller
 	 */
-	public SiteController() {
+	public SiteController(MainFrame mainFrame) {
+		this.mainFrame = mainFrame;
 		albumList = new ArrayList<>(30);
+		rootAlbumFolder = null;
+	}
+
+	/**
+	 * sets the root album folder for this controller. The controller will NOT
+	 * automatically reload information from the new folder
+	 * @param rootAlbumFolder the location to set the root album folder
+	 */
+	public void setRootAlbumFolder(File rootAlbumFolder) {
+		this.rootAlbumFolder = rootAlbumFolder;
 	}
 
 	@Override
 	public Object getDataForColumn(int rowIndex, int columnIndex) {
-		if (COLUMN_NAMES[columnIndex].equals("Album Name")) {
-			return albumList.get(rowIndex);
-		} else if (COLUMN_NAMES[columnIndex].equals("Album Date")) {
-
+		switch (COLUMN_NAMES[columnIndex]) {
+			case "Album Name":
+				return albumList.get(rowIndex).getAlbumName();
+			case "Album Date":
+				return albumList.get(rowIndex).getAlbumDescription();
 		}
 		return "";
 	}
@@ -76,6 +105,19 @@ public class SiteController implements Tabulate {
 
 	@Override
 	public JPanel initDetailComponent() {
+		albumPanel = new JPanel();
+		return albumPanel;
+	}
+
+	/**
+	 * populates the controller with the correct album data given a root site folder
+	 */
+	@Override
+	public void run() {
+		if (rootAlbumFolder != null) {
+		mainFrame.setNotification(
+					"Album data from" + rootAlbumFolder.getName() + " has been loaded into memory.");
+		}
 	}
 
 }
