@@ -58,6 +58,15 @@ public class Listeners {
 	}
 
 	/**
+	 * updates the information for the currently selected album with the currently
+	 * displayed information
+	 */
+	static ActionListener createSaveAlbumInformation() {
+		return (ActionEvent e) -> {
+			System.out.println("info saved for album");
+		};
+	}
+	/**
 	 * opens a JFileChooser with the given title that accepts single files only
 	 * @return returns the file selected from the user, or null if no file was selected
 	 */

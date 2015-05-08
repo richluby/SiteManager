@@ -11,11 +11,13 @@ import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import masterDetail.MasterDetailPane;
 import masterDetail.Tabulate;
 
 /**
- *
+ * This class controls the list of albums maintained by the program. It searches for album
+ * information in <tt>ALBUM_DATA_FILE_NAME</tt>.
  * @author RLuby
  */
 public class SiteController implements Tabulate, Runnable {
@@ -23,6 +25,10 @@ public class SiteController implements Tabulate, Runnable {
 	 * the array containing the column names for this class
 	 */
 	private static final String COLUMN_NAMES[] = new String[]{"Album Name", "Album Date"};
+	/**
+	 * the name of the file that this class checks in order to discover album data.
+	 */
+	private static final String ALBUM_DATA_FILE_NAME = "AlbumData";
 	/**
 	 * contains the list of albums
 	 */
@@ -64,12 +70,14 @@ public class SiteController implements Tabulate, Runnable {
 	}
 
 	/**
-	 * sets the root site folder for this controller. The controller will NOT
+	 * sets the root site folder for this controller. The controller will
 	 * automatically reload information from the new folder
 	 * @param rootAlbumFolder the location to set the root site folder
 	 */
 	public void setRootSiteFolder(File rootAlbumFolder) {
 		this.rootSiteFolder = rootAlbumFolder;
+		Thread thread = new Thread(this);
+		thread.start();
 	}
 
 	@Override
@@ -129,7 +137,8 @@ public class SiteController implements Tabulate, Runnable {
 	public JPanel initDetailComponent() {
 		JPanel detailPanel = new JPanel(new GridBagLayout());
 		albumPanel = new InformationPanel("Album Information",
-										  Listeners.createBrowseForAlbumFolder());
+										  Listeners.createBrowseForAlbumFolder(),
+										  Listeners.createSaveAlbumInformation());
 		GridBagConstraints gbConstraints = new GridBagConstraints();
 		gbConstraints.weighty = .2;
 		gbConstraints.gridy = 0;
@@ -153,11 +162,22 @@ public class SiteController implements Tabulate, Runnable {
 	@Override
 	public void run() {
 		if (rootSiteFolder != null) {
-
-		mainFrame.setNotification(
-					"Album data from \"" + rootSiteFolder.getAbsolutePath() + "\" has been loaded into memory.");
+			populateAlbumList();
+			SwingUtilities.invokeLater(() -> {
+				mainFrame.setNotification(
+						"Album data from \"" + rootSiteFolder.getAbsolutePath() + "\" has been loaded into memory.");
+				mainFrame.fireAlbumTableDataChanged();
+			});
 		}
 	}
+	/**
+	 * reads the file <tt>ALBUM_DATA_FILE_NAME</tt> to discern album information. It will
+	 * also examine the directory for unlisted albums.
+	 */
+	private void populateAlbumList() {
+		//read files HERE
+	}
+
 	/**
 	 * sets the location of the currently active album, and updates the text field
 	 */
@@ -165,6 +185,8 @@ public class SiteController implements Tabulate, Runnable {
 		if (indexOfCurrentAlbum < albumList.size() && albumFolder != null) {
 			albumPanel.setLocation(albumFolder.getAbsolutePath());
 			albumList.get(indexOfCurrentAlbum).setAlbumFolder(albumFolder);
+			mainFrame.setNotification(
+					"Album location set to \"" + albumFolder.getAbsolutePath() + "\"");
 		} else {
 			mainFrame.setNotification(
 					"The selected album could not be found. Try choosing a different album.");

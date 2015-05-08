@@ -31,10 +31,14 @@ class InformationPanel extends JPanel {
 	/**
 	 * initializes the class
 	 */
-	public InformationPanel(String title, ActionListener browseListener) {
+	public InformationPanel(String title, ActionListener browseListener,
+							ActionListener saveListener) {
 		//init variables
 		titleField = new JTextField();
+
 		locationField = new JTextField(10);
+		locationField.setFocusable(false);
+
 		descriptionArea = new JTextArea(10, 10);
 		descriptionArea.setWrapStyleWord(true);
 		descriptionArea.setLineWrap(true);
@@ -60,8 +64,12 @@ class InformationPanel extends JPanel {
 
 		tempLabel = new JLabel("Description: ");
 		add(tempLabel);
-		add(descriptionArea, "span, grow");
+		add(descriptionArea, "span, grow, wrap");
 		//add(tempPanel);
+
+		button = new JButton("Save");
+		button.addActionListener(saveListener);
+		add(button);
 
 		setBorder(new TitledBorder(title));
 	}

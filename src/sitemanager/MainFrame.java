@@ -167,5 +167,10 @@ public class MainFrame extends JFrame {
 	void setAlbumLocation(File albumFolder) {
 		siteController.setAlbumLocation(albumFolder);
 	}
-
+	/**
+	 * instructs the album table to update due to data changes
+	 */
+	public void fireAlbumTableDataChanged() {
+		siteMasterDetailPane.fireTableDataChanged();
+	}
 }
