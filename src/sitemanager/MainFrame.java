@@ -75,6 +75,7 @@ public class MainFrame extends JFrame {
 		setTitle("Account Manager");
 		BorderLayout layout = new BorderLayout(10, 10);
 		rootSiteFolder = null;
+		Listeners.setMainFrame(this);
 		setLayout(layout);
 		initMenuBar();
 		initMainPanel();
@@ -90,6 +91,7 @@ public class MainFrame extends JFrame {
 		//set up File menu
 		Menu fileMenu = new Menu("File");
 		MenuItem chooseAlbum = new MenuItem("Choose Site Folder");
+		chooseAlbum.addActionListener(Listeners.createRootFolderForSiteChooser());
 		fileMenu.add(chooseAlbum);
 		menuBar.add(fileMenu);
 		//set up Help menu
@@ -151,4 +153,19 @@ public class MainFrame extends JFrame {
 		Thread thread = new Thread(siteController, "initSiteControllerData");
 		thread.start();
 	}
+	/**
+	 * sets the root folder for a site/album, and updates the controller accordingly
+	 * @param selectedFile the directory at the root of the album
+	 */
+	public void setRootFolderForSite(File selectedFile) {
+		rootSiteFolder = selectedFile;
+	}
+	/**
+	 * sets the location for the currently active album
+	 * @param albumFolder the folder to set as the location for the active album
+	 */
+	void setAlbumLocation(File albumFolder) {
+
+	}
+
 }

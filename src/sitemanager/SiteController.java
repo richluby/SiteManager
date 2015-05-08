@@ -114,7 +114,8 @@ public class SiteController implements Tabulate, Runnable {
 	@Override
 	public JPanel initDetailComponent() {
 		JPanel detailPanel = new JPanel(new GridBagLayout());
-		albumPanel = new InformationPanel("Album Information");
+		albumPanel = new InformationPanel("Album Information",
+										  Listeners.createBrowseForAlbumFolder());
 		GridBagConstraints gbConstraints = new GridBagConstraints();
 		gbConstraints.weighty = .2;
 		gbConstraints.gridy = 0;
@@ -140,7 +141,7 @@ public class SiteController implements Tabulate, Runnable {
 		if (rootAlbumFolder != null) {
 
 		mainFrame.setNotification(
-					"Album data from" + rootAlbumFolder.getName() + " has been loaded into memory.");
+					"Album data from \"" + rootAlbumFolder.getAbsolutePath() + "\" has been loaded into memory.");
 		}
 	}
 

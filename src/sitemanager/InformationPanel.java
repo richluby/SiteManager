@@ -1,5 +1,6 @@
 package sitemanager;
 
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,7 +31,7 @@ class InformationPanel extends JPanel {
 	/**
 	 * initializes the class
 	 */
-	public InformationPanel(String title) {
+	public InformationPanel(String title, ActionListener browseListener) {
 		//init variables
 		titleField = new JTextField();
 		locationField = new JTextField(10);
@@ -51,6 +52,7 @@ class InformationPanel extends JPanel {
 
 		tempLabel = new JLabel("Location: ");
 		JButton button = new JButton("Browse");
+		button.addActionListener(browseListener);
 		add(tempLabel);
 		add(locationField, "span 3");
 		add(button, "wrap");
