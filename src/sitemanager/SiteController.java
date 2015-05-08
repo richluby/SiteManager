@@ -9,6 +9,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.File;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import masterDetail.MasterDetailPane;
 import masterDetail.Tabulate;
@@ -40,7 +41,7 @@ public class SiteController implements Tabulate, Runnable {
 	 * the folder for the website. The controller expects album data to be organized in a
 	 * subfolder for automatic parsing purposes
 	 */
-	private File rootAlbumFolder;
+	private File rootSiteFolder;
 	/**
 	 * the master detail pane for the photos. The siteController is responsible for
 	 * ensuring that it has the controller for the currently selected album
@@ -58,7 +59,7 @@ public class SiteController implements Tabulate, Runnable {
 	public SiteController(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
 		albumList = new ArrayList<>(30);
-		rootAlbumFolder = null;
+		rootSiteFolder = null;
 		indexOfCurrentAlbum = 0;
 	}
 
@@ -68,7 +69,7 @@ public class SiteController implements Tabulate, Runnable {
 	 * @param rootAlbumFolder the location to set the root site folder
 	 */
 	public void setRootSiteFolder(File rootAlbumFolder) {
-		this.rootAlbumFolder = rootAlbumFolder;
+		this.rootSiteFolder = rootAlbumFolder;
 	}
 
 	@Override
@@ -106,8 +107,13 @@ public class SiteController implements Tabulate, Runnable {
 	@Override
 	public void addElement() {
 		Album album = new Album();
-		album.setAlbumName("This name");
-		albumList.add(album);
+
+		String albumName = JOptionPane.showInputDialog(mainFrame,
+													   "Enter a name for this album:");
+		if (albumName != null && !albumName.equals("")) {
+			album.setAlbumName(albumName);
+			albumList.add(album);
+		}
 
 	}
 
@@ -147,10 +153,10 @@ public class SiteController implements Tabulate, Runnable {
 	 */
 	@Override
 	public void run() {
-		if (rootAlbumFolder != null) {
+		if (rootSiteFolder != null) {
 
 		mainFrame.setNotification(
-					"Album data from \"" + rootAlbumFolder.getAbsolutePath() + "\" has been loaded into memory.");
+					"Album data from \"" + rootSiteFolder.getAbsolutePath() + "\" has been loaded into memory.");
 		}
 	}
 	/**
