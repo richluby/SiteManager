@@ -1,0 +1,93 @@
+/*see http://thecodeplayer.com/walkthrough/css3-image-slider-with-stylized-thumbnails*/
+/*Time for the CSS*/
+.slider {
+	width: 640px; /*Same as width of the large image*/
+	position: relative;
+	/*Instead of height we will use padding*/
+	padding-top: 320px; /*That helps bring the labels down*/
+	/*margin for the entire gallery*/
+	/*Lets add a shadow*/
+	box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.75);
+}
+
+
+/*Last thing remaining is to add transitions*/
+.slider>img{
+	position: absolute;
+	left: 0; top: 0;
+	transition: all 0.5s;
+}
+
+.slider input[name='slide_switch'] {
+    /*removes the radio button*/
+	display: none;
+}
+
+.slider label {
+    /*formats the thumbnails*/
+	/*Lets add some spacing for the thumbnails*/
+	margin: 18px 0 0 18px;
+	border: 3px solid #999;
+
+	float: left; /*lines them up with each other when combined w/ .slider label img*/
+	cursor: pointer;
+	transition: all 0.5s;
+
+	/*Default style = low opacity*/
+	opacity: 0.6;
+}
+
+.slider label img{
+	display: block;
+}
+
+/*Time to add the click effects*/
+.slider input[name='slide_switch']:checked+label {
+	border-color: #666;
+	opacity: 1;
+    /*Clicking any thumbnail now should change its opacity(style)*/
+}
+
+/*Time to work on the main images*/
+.slider input[name='slide_switch'] ~ img {
+	opacity: 0;
+	transform: scale(.1);
+    /*That hides all main images at a 110% size
+    On click the images will be displayed at normal size to complete the effect
+    */
+}
+
+.slider input[name='slide_switch']:checked+label+img {
+	opacity: 1;
+	transform: scale(1);
+    /*Clicking on any thumbnail now should activate the image related to it*/
+}
+/*end see*/
+
+/*see http://jsfiddle.net/UB3UQ/
+selects the first element with an overlay class to apply to this checked item*/
+.slider input[name='slide_switch']:hover:checked + label + img + .overlay {
+    width:100%;
+    background:rgba(0,0,0,.5);
+    /*border:10px solid red;*/
+    position:absolute;
+    right: 0%;
+    bottom: 0%;
+    display:inline-block;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+    text-align:center;
+    color:white;
+    padding: 5px;
+    font-size:15px;
+}
+
+.overlay {
+    z-index: 10000;
+    display:none;
+}
+/*end see*/
+/*.slider input[name='slide_switch']:checked+label+img+div{
+    display: none;
+}*/
