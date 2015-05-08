@@ -14,9 +14,11 @@ import javax.swing.table.TableRowSorter;
 
 /**
  * This class embeds a Master-Detail view JSplitPane.
+ * <p>
  * @author Richard Luby, Copyright 2015
  */
 public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
+
 	/**
 	 * the left panel with the jtable
 	 */
@@ -36,6 +38,7 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 
 	/**
 	 * initializes the JTable for the class. the RIGHT component must be set manually
+	 * <p>
 	 * @param controller the object controller for this Pane
 	 */
 	public MasterDetailPane(T controller) {
@@ -43,6 +46,7 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 		this.controller = controller;
 		setupTable();
 	}
+
 	/**
 	 * sets up the table for this Pane, and sets it as the left component of the pane
 	 */
@@ -50,12 +54,13 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 		masterTable = new JTable(new MasterTable(controller)) {
 			/**
 			 * Create alternating, colored rows, with the active row a different color
+			 * <p>
 			 * @return returns a renderer that creates alternating row colors, with the
 			 *         active row a third color
 			 */
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int row,
-											 int column) {
+				int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
 
 				//  Alternate row color, set active row to med Gray
@@ -71,7 +76,9 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 		masterTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		//movieTable.setCellSelectionEnabled(true);
 		masterTable.setRowSelectionAllowed(true);
-		masterTable.setRowSelectionInterval(0, 0);
+		if (masterTable.getModel().getRowCount() > 0) {
+			masterTable.setRowSelectionInterval(0, 0);
+		}
 		masterTable.setUpdateSelectionOnSort(true);
 		masterTable.setFocusable(true);
 		masterTable.setShowGrid(true);

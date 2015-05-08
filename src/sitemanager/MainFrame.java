@@ -8,6 +8,7 @@ import java.awt.MenuBar;
 import java.awt.MenuItem;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -15,17 +16,24 @@ import masterDetail.MasterDetailPane;
 
 /**
  * the main application window
+ * <p>
  * @author Richard Luby, Copyright 2015
  */
 public class MainFrame extends JFrame {
+
 	/**
 	 * the controller to use for the application
 	 */
-	private AccountsController accountController;
+	private SiteController siteController;
 	/**
 	 * the panel used to notify the user without interrupting
 	 */
 	private NotificationPanel notifPanel;
+	/**
+	 * the master-detail panel for the site management
+	 */
+	private MasterDetailPane<SiteController> siteMasterDetailPane;
+
 	/**
 	 * creates the main application window
 	 */
@@ -48,12 +56,12 @@ public class MainFrame extends JFrame {
 		setTitle("Account Manager");
 		BorderLayout layout = new BorderLayout(10, 10);
 		setLayout(layout);
-		accountController = new AccountsController();
 		initMenuBar();
 		initMainPanel();
 		initNotificationArea();
 		setVisible(true);
 	}
+
 	/**
 	 * generates a menu bar and adds it to the program
 	 */
@@ -67,12 +75,27 @@ public class MainFrame extends JFrame {
 		menuBar.add(helpMenu);
 		setMenuBar(menuBar);
 	}
+
 	/**
 	 * generates and adds the main panel to the application
 	 */
 	private void initMainPanel() {
-		add(new MasterDetailPane(accountController), BorderLayout.CENTER);
+		JTabbedPane tabbedPane = new javax.swing.JTabbedPane();
+		initSitePanel(tabbedPane);
+		add(tabbedPane, BorderLayout.CENTER);
 	}
+
+	/**
+	 * generates and adds a site management pane to the pane
+	 * <p>
+	 * @param pane the pane to which to add the site managing layout
+	 */
+	private void initSitePanel(JTabbedPane tabbedPane) {
+		siteController = new SiteController();
+		siteMasterDetailPane = new MasterDetailPane(siteController);
+		tabbedPane.addTab("Site", siteMasterDetailPane);
+	}
+
 	/**
 	 * generates and places a JPanel at the base of the program window to display
 	 * notifications to the user
