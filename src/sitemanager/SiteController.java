@@ -217,7 +217,11 @@ public class SiteController implements Tabulate, Runnable {
 			albumList.get(indexOfCurrentAlbum).setAlbumFolder(albumFolder);
 			//USED FOR DEBUGGING PURPOSES. SHOULD BE SELECTED BASED ON ALBUM COVER
 			albumPanel.setDisplayedImage(new File(
-					albumFolder.getAbsolutePath() + File.separator + "Naboo.jpg"), "east");
+					albumFolder.getAbsolutePath() + File.separator + "Naboo.jpg"),
+										 "east",
+										 .5,
+										 1);
+
 			mainFrame.setNotification(
 					"Album location set to \"" + albumFolder.getAbsolutePath() + "\"");
 		} else {

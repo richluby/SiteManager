@@ -104,20 +104,26 @@ class InformationPanel extends JPanel {
 	 * sets the photo displayed by this panel
 	 * @param photo       the photo to display
 	 * @param constraints the constraints to be applied to this photo, based on
-	 *                    <tt>MiGLayout</tt>
+	 * <tt>MiGLayout</tt>
+	 * @param widthScale  the proportion of horizontal space to use in the panel for the
+	 *                    image
+	 * @param heightScale the proportion of vertical space to use in the panel for the
+	 *                    image
 	 */
-	public boolean setDisplayedImage(File photo, String constraints) {
+	public boolean setDisplayedImage(File photo, String constraints, double widthScale,
+									 double heightScale) {
 		try {
 			BufferedImage img = ImageIO.read(photo);
-			ImageIcon icon = new ImageIcon(img.getScaledInstance((int) (getWidth() * .5),
-																 getHeight(),
-																 BufferedImage.SCALE_DEFAULT));
+			ImageIcon icon = new ImageIcon(img.getScaledInstance(
+					(int) (getWidth() * widthScale),
+					(int) (getHeight() * heightScale),
+					BufferedImage.SCALE_DEFAULT));
 			if (imageLabel == null) {
 				imageLabel = new JLabel(icon);
 			} else {
 				imageLabel.setIcon(icon);
 			}
-			add(imageLabel, "gapleft 10px, growx, " + constraints);
+			add(imageLabel, "gapleft 10px, " + constraints);
 			return true;
 		} catch (IOException ex) {
 			Logger.getLogger(InformationPanel.class.getName()).log(Level.SEVERE, null, ex);
