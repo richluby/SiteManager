@@ -4,7 +4,6 @@
 package sitemanager;
 
 import java.io.File;
-import java.util.ArrayList;
 
 /**
  * This class contains the data necessary to represent an album to the program
@@ -32,7 +31,7 @@ public class Album {
 	/**
 	 * the list of photos contained in this album
 	 */
-	private ArrayList<Photo> photoList;
+	private PhotoController photoController;
 
 	/**
 	 * initializes the class
@@ -42,7 +41,7 @@ public class Album {
 		albumDescription = "";
 		albumFolder = null;
 		albumCover = null;
-		photoList = new ArrayList<>(20);
+		photoController = new PhotoController();
 	}
 
 	/**

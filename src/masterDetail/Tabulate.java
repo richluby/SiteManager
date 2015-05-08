@@ -61,7 +61,7 @@ public interface Tabulate {
 
 	/**
 	 * instructs the controller to load the data for the element into the right-component
-	 * view and fire a repaint
+	 * view and fire a repaint on the right-component
 	 * @param rowIndex the row index of the element to be displayed
 	 */
 	public void updateDisplayForElement(int rowIndex);

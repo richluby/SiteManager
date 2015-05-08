@@ -110,11 +110,15 @@ public class SiteController implements Tabulate, Runnable {
 	}
 
 	/**
-	 * populates the controller with the correct album data given a root site folder
+	 * populates the controller with the correct album data given a root site folder. This
+	 * implementation will not run if there is no root folder, or if <tt>rootFolder</tt>
+	 * is null. A separate call must be made to set the root folder. This allows simple
+	 * refreshing of the data due to external file changes.
 	 */
 	@Override
 	public void run() {
 		if (rootAlbumFolder != null) {
+
 		mainFrame.setNotification(
 					"Album data from" + rootAlbumFolder.getName() + " has been loaded into memory.");
 		}
