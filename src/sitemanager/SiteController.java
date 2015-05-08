@@ -67,8 +67,9 @@ public class SiteController implements Tabulate, Runnable {
 				return albumList.get(rowIndex).getAlbumName();
 			case "Album Date":
 				return albumList.get(rowIndex).getAlbumDescription();
+			default:
+				return "";
 		}
-		return "";
 	}
 
 	@Override
