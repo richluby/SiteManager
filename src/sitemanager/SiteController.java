@@ -9,11 +9,15 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.File;
 import java.util.ArrayList;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import masterDetail.MasterDetailPane;
 import masterDetail.Tabulate;
+import static sitemanager.MainFrame.DIVIDER_LOCATION;
 
 /**
  * This class controls the list of albums maintained by the program. It searches for album
@@ -57,6 +61,10 @@ public class SiteController implements Tabulate, Runnable {
 	 * the index of the currently selected album
 	 */
 	private int indexOfCurrentAlbum;
+	/**
+	 * the field that contains the location of the album cover
+	 */
+	private JTextField albumCoverLocation;
 
 	/**
 	 * initializes the controller with relevant data
@@ -137,8 +145,22 @@ public class SiteController implements Tabulate, Runnable {
 	public JPanel initDetailComponent() {
 		JPanel detailPanel = new JPanel(new GridBagLayout());
 		albumPanel = new InformationPanel("Album Information",
-										  Listeners.createBrowseForAlbumFolder(),
-										  Listeners.createSaveAlbumInformation());
+										  Listeners.createBrowseForAlbumFolder(), null);
+		//add information for the album cover
+		JLabel coverLabel = new JLabel("Cover Image: ");
+		albumCoverLocation = new JTextField();
+		albumCoverLocation.setFocusable(false);
+		JButton button = new JButton("Browse");
+		button.addActionListener(null);
+		albumPanel.add(coverLabel);
+		albumPanel.add(albumCoverLocation, "span 3, growx");
+		albumPanel.add(button, "wrap");
+
+		//create save button
+		button = new JButton("Save");
+		button.addActionListener(Listeners.createSaveAlbumInformation());
+		albumPanel.add(button, "skip 1");
+
 		GridBagConstraints gbConstraints = new GridBagConstraints();
 		gbConstraints.weighty = .2;
 		gbConstraints.gridy = 0;
@@ -149,6 +171,9 @@ public class SiteController implements Tabulate, Runnable {
 		photoPane = new MasterDetailPane<>(new PhotoController());
 		gbConstraints.weighty = .8;
 		gbConstraints.gridy = 1;
+		int dividerLocationForMainMasterDetail = (int) (mainFrame.getWidth() * DIVIDER_LOCATION);
+		photoPane.setDividerLocation(
+				(int) ((mainFrame.getWidth() - dividerLocationForMainMasterDetail) * DIVIDER_LOCATION));
 		detailPanel.add(photoPane, gbConstraints);
 		return detailPanel;
 	}

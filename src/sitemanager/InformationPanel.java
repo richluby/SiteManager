@@ -30,6 +30,10 @@ class InformationPanel extends JPanel {
 
 	/**
 	 * initializes the class
+	 * @param title          the title to put around the border of this item
+	 * @param browseListener the listener attached to the browse button
+	 * @param saveListener   the listener attached to the save button. If this listener is
+	 *                       null, then no save button is added.
 	 */
 	public InformationPanel(String title, ActionListener browseListener,
 							ActionListener saveListener) {
@@ -39,7 +43,7 @@ class InformationPanel extends JPanel {
 		locationField = new JTextField(10);
 		locationField.setFocusable(false);
 
-		descriptionArea = new JTextArea(10, 10);
+		descriptionArea = new JTextArea(10, 5);
 		descriptionArea.setWrapStyleWord(true);
 		descriptionArea.setLineWrap(true);
 		//init layout
@@ -66,11 +70,11 @@ class InformationPanel extends JPanel {
 		add(tempLabel);
 		add(descriptionArea, "span, grow, wrap");
 		//add(tempPanel);
-
+		if (saveListener != null) {
 		button = new JButton("Save");
-		button.addActionListener(saveListener);
-		add(button, "skip 1");
-
+			button.addActionListener(saveListener);
+			add(button, "skip 1");
+		}
 		setBorder(new TitledBorder(title));
 	}
 	/**
