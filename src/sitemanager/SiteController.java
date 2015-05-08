@@ -107,7 +107,6 @@ public class SiteController implements Tabulate, Runnable {
 	@Override
 	public void addElement() {
 		Album album = new Album();
-
 		String albumName = JOptionPane.showInputDialog(mainFrame,
 													   "Enter a name for this album:");
 		if (albumName != null && !albumName.equals("")) {

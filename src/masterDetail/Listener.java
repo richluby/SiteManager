@@ -2,6 +2,8 @@ package masterDetail;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.event.MouseInputListener;
 import javax.swing.table.DefaultTableModel;
@@ -46,8 +48,12 @@ public class Listener<T extends Tabulate> {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON1 && controller != null) {//check for left click
+					JPopupMenu callingMenu = ((JPopupMenu) ((JMenuItem) e.getSource()).getParent());
+					callingMenu.setVisible(false);
+					callingMenu.setFocusable(false);
 					controller.addElement();
 					((DefaultTableModel) dataTable.getModel()).fireTableDataChanged();
+					//callingMenu.setFocusable(true);
 				}
 			}
 
@@ -97,6 +103,9 @@ public class Listener<T extends Tabulate> {
 					int rowIndex = dataTable.getSelectedRow();
 					//int correctRow = dataTable.convertColumnIndexToModel(rowIndex);
 					if (rowIndex >= 0) {
+						JPopupMenu callingMenu = ((JPopupMenu) ((JMenuItem) e.getSource()).getParent());
+						callingMenu.setVisible(false);
+						callingMenu.setFocusable(false);
 						controller.removeElement(rowIndex);
 						((DefaultTableModel) dataTable.getModel()).fireTableDataChanged();
 					}
