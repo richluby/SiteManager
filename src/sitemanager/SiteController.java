@@ -38,7 +38,7 @@ public class SiteController implements Tabulate, Runnable {
 
 	/**
 	 * the folder for the website. The controller expects album data to be organized in a
-	 * separate folder
+	 * subfolder for automatic parsing purposes
 	 */
 	private File rootAlbumFolder;
 	/**
@@ -63,9 +63,9 @@ public class SiteController implements Tabulate, Runnable {
 	}
 
 	/**
-	 * sets the root album folder for this controller. The controller will NOT
+	 * sets the root site folder for this controller. The controller will NOT
 	 * automatically reload information from the new folder
-	 * @param rootAlbumFolder the location to set the root album folder
+	 * @param rootAlbumFolder the location to set the root site folder
 	 */
 	public void setRootSiteFolder(File rootAlbumFolder) {
 		this.rootAlbumFolder = rootAlbumFolder;
@@ -105,7 +105,10 @@ public class SiteController implements Tabulate, Runnable {
 
 	@Override
 	public void addElement() {
-		System.out.println("Added");
+		Album album = new Album();
+		album.setAlbumName("This name");
+		albumList.add(album);
+
 	}
 
 	@Override
@@ -154,7 +157,8 @@ public class SiteController implements Tabulate, Runnable {
 	 * sets the location of the currently active album, and updates the text field
 	 */
 	void setAlbumLocation(File albumFolder) {
-		if (indexOfCurrentAlbum < albumList.size()) {
+		if (indexOfCurrentAlbum < albumList.size() && albumFolder != null) {
+			albumPanel.setLocation(albumFolder.getAbsolutePath());
 			albumList.get(indexOfCurrentAlbum).setAlbumFolder(albumFolder);
 		} else {
 			mainFrame.setNotification(

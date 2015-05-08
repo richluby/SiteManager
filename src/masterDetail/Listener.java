@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JTable;
 import javax.swing.event.MouseInputListener;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * this class contains the listeners used throughout the detail pane
@@ -46,6 +47,7 @@ public class Listener<T extends Tabulate> {
 			public void mousePressed(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON1 && controller != null) {//check for left click
 					controller.addElement();
+					((DefaultTableModel) dataTable.getModel()).fireTableDataChanged();
 				}
 			}
 
@@ -96,6 +98,7 @@ public class Listener<T extends Tabulate> {
 					//int correctRow = dataTable.convertColumnIndexToModel(rowIndex);
 					if (rowIndex >= 0) {
 						controller.removeElement(rowIndex);
+						((DefaultTableModel) dataTable.getModel()).fireTableDataChanged();
 					}
 				}
 			}

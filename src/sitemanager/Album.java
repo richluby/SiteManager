@@ -98,12 +98,12 @@ public class Album {
 	/**
 	 * sets the containing folder of this album
 	 * <p>
-	 * @param albumFolder the root folder of this album
+	 * @param af the root folder of this album
 	 */
-	public void setAlbumFolder(File albumFolder) {
-		if (!this.albumFolder.equals(albumFolder)) {
-			this.albumFolder = albumFolder;
-			photoController.populatePhotoList(albumFolder);
+	public void setAlbumFolder(File af) {
+		if (this.albumFolder == null || !this.albumFolder.equals(af)) {
+			this.albumFolder = af;
+			photoController.populatePhotoList(this.albumFolder);
 		}
 	}
 
