@@ -1,0 +1,25 @@
+#This file tracks the list of supported tags when reading through html
+#Tags must be wrapped by ${}
+#Any iterable uses a roving pointer, ie it will only go forward in a given
+#data structure. In the case of a loop, it will continue until the end of the list.
+#Practically, this allows different treatment of the first element of a list.
+
+AlbumTitle
+AlbumDescription
+AlbumCover
+#AlbumSource represents the folder containing the album
+AlbumSource
+
+PhotoSource
+PhotoTitle
+PhotoDescription
+
+#BeginLoop will go through the selected section with ALBUM or PHOTO
+#until the end of the list has been reached
+BeginLoop:Album|Photo
+EndLoop
+ListLength:Album|Photo
+#Supports the four basic arithmetic operations
+Math
+#will start at 0, then increment each time ${INC} is found
+SequentialID
