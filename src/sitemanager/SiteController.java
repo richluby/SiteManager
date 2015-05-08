@@ -95,11 +95,12 @@ public class SiteController implements Tabulate, Runnable {
 
 	@Override
 	public void removeElement(int rowIndex) {
-
+		System.out.println("removed: " + rowIndex);
 	}
 
 	@Override
 	public void addElement() {
+		System.out.println("Added");
 	}
 
 	@Override

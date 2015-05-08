@@ -45,7 +45,7 @@ public class Listener<T extends Tabulate> {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON1 && controller != null) {//check for left click
-
+					controller.addElement();
 				}
 			}
 

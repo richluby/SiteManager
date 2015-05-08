@@ -87,12 +87,18 @@ public class MainFrame extends JFrame {
 	 */
 	private void initMenuBar() {
 		MenuBar menuBar = new MenuBar();
+		//set up File menu
+		Menu fileMenu = new Menu("File");
+		MenuItem chooseAlbum = new MenuItem("Choose Site Folder");
+		fileMenu.add(chooseAlbum);
+		menuBar.add(fileMenu);
 		//set up Help menu
 		Menu helpMenu = new Menu("Help");
 		MenuItem viewHelp = new MenuItem("Help...");
 		viewHelp.addActionListener(HelpClass.createNewHelpWindowListener(this));
 		helpMenu.add(viewHelp);
 		menuBar.add(helpMenu);
+
 		setMenuBar(menuBar);
 	}
 
