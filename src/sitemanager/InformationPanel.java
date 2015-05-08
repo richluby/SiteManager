@@ -1,6 +1,13 @@
 package sitemanager;
 
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,15 +34,20 @@ class InformationPanel extends JPanel {
 	 * the text box for the description of this item
 	 */
 	private JTextArea descriptionArea;
+	/**
+	 * the label to hold the image displayed in this item
+	 */
+	private JLabel imageLabel;
 
 	/**
 	 * initializes the class
-	 * @param title          the title to put around the border of this item
+	 * @param title            the title to put around the border of this item
 	 * @param browseListener the listener attached to the browse button
 	 * @param saveListener   the listener attached to the save button. If this listener is
 	 *                       null, then no save button is added.
 	 */
-	public InformationPanel(String title, ActionListener browseListener,
+	public InformationPanel(String title,
+							ActionListener browseListener,
 							ActionListener saveListener) {
 		//init variables
 		titleField = new JTextField();
@@ -84,7 +96,30 @@ class InformationPanel extends JPanel {
 	public void setTitle(String title) {
 		titleField.setText(title);
 	}
-
+	/**
+	 * sets the photo displayed by this panel
+	 * @param photo       the photo to display
+	 * @param constraints the constraints to be applied to this photo, based on
+	 *                    <tt>MiGLayout</tt>
+	 */
+	public boolean setDisplayedImage(File photo, String constraints) {
+		try {
+			BufferedImage img = ImageIO.read(photo);
+			ImageIcon icon = new ImageIcon(img.getScaledInstance((int) (getWidth() * .5),
+																 getHeight(),
+																 BufferedImage.SCALE_DEFAULT));
+			if (imageLabel == null) {
+				imageLabel = new JLabel(icon);
+			} else {
+				imageLabel.setIcon(icon);
+			}
+			add(imageLabel, "gapleft 10px, growx, " + constraints);
+			return true;
+		} catch (IOException ex) {
+			Logger.getLogger(InformationPanel.class.getName()).log(Level.SEVERE, null, ex);
+			return false;
+		}
+	}
 	/**
 	 * sets the description of this item
 	 * @param description the description to set
