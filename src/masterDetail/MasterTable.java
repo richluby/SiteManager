@@ -112,4 +112,13 @@ public class MasterTable<T extends Tabulate> extends DefaultTableModel {
 	public Object getValueAt(int row, int column) {
 		return controller.getDataForColumn(row, column);
 	}
+
+	/**
+	 * sets the controller for this table, and fires a property change event
+	 * @param controller the new controller to set
+	 */
+	public void setController(T controller) {
+		this.controller = controller;
+		fireTableDataChanged();
+	}
 }

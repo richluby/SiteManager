@@ -116,4 +116,14 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 		//add the popup menu to the jtable
 		masterTable.setComponentPopupMenu(rightClick);
 	}
+
+	/**
+	 * sets the controller for this table, and fires a property change event
+	 * @param controller the new controller to set
+	 */
+	public void setController(T controller) {
+		listener.setController(controller);
+		this.controller = controller;
+		((MasterTable) masterTable.getModel()).setController(controller);
+	}
 }

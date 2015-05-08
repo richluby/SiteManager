@@ -14,7 +14,7 @@ public class Listener<T extends Tabulate> {
 	/**
 	 * the controller for this instance
 	 */
-	private final T controller;
+	private T controller;
 	/**
 	 * the Jtable associated with this listener object
 	 */
@@ -28,7 +28,13 @@ public class Listener<T extends Tabulate> {
 		this.controller = controller;
 		this.dataTable = dataJTable;
 	}
-
+	/**
+	 * sets the controller for this table, and fires a property change event
+	 * @param controller the new controller to set
+	 */
+	public void setController(T controller) {
+		this.controller = controller;
+	}
 	/**
 	 * creates a listener to add an element to the controller
 	 * @return returns a listener that instructs the controller to add an element
