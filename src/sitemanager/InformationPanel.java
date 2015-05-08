@@ -69,7 +69,7 @@ class InformationPanel extends JPanel {
 
 		button = new JButton("Save");
 		button.addActionListener(saveListener);
-		add(button);
+		add(button, "skip 1");
 
 		setBorder(new TitledBorder(title));
 	}

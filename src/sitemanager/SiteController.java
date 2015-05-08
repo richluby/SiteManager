@@ -163,6 +163,7 @@ public class SiteController implements Tabulate, Runnable {
 	public void run() {
 		if (rootSiteFolder != null) {
 			populateAlbumList();
+			//keep gui updates on edt
 			SwingUtilities.invokeLater(() -> {
 				mainFrame.setNotification(
 						"Album data from \"" + rootSiteFolder.getAbsolutePath() + "\" has been loaded into memory.");
@@ -171,13 +172,17 @@ public class SiteController implements Tabulate, Runnable {
 		}
 	}
 	/**
-	 * reads the file <tt>ALBUM_DATA_FILE_NAME</tt> to discern album information. It will
-	 * also examine the directory for unlisted albums.
+	 * reads the file <tt>ALBUM_DATA_FILE_NAME</tt> to discern album information.
 	 */
 	private void populateAlbumList() {
 		//read files HERE
 	}
+	/**
+	 * writes the current albums and photo information to the <tt>rootSiteFolder</tt>
+	 */
+	private void writeInformationToDisk() {
 
+	}
 	/**
 	 * sets the location of the currently active album, and updates the text field
 	 */
