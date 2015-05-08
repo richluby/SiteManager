@@ -67,7 +67,7 @@ public class SiteController implements Tabulate, Runnable {
 	 * automatically reload information from the new folder
 	 * @param rootAlbumFolder the location to set the root album folder
 	 */
-	public void setRootAlbumFolder(File rootAlbumFolder) {
+	public void setRootSiteFolder(File rootAlbumFolder) {
 		this.rootAlbumFolder = rootAlbumFolder;
 	}
 
@@ -154,7 +154,12 @@ public class SiteController implements Tabulate, Runnable {
 	 * sets the location of the currently active album, and updates the text field
 	 */
 	void setAlbumLocation(File albumFolder) {
-		albumList.get(indexOfCurrentAlbum).setAlbumFolder(albumFolder);
+		if (indexOfCurrentAlbum < albumList.size()) {
+			albumList.get(indexOfCurrentAlbum).setAlbumFolder(albumFolder);
+		} else {
+			mainFrame.setNotification(
+					"The selected album could not be found. Try choosing a different album.");
+		}
 	}
 
 }

@@ -49,6 +49,7 @@ public class Album {
 	public PhotoController getPhotoController() {
 		return photoController;
 	}
+
 	/**
 	 * returns the album name
 	 * <p>
@@ -100,7 +101,10 @@ public class Album {
 	 * @param albumFolder the root folder of this album
 	 */
 	public void setAlbumFolder(File albumFolder) {
-		this.albumFolder = albumFolder;
+		if (!this.albumFolder.equals(albumFolder)) {
+			this.albumFolder = albumFolder;
+			photoController.populatePhotoList(albumFolder);
+		}
 	}
 
 	/**
