@@ -13,7 +13,7 @@ import javax.swing.JFileChooser;
 public class Listeners {
 
 	/**
-	 *
+	 * determines what type of file should be allowed in file choosers
 	 */
 	private static enum FILE_TYPE {
 
@@ -57,6 +57,18 @@ public class Listeners {
 			if (albumFolder != null) {
 				mainFrame.setAlbumLocation(albumFolder);
 			}
+		};
+	}
+
+	/**
+	 * instructs the update the active album with information from the display
+	 * <p>
+	 * @return returns a listener that instructs the controller to update the active labum
+	 */
+	static ActionListener createUpdateAlbum() {
+		return (ActionEvent e) -> {
+			mainFrame.updateActiveAlbum();
+			mainFrame.fireAlbumTableDataChanged();
 		};
 	}
 

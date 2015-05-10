@@ -181,4 +181,11 @@ public class MainFrame extends JFrame {
 	public void fireAlbumTableDataChanged() {
 		siteMasterDetailPane.fireTableDataChanged();
 	}
+
+	/**
+	 * instructs the update the active album with information from the display
+	 */
+	void updateActiveAlbum() {
+		siteController.updateDisplayForActiveElement();
+	}
 }

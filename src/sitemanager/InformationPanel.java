@@ -16,9 +16,11 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import net.miginfocom.swing.MigLayout;
+
 /**
  * This class contains the frame work to display information common to both albums and
  * photos
+ * <p>
  * @author Richard Luby, Copyright 2015
  */
 class InformationPanel extends JPanel {
@@ -42,14 +44,15 @@ class InformationPanel extends JPanel {
 
 	/**
 	 * initializes the class
-	 * @param title            the title to put around the border of this item
+	 * <p>
+	 * @param title          the title to put around the border of this item
 	 * @param browseListener the listener attached to the browse button
 	 * @param saveListener   the listener attached to the save button. If this listener is
 	 *                       null, then no save button is added.
 	 */
 	public InformationPanel(String title,
-							ActionListener browseListener,
-							ActionListener saveListener) {
+		ActionListener browseListener,
+		ActionListener saveListener) {
 		//init variables
 		titleField = new JTextField();
 
@@ -87,21 +90,25 @@ class InformationPanel extends JPanel {
 		add(scroller, "span, grow, wrap");
 		//add(tempPanel);
 		if (saveListener != null) {
-		button = new JButton("Save");
+			button = new JButton("Save");
 			button.addActionListener(saveListener);
 			add(button, "skip 1");
 		}
 		setBorder(new TitledBorder(title));
 	}
+
 	/**
 	 * sets the title of this item
+	 * <p>
 	 * @param title the title to set
 	 */
 	public void setTitle(String title) {
 		titleField.setText(title);
 	}
+
 	/**
 	 * sets the photo displayed by this panel
+	 * <p>
 	 * @param photo       the photo to display
 	 * @param constraints the constraints to be applied to this photo, based on
 	 * <tt>MiGLayout</tt>
@@ -111,13 +118,13 @@ class InformationPanel extends JPanel {
 	 *                    image
 	 */
 	public boolean setDisplayedImage(File photo, String constraints, double widthScale,
-									 double heightScale) {
+		double heightScale) {
 		try {
 			BufferedImage img = ImageIO.read(photo);
 			ImageIcon icon = new ImageIcon(img.getScaledInstance(
-					(int) (getWidth() * widthScale),
-					(int) (getHeight() * heightScale),
-					BufferedImage.SCALE_DEFAULT));
+				(int) (getWidth() * widthScale),
+				(int) (getHeight() * heightScale),
+				BufferedImage.SCALE_DEFAULT));
 			if (imageLabel == null) {
 				imageLabel = new JLabel(icon);
 			} else {
@@ -128,13 +135,15 @@ class InformationPanel extends JPanel {
 		} catch (IOException ex) {
 			Logger.getLogger(InformationPanel.class.getName()).log(Level.SEVERE, null, ex);
 			return false;
-		} catch (NullPointerException e) {
+		} catch (NullPointerException | IllegalArgumentException e) {
 			Logger.getLogger(InformationPanel.class.getName()).log(Level.INFO, null, e);
 			return false;
 		}
 	}
+
 	/**
 	 * sets the description of this item
+	 * <p>
 	 * @param description the description to set
 	 */
 	public void setDescription(String description) {
@@ -143,6 +152,7 @@ class InformationPanel extends JPanel {
 
 	/**
 	 * sets the description of this item
+	 * <p>
 	 * @param description the description to set
 	 */
 	public void setLocation(String location) {
@@ -151,6 +161,7 @@ class InformationPanel extends JPanel {
 
 	/**
 	 * returns the text in the title of this item
+	 * <p>
 	 * @return returns the text in the titleBox of this item
 	 */
 	public String getTitle() {
@@ -159,6 +170,7 @@ class InformationPanel extends JPanel {
 
 	/**
 	 * returns the field in the description box of this item
+	 * <p>
 	 * @return returns the current description text of this item
 	 */
 	public String getDescription() {

@@ -171,7 +171,7 @@ public class SiteController implements Tabulate, Runnable {
 
 		//create save button
 		button = new JButton("Save");
-		button.addActionListener(null);
+		button.addActionListener(Listeners.createUpdateAlbum());
 		albumPanel.add(button, "skip 1");
 
 		GridBagConstraints gbConstraints = new GridBagConstraints();
@@ -244,6 +244,17 @@ public class SiteController implements Tabulate, Runnable {
 			mainFrame.setNotification(
 				"The selected album could not be found. Try choosing a different album.");
 		}
+	}
+
+	/**
+	 * instructs the controller to update the active album with information from the
+	 * display
+	 */
+	void updateDisplayForActiveElement() {
+		Album album = albumList.get(indexOfCurrentAlbum);
+		album.setAlbumName(albumPanel.getTitle());
+		album.setAlbumDescription(albumPanel.getDescription());
+
 	}
 
 }
