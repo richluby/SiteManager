@@ -132,6 +132,7 @@ public class Listener<T extends Tabulate> {
 			public void mousePressed(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON1 && controller != null) {//check for left click
 					int rowIndex = dataTable.getSelectedRow();
+					System.out.println("Row: " + rowIndex);
 					//int correctRow = dataTable.convertColumnIndexToModel(rowIndex);
 					if (rowIndex >= 0) {
 						JPopupMenu callingMenu = ((JPopupMenu) ((JMenuItem) e.getSource()).getParent());

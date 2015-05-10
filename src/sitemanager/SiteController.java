@@ -30,7 +30,7 @@ public class SiteController implements Tabulate, Runnable {
 	/**
 	 * the array containing the column names for this class
 	 */
-	private static final String COLUMN_NAMES[] = new String[]{"Album Name", "Album Date"};
+	private static final String COLUMN_NAMES[] = new String[]{"Album Name", "Description"};
 	/**
 	 * the name of the file that this class checks in order to discover album data.
 	 */
@@ -121,7 +121,9 @@ public class SiteController implements Tabulate, Runnable {
 
 	@Override
 	public void removeElement(int rowIndex) {
-		System.out.println("removed: " + rowIndex);
+		if (rowIndex < albumList.size()) {
+			albumList.remove(rowIndex);
+		}
 	}
 
 	@Override
