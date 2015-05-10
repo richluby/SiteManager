@@ -183,6 +183,7 @@ public class Listener<T extends Tabulate> {
 			int rowIndex = dataTable.getSelectedRow();
 			if (rowIndex >= 0 && rowIndex < dataTable.getRowCount()) {
 				controller.updateElement(rowIndex);
+				((DefaultTableModel) dataTable.getModel()).fireTableDataChanged();
 			}
 		};
 	}
