@@ -22,9 +22,11 @@ import static sitemanager.MainFrame.DIVIDER_LOCATION;
 /**
  * This class controls the list of albums maintained by the program. It searches for album
  * information in <tt>ALBUM_DATA_FILE_NAME</tt>.
+ * <p>
  * @author RLuby
  */
 public class SiteController implements Tabulate, Runnable {
+
 	/**
 	 * the array containing the column names for this class
 	 */
@@ -68,6 +70,7 @@ public class SiteController implements Tabulate, Runnable {
 
 	/**
 	 * initializes the controller with relevant data
+	 * <p>
 	 * @param mainFrame the application window responsible for this controller
 	 */
 	public SiteController(MainFrame mainFrame) {
@@ -80,6 +83,7 @@ public class SiteController implements Tabulate, Runnable {
 	/**
 	 * sets the root site folder for this controller. The controller will
 	 * automatically reload information from the new folder
+	 * <p>
 	 * @param rootAlbumFolder the location to set the root site folder
 	 */
 	public void setRootSiteFolder(File rootAlbumFolder) {
@@ -124,7 +128,7 @@ public class SiteController implements Tabulate, Runnable {
 	public void addElement() {
 		Album album = new Album();
 		String albumName = JOptionPane.showInputDialog(mainFrame,
-													   "Enter a name for this album:");
+			"Enter a name for this album:");
 		if (albumName != null && !albumName.equals("")) {
 			album.setAlbumName(albumName);
 			albumList.add(album);
@@ -139,13 +143,22 @@ public class SiteController implements Tabulate, Runnable {
 	@Override
 	public void updateDisplayForElement(int rowIndex) {
 		indexOfCurrentAlbum = rowIndex;
+		Album album = albumList.get(rowIndex);
+		albumPanel.setTitle(album.getAlbumName());
+		albumPanel.setDescription(album.getAlbumDescription());
+		if (album.getAlbumFolder() != null) {
+			albumPanel.setLocation(album.getAlbumFolder().getAbsolutePath());
+		}
+		albumPanel.setDisplayedImage(album.getAlbumCover(),
+			"east",
+			.5, 1);
 	}
 
 	@Override
 	public JPanel initDetailComponent() {
 		JPanel detailPanel = new JPanel(new GridBagLayout());
 		albumPanel = new InformationPanel("Album Information",
-										  Listeners.createBrowseForAlbumFolder(), null);
+			Listeners.createBrowseForAlbumFolder(), null);
 		//add information for the album cover
 		JLabel coverLabel = new JLabel("Cover Image: ");
 		albumCoverLocation = new JTextField();
@@ -173,7 +186,7 @@ public class SiteController implements Tabulate, Runnable {
 		gbConstraints.gridy = 1;
 		int dividerLocationForMainMasterDetail = (int) (mainFrame.getWidth() * DIVIDER_LOCATION);
 		photoPane.setDividerLocation(
-				(int) ((mainFrame.getWidth() - dividerLocationForMainMasterDetail) * DIVIDER_LOCATION));
+			(int) ((mainFrame.getWidth() - dividerLocationForMainMasterDetail) * DIVIDER_LOCATION));
 		detailPanel.add(photoPane, gbConstraints);
 		return detailPanel;
 	}
@@ -191,23 +204,26 @@ public class SiteController implements Tabulate, Runnable {
 			//keep gui updates on edt
 			SwingUtilities.invokeLater(() -> {
 				mainFrame.setNotification(
-						"Album data from \"" + rootSiteFolder.getAbsolutePath() + "\" has been loaded into memory.");
+					"Album data from \"" + rootSiteFolder.getAbsolutePath() + "\" has been loaded into memory.");
 				mainFrame.fireAlbumTableDataChanged();
 			});
 		}
 	}
+
 	/**
 	 * reads the file <tt>ALBUM_DATA_FILE_NAME</tt> to discern album information.
 	 */
 	private void populateAlbumList() {
 		//read files HERE
 	}
+
 	/**
 	 * writes the current albums and photo information to the <tt>rootSiteFolder</tt>
 	 */
 	private void writeInformationToDisk() {
 
 	}
+
 	/**
 	 * sets the location of the currently active album, and updates the text field
 	 */
@@ -217,16 +233,16 @@ public class SiteController implements Tabulate, Runnable {
 			albumList.get(indexOfCurrentAlbum).setAlbumFolder(albumFolder);
 			//USED FOR DEBUGGING PURPOSES. SHOULD BE SELECTED BASED ON ALBUM COVER
 			albumPanel.setDisplayedImage(new File(
-					albumFolder.getAbsolutePath() + File.separator + "Naboo.jpg"),
-										 "east",
-										 .5,
-										 1);
+				albumFolder.getAbsolutePath() + File.separator + "Naboo.jpg"),
+				"east",
+				.5,
+				1);
 
 			mainFrame.setNotification(
-					"Album location set to \"" + albumFolder.getAbsolutePath() + "\"");
+				"Album location set to \"" + albumFolder.getAbsolutePath() + "\"");
 		} else {
 			mainFrame.setNotification(
-					"The selected album could not be found. Try choosing a different album.");
+				"The selected album could not be found. Try choosing a different album.");
 		}
 	}
 

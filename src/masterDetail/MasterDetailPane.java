@@ -92,6 +92,8 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 		TableRowSorter<MasterTable> sorter = new TableRowSorter<>((MasterTable) masterTable.getModel());
 		masterTable.setRowSorter(sorter);
 		setupPopupMenu();
+		ListSelectionModel selectionModel = masterTable.getSelectionModel();
+		selectionModel.addListSelectionListener(listener.createSelectionChange());
 		tableScroller = new JScrollPane(masterTable);
 		setLeftComponent(tableScroller);
 	}
@@ -120,6 +122,7 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 
 	/**
 	 * sets the controller for this table, and fires a property change event
+	 * <p>
 	 * @param controller the new controller to set
 	 */
 	public void setController(T controller) {

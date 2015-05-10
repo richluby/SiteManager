@@ -3,3 +3,4 @@
 *.mf
 /build/
 /dist/
+/nbproject/private/

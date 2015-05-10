@@ -128,6 +128,9 @@ class InformationPanel extends JPanel {
 		} catch (IOException ex) {
 			Logger.getLogger(InformationPanel.class.getName()).log(Level.SEVERE, null, ex);
 			return false;
+		} catch (NullPointerException e) {
+			Logger.getLogger(InformationPanel.class.getName()).log(Level.INFO, null, e);
+			return false;
 		}
 	}
 	/**

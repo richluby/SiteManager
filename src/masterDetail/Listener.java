@@ -5,11 +5,14 @@ import java.awt.event.MouseListener;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MouseInputListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
  * this class contains the listeners used throughout the detail pane
+ * <p>
  * @author Richard Luby, Copyright 2015
  */
 public class Listener<T extends Tabulate> {
@@ -22,8 +25,10 @@ public class Listener<T extends Tabulate> {
 	 * the Jtable associated with this listener object
 	 */
 	private final JTable dataTable;
+
 	/**
 	 * initializes the class
+	 * <p>
 	 * @param controller the controller from the master-detail view
 	 * @param dataJTable the jtable that contains the data
 	 */
@@ -31,15 +36,19 @@ public class Listener<T extends Tabulate> {
 		this.controller = controller;
 		this.dataTable = dataJTable;
 	}
+
 	/**
 	 * sets the controller for this table, and fires a property change event
+	 * <p>
 	 * @param controller the new controller to set
 	 */
 	public void setController(T controller) {
 		this.controller = controller;
 	}
+
 	/**
 	 * creates a listener to add an element to the controller
+	 * <p>
 	 * @return returns a listener that instructs the controller to add an element
 	 */
 	public MouseListener mouseCreateAddElement() {
@@ -84,17 +93,37 @@ public class Listener<T extends Tabulate> {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+
 			}
 
 		};
 	}
 
+	/**
+	 * instructs the controller to change the display for the right side component due to
+	 * a selection change in the table
+	 */
+	ListSelectionListener createSelectionChange() {
+		return (ListSelectionEvent e) -> {
+			if (controller != null) {//check for left click
+				int rowIndex = dataTable.getSelectedRow();
+				//int correctRow = dataTable.convertColumnIndexToModel(rowIndex);
+				if (rowIndex >= 0) {
+					controller.updateDisplayForElement(rowIndex);
+				}
+			}
+		};
+	}
+
+	/**
+	 * instructs the controller to remove an element from the data model, and then this
+	 * method fires the property change event
+	 */
 	MouseListener mouseCreateRemoveElement() {
 		return new MouseInputListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+
 			}
 
 			@Override
