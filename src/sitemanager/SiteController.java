@@ -171,7 +171,7 @@ public class SiteController implements Tabulate, Runnable {
 
 		//create save button
 		button = new JButton("Save");
-		button.addActionListener(Listeners.createSaveAlbumInformation());
+		button.addActionListener(null);
 		albumPanel.add(button, "skip 1");
 
 		GridBagConstraints gbConstraints = new GridBagConstraints();

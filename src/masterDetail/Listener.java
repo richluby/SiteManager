@@ -1,5 +1,7 @@
 package masterDetail;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JMenuItem;
@@ -169,4 +171,19 @@ public class Listener<T extends Tabulate> {
 		};
 	}
 
+	/**
+	 * instructs the controller to update the information for the element at the active
+	 * selection index
+	 * <p>
+	 * @return returns a listener that calls the <tt>upDateElemnt(int)</tt> method in the
+	 *         controller
+	 */
+	public ActionListener createSaveElementInformation() {
+		return (ActionEvent e) -> {
+			int rowIndex = dataTable.getSelectedRow();
+			if (rowIndex >= 0 && rowIndex < dataTable.getRowCount()) {
+				controller.updateElement(rowIndex);
+			}
+		};
+	}
 }

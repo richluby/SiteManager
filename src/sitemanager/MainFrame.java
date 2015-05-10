@@ -22,6 +22,7 @@ import masterDetail.MasterDetailPane;
  * @author Richard Luby, Copyright 2015
  */
 public class MainFrame extends JFrame {
+
 	/**
 	 * the location at which to start the divided
 	 */
@@ -136,8 +137,10 @@ public class MainFrame extends JFrame {
 		notifPanel.setMessage("Welcome to the Site Manager Application");
 		add(notifPanel, BorderLayout.SOUTH);
 	}
+
 	/**
 	 * sets the notification to the user
+	 * <p>
 	 * @param message the message to send to the user
 	 */
 	public void setNotification(String message) {
@@ -149,24 +152,29 @@ public class MainFrame extends JFrame {
 	 */
 	public void loadSiteControllerData() {
 		siteController.setRootSiteFolder(new File(
-				rootSiteFolder.getAbsoluteFile() + File.separator + "albumData"));
+			rootSiteFolder.getAbsoluteFile() + File.separator + "albumData"));
 		Thread thread = new Thread(siteController, "initSiteControllerData");
 		thread.start();
 	}
+
 	/**
 	 * sets the root folder for a site/album, and updates the controller accordingly
+	 * <p>
 	 * @param selectedFile the directory at the root of the album
 	 */
 	public void setRootFolderForSite(File selectedFile) {
 		rootSiteFolder = selectedFile;
 	}
+
 	/**
 	 * sets the location for the currently active album
+	 * <p>
 	 * @param albumFolder the folder to set as the location for the active album
 	 */
 	void setAlbumLocation(File albumFolder) {
 		siteController.setAlbumLocation(albumFolder);
 	}
+
 	/**
 	 * instructs the album table to update due to data changes
 	 */

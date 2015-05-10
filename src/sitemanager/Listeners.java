@@ -7,6 +7,7 @@ import javax.swing.JFileChooser;
 
 /**
  * This class contains convenience methods for all the listeners in the program
+ * <p>
  * @author Richard Luby, Copyright 2015
  */
 public class Listeners {
@@ -31,26 +32,28 @@ public class Listeners {
 	/**
 	 * creates a listener that selects the root folder for a website. This listener
 	 * proceeds to load relevant data from that directory
+	 * <p>
 	 * @return returns a listener that causes the program to reload the active album
 	 *         information
 	 */
 	static ActionListener createRootFolderForSiteChooser() {
 		return (ActionEvent e) -> {
 			File rootFolder = openDialogChooser(FILE_TYPE.DIRECTORY.ordinal(),
-												"Choose Root Folder");
+				"Choose Root Folder");
 			if (rootFolder != null) {
 				mainFrame.setRootFolderForSite(rootFolder);
 				mainFrame.loadSiteControllerData();
 			}
 		};
 	}
+
 	/**
 	 * returns a listener that displays a dialog to select a directory
 	 */
 	static ActionListener createBrowseForAlbumFolder() {
 		return (ActionEvent e) -> {
 			File albumFolder = openDialogChooser(FILE_TYPE.DIRECTORY.ordinal(),
-												 "Choose Album Folder");
+				"Choose Album Folder");
 			if (albumFolder != null) {
 				mainFrame.setAlbumLocation(albumFolder);
 			}
@@ -58,16 +61,8 @@ public class Listeners {
 	}
 
 	/**
-	 * updates the information for the currently selected album with the currently
-	 * displayed information
-	 */
-	static ActionListener createSaveAlbumInformation() {
-		return (ActionEvent e) -> {
-			System.out.println("info saved for album");
-		};
-	}
-	/**
 	 * opens a JFileChooser with the given title that accepts single files only
+	 * <p>
 	 * @return returns the file selected from the user, or null if no file was selected
 	 */
 	private static File openDialogChooser(int fileType, String title) {
