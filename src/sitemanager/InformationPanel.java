@@ -136,11 +136,16 @@ class InformationPanel extends JPanel {
 			return true;
 		} catch (IOException ex) {
 			System.out.println("No image found for infoPanel");
+			if (imageLabel != null) {
+				imageLabel.setIcon(null);
+				imageLabel.revalidate();
+				imageLabel.repaint();
+			}
 			return false;
 		} catch (NullPointerException | IllegalArgumentException e) {
 			System.out.println("Improper image format passed to infoPanel");
 			if (imageLabel != null) {
-				imageLabel.removeAll();
+				imageLabel.setIcon(null);
 				imageLabel.revalidate();
 				imageLabel.repaint();
 			}

@@ -175,6 +175,8 @@ public class SiteController implements Tabulate, Runnable {
 		albumPanel.setDescription(album.getAlbumDescription());
 		if (album.getAlbumFolder() != null) {
 			albumPanel.setLocation(album.getAlbumFolder().getAbsolutePath());
+		} else {
+			albumPanel.setLocation("");
 		}
 		if (album.getAlbumCover() != null) {
 			albumCoverLocation.setText(album.getAlbumCover().getAbsolutePath());
