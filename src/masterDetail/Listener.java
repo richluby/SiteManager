@@ -107,8 +107,8 @@ public class Listener<T extends Tabulate> {
 	 */
 	ListSelectionListener createSelectionChange() {
 		return (ListSelectionEvent e) -> {
-			if (controller != null) {//check for left click
-				int rowIndex = dataTable.getSelectedRow();
+			int rowIndex = dataTable.getSelectedRow();
+			if (controller != null && rowIndex < controller.getNumberOfRows() && rowIndex >= 0) {//check for left click
 				rowIndex = dataTable.convertRowIndexToModel(rowIndex);
 				if (rowIndex >= 0) {
 					controller.updateDisplayForElement(rowIndex);
