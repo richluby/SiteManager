@@ -129,5 +129,6 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 		listener.setController(controller);
 		this.controller = controller;
 		((MasterTable) masterTable.getModel()).setController(controller);
+		((MasterTable) masterTable.getModel()).fireTableDataChanged();
 	}
 }
