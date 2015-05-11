@@ -148,4 +148,30 @@ public class Listeners {
 			}
 		};
 	}
+
+	/**
+	 * creates a dialog that allows a user to browse for a different photo location
+	 * <p>
+	 * @return allows the user to select a photo to use in the active album
+	 */
+	static ActionListener createBrowseForPhoto() {
+		return (ActionEvent e) -> {
+			PhotoController controller = mainFrame.getSiteController().getActiveAlbum().getPhotoController();
+			File image = openDialogChooser(FILE_TYPE.FILE.ordinal(), "Choose a Photo", mainFrame.getSiteController().getActiveAlbum().getAlbumFolder());
+			if (image != null) {
+				controller.setPhotoLocationForActivePhoto(image);
+			}
+		};
+	}
+
+	/**
+	 * saves the information for a photo from the display to the model data behind the
+	 * display
+	 * <p>
+	 * @return a listener designed to update the active photo with the current display
+	 *         information
+	 */
+	static ActionListener creatUpdatePhoto() {
+		return null;
+	}
 }

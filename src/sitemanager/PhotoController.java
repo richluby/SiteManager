@@ -17,6 +17,11 @@ class PhotoController implements Tabulate {
 	 */
 	private final static String[] COLUMN_NAMES = new String[]{"Name", "Location"};
 	/**
+	 * the constraints to use for the photo in the preview photo sections. the order is
+	 * {width, height}
+	 */
+	private final static float[] CONSTRAINTS = new float[]{.8f, .4f};
+	/**
 	 * the name of the file in which to look for information regarding photos. This file
 	 * must be in the same folder as the albumFolder passed to the controller
 	 */
@@ -51,7 +56,7 @@ class PhotoController implements Tabulate {
 		parentAlbum = parent;
 		activePhotoIndex = 0;
 		if (informationPanel == null) {
-			informationPanel = new InformationPanel("Photo Information", null, null);
+			informationPanel = new InformationPanel("Photo Information", Listeners.createBrowseForPhoto(), Listeners.creatUpdatePhoto());
 		}
 	}
 
@@ -121,7 +126,7 @@ class PhotoController implements Tabulate {
 			informationPanel.setTitle(activePhoto.getPhotoName());
 			informationPanel.setDescription(activePhoto.getPhotoDescription());
 			informationPanel.setLocation(activePhoto.getPhotoFile().getAbsolutePath());
-			informationPanel.setDisplayedImage(activePhoto.getPhotoFile(), "south", .8, .4);
+			informationPanel.setDisplayedImage(activePhoto.getPhotoFile(), "south", CONSTRAINTS[0], CONSTRAINTS[1]);
 		}
 	}
 
@@ -135,5 +140,13 @@ class PhotoController implements Tabulate {
 	 */
 	void writeDataToDisk() {
 
+	}
+
+	/**
+	 * sets the location for the image file for the currently active photo
+	 */
+	void setPhotoLocationForActivePhoto(File imageFile) {
+		photoList.get(activePhotoIndex).setPhotoFile(imageFile);
+		informationPanel.setDisplayedImage(imageFile, "south", CONSTRAINTS[0], CONSTRAINTS[1]);
 	}
 }
