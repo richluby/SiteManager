@@ -43,7 +43,7 @@ public class Listeners {
 			File rootFolder = openDialogChooser(FILE_TYPE.DIRECTORY.ordinal(),
 				"Choose Root Folder");
 			if (rootFolder != null) {
-				mainFrame.setRootFolderForSite(rootFolder);
+				mainFrame.getSiteController().setRootSiteFolder(rootFolder);
 				mainFrame.loadSiteControllerData();
 			}
 		};

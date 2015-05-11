@@ -139,7 +139,9 @@ class InformationPanel extends JPanel {
 			return false;
 		} catch (NullPointerException | IllegalArgumentException e) {
 			System.out.println("Improper image format passed to infoPanel");
-			imageLabel.removeAll();
+			if (imageLabel != null) {
+				imageLabel.removeAll();
+			}
 			return false;
 		}
 	}

@@ -46,7 +46,7 @@ public class MainFrame extends JFrame {
 	 * <p>
 	 * <tt>main.css</tt> is in "/"
 	 * <p>
-	 * <tt>album.css</tt> is in "/albumData/"
+	 * <tt>album.css</tt> is in "/"
 	 */
 	private File rootSiteFolder;
 	/**
@@ -102,7 +102,7 @@ public class MainFrame extends JFrame {
 		viewHelp.addActionListener(HelpClass.createNewHelpWindowListener(this));
 		helpMenu.add(viewHelp);
 		menuBar.add(helpMenu);
-		
+
 		setMenuBar(menuBar);
 	}
 
@@ -125,7 +125,7 @@ public class MainFrame extends JFrame {
 		siteMasterDetailPane = new MasterDetailPane(siteController);
 		siteMasterDetailPane.setDividerLocation((int) (getWidth() * DIVIDER_LOCATION));
 		tabbedPane.addTab("Site", siteMasterDetailPane);
-		
+
 		tabbedPane.addTab("Accounts", new JPanel());
 	}
 
@@ -153,18 +153,9 @@ public class MainFrame extends JFrame {
 	 */
 	public void loadSiteControllerData() {
 		siteController.setRootSiteFolder(new File(
-			rootSiteFolder.getAbsoluteFile() + File.separator + "albumData"));
+			rootSiteFolder.getAbsolutePath()));
 		Thread thread = new Thread(siteController, "initSiteControllerData");
 		thread.start();
-	}
-
-	/**
-	 * sets the root folder for a site/album, and updates the controller accordingly
-	 * <p>
-	 * @param selectedFile the directory at the root of the album
-	 */
-	public void setRootFolderForSite(File selectedFile) {
-		rootSiteFolder = selectedFile;
 	}
 
 	/**

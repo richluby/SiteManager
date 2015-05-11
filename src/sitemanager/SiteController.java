@@ -251,17 +251,21 @@ public class SiteController implements Tabulate, Runnable {
 	 * writes the albums and photo information to the <tt>rootSiteFolder</tt>
 	 */
 	public void writeInformationToDisk() {
-		FileOperations.FileWriter writer = new FileOperations.FileWriter(rootSiteFolder.getAbsolutePath() + File.separator + ALBUM_DATA_FILE_NAME);
-		writer.write("#This file contains information regarding albums.\n#Whitespace is ignored when parsing this file when it occurs at either end of a line");
-		for (Iterator<Album> iterator = albumList.iterator(); iterator.hasNext();) {
-			Album album = iterator.next();
-			writer.writeln(KEYWORDS.ALBUM_NAME + ": " + album.getAlbumName());
-			writer.writeln("\t" + KEYWORDS.ALBUM_LOCATION + ": " + album.getAlbumFolder().getAbsolutePath());
-			writer.writeln("\t" + KEYWORDS.ALBUM_COVER + ": " + album.getAlbumCover().getAbsolutePath());
-			writer.writeln("\t" + KEYWORDS.ALBUM_DESCRIPTION + ": " + album.getAlbumDescription());
-			album.getPhotoController().writeDataToDisk();
+		try {
+			FileOperations.FileWriter writer = new FileOperations.FileWriter(rootSiteFolder.getAbsolutePath() + File.separator + ALBUM_DATA_FILE_NAME);
+			writer.writeln("#This file contains information regarding albums.\n#Whitespace is ignored when parsing this file if it occurs at either end of a line.");
+			for (Iterator<Album> iterator = albumList.iterator(); iterator.hasNext();) {
+				Album album = iterator.next();
+				writer.writeln(KEYWORDS.ALBUM_NAME + ": " + album.getAlbumName());
+				writer.writeln("\t" + KEYWORDS.ALBUM_LOCATION + ": " + album.getAlbumFolder().getAbsolutePath());
+				writer.writeln("\t" + KEYWORDS.ALBUM_COVER + ": " + album.getAlbumCover().getAbsolutePath());
+				writer.writeln("\t" + KEYWORDS.ALBUM_DESCRIPTION + ": " + album.getAlbumDescription());
+				album.getPhotoController().writeDataToDisk();
+			}
+			writer.close();
+		} catch (NullPointerException e) {
+			mainFrame.setNotification("No root folder was chosen. Data cannot be saved.");
 		}
-		writer.close();
 	}
 
 	/**
