@@ -126,10 +126,13 @@ class InformationPanel extends JPanel {
 				BufferedImage.SCALE_DEFAULT));
 			if (imageLabel == null) {
 				imageLabel = new JLabel(icon);
+				add(imageLabel, "gapleft 10px, " + constraints);
 			} else {
 				imageLabel.setIcon(icon);
+				imageLabel.revalidate();
+				imageLabel.repaint();
 			}
-			add(imageLabel, "gapleft 10px, " + constraints);
+
 			return true;
 		} catch (IOException ex) {
 			System.out.println("No image found for infoPanel");

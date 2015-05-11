@@ -55,7 +55,7 @@ public class Listeners {
 			File albumFolder = openDialogChooser(FILE_TYPE.DIRECTORY.ordinal(),
 				"Choose Album Folder");
 			if (albumFolder != null) {
-				mainFrame.setAlbumLocation(albumFolder);
+				mainFrame.getSiteController().setAlbumLocation(albumFolder);
 			}
 		};
 	}

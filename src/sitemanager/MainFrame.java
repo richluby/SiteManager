@@ -167,15 +167,6 @@ public class MainFrame extends JFrame {
 	}
 
 	/**
-	 * sets the location for the currently active album
-	 * <p>
-	 * @param albumFolder the folder to set as the location for the active album
-	 */
-	void setAlbumLocation(File albumFolder) {
-		siteController.setAlbumLocation(albumFolder);
-	}
-
-	/**
 	 * instructs the album table to update due to data changes
 	 */
 	public void fireAlbumTableDataChanged() {
