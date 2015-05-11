@@ -32,11 +32,15 @@ class PhotoController implements Tabulate {
 	/**
 	 * the information panel to be displayed in the detail pane
 	 */
-	private InformationPanel informationPanel;
+	static private InformationPanel informationPanel;
 	/**
 	 * The album to which this controller belongs
 	 */
 	private Album parentAlbum;
+	/**
+	 * the photo that is currently selected
+	 */
+	private int activePhotoIndex;
 
 	/**
 	 * initializes the controller
@@ -45,6 +49,10 @@ class PhotoController implements Tabulate {
 		albumFolder = null;
 		photoList = new ArrayList<>();
 		parentAlbum = parent;
+		activePhotoIndex = 0;
+		if (informationPanel == null) {
+			informationPanel = new InformationPanel("Photo Information", null, null);
+		}
 	}
 
 	@Override
@@ -108,11 +116,18 @@ class PhotoController implements Tabulate {
 
 	@Override
 	public void updateDisplayForElement(int rowIndex) {
+		if (rowIndex < photoList.size()) {
+			Photo activePhoto = photoList.get(rowIndex);
+			System.out.println("infoPanel: " + informationPanel);
+			informationPanel.setTitle(activePhoto.getPhotoName());
+			informationPanel.setDescription(activePhoto.getPhotoDescription());
+			informationPanel.setLocation(activePhoto.getPhotoFile().getAbsolutePath());
+			informationPanel.setDisplayedImage(activePhoto.getPhotoFile(), "south", .8, .4);
+		}
 	}
 
 	@Override
 	public JPanel initDetailComponent() {
-		informationPanel = new InformationPanel("Photo Information", null, null);
 		return informationPanel;
 	}
 

@@ -44,8 +44,8 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 	public MasterDetailPane(T controller) {
 		super();
 		this.controller = controller;
-		setupTable();
 		setRightComponent(controller.initDetailComponent());
+		setupTable();
 	}
 
 	/**
