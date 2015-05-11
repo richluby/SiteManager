@@ -41,7 +41,7 @@ public class Listeners {
 	static ActionListener createRootFolderForSiteChooser() {
 		return (ActionEvent e) -> {
 			File rootFolder = openDialogChooser(FILE_TYPE.DIRECTORY.ordinal(),
-				"Choose Root Folder", new File("./"));
+				"Choose Root Folder", new File(System.getProperty("user.home")));
 			if (rootFolder != null) {
 				mainFrame.getSiteController().setRootSiteFolder(rootFolder);
 			}
