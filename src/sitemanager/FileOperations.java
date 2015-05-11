@@ -84,6 +84,20 @@ public class FileOperations {
 		}
 
 		/**
+		 * writes a single piece of data to the file associated with this object, and then
+		 * appends a newline character
+		 * <p>
+		 * @param data the data to be written to file
+		 */
+		public void writeln(String data) {
+			try {
+				fileWriter.write(data + "\n");
+			} catch (IOException e) {
+				handleError(e, MODE);
+			}
+		}
+
+		/**
 		 * flushes the writer and closes associated resources
 		 */
 		public void close() {
