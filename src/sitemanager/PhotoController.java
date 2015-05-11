@@ -122,6 +122,7 @@ class PhotoController implements Tabulate {
 	@Override
 	public void updateDisplayForElement(int rowIndex) {
 		if (rowIndex < photoList.size()) {
+			activePhotoIndex = rowIndex;
 			Photo activePhoto = photoList.get(rowIndex);
 			informationPanel.setTitle(activePhoto.getPhotoName());
 			informationPanel.setDescription(activePhoto.getPhotoDescription());
