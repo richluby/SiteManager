@@ -2,7 +2,6 @@ package sitemanager;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import javax.swing.JPanel;
 import masterDetail.Tabulate;
 
@@ -34,13 +33,18 @@ class PhotoController implements Tabulate {
 	 * the information panel to be displayed in the detail pane
 	 */
 	private InformationPanel informationPanel;
+	/**
+	 * The album to which this controller belongs
+	 */
+	private Album parentAlbum;
 
 	/**
 	 * initializes the controller
 	 */
-	public PhotoController() {
+	public PhotoController(Album parent) {
 		albumFolder = null;
 		photoList = new ArrayList<>();
+		parentAlbum = parent;
 	}
 
 	@Override
@@ -60,15 +64,19 @@ class PhotoController implements Tabulate {
 	 * <p>
 	 * @param af the album folder in which to find photos.
 	 */
-	void populatePhotoList(File af) {
+	public void populatePhotoList(File af) {
 		this.albumFolder = af;
 		File[] files = albumFolder.listFiles((File pathname) -> {
 			return pathname.getName().endsWith("jpg") || pathname.getName().endsWith(
 				"jpeg");
 		});
-		System.out.println("files: " + Arrays.toString(files));
-		//read photos
-
+		Photo photo = null;
+		for (File file : files) {
+			photo = new Photo();
+			photo.setPhotoFile(file);
+			photo.setPhotoName(file.getName());
+			photoList.add(photo);
+		}
 	}
 
 	@Override

@@ -41,8 +41,9 @@ public class Album {
 		albumDescription = "";
 		albumFolder = null;
 		albumCover = null;
-		photoController = new PhotoController();
+		photoController = new PhotoController(this);
 	}
+
 	/**
 	 * returns the photoController that handles the photos for this album
 	 */

@@ -121,7 +121,7 @@ public class SiteController implements Tabulate, Runnable {
 		switch (COLUMN_NAMES[columnIndex]) {
 			case "Album Name":
 				return albumList.get(rowIndex).getAlbumName();
-			case "Album Date":
+			case "Description":
 				return albumList.get(rowIndex).getAlbumDescription();
 			default:
 				return "";
@@ -208,7 +208,7 @@ public class SiteController implements Tabulate, Runnable {
 		gbConstraints.fill = GridBagConstraints.BOTH;
 		detailPanel.add(albumPanel, gbConstraints);
 
-		photoPane = new MasterDetailPane<>(new PhotoController());
+		photoPane = new MasterDetailPane<>(new PhotoController(null));
 		gbConstraints.weighty = .8;
 		gbConstraints.gridy = 1;
 		int dividerLocationForMainMasterDetail = (int) (mainFrame.getWidth() * DIVIDER_LOCATION);
@@ -286,7 +286,7 @@ public class SiteController implements Tabulate, Runnable {
 			} else {
 				mainFrame.setNotification("No valid album cover was found.");
 			}
-
+			photoPane.fireTableDataChanged();
 		} else {
 			mainFrame.setNotification(
 				"The selected album could not be found. Try choosing a different album.");
