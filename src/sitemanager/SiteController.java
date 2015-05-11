@@ -9,6 +9,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -31,6 +32,29 @@ public class SiteController implements Tabulate, Runnable {
 	 * the array containing the column names for this class
 	 */
 	private static final String COLUMN_NAMES[] = new String[]{"Album Name", "Description"};
+
+	/**
+	 * the list of keywords used when parsing through the file
+	 */
+	private static enum KEYWORDS {
+
+		/**
+		 * the name of the album
+		 */
+		ALBUM_NAME,
+		/**
+		 * the folder location of the album
+		 */
+		ALBUM_LOCATION,
+		/**
+		 * the file location of the album cover
+		 */
+		ALBUM_COVER,
+		/**
+		 * the text description of the album. This description may be multiple lines.
+		 */
+		ALBUM_DESCRIPTION
+	};
 	/**
 	 * the name of the file that this class checks in order to discover album data.
 	 */
@@ -220,10 +244,20 @@ public class SiteController implements Tabulate, Runnable {
 	}
 
 	/**
-	 * writes the current albums and photo information to the <tt>rootSiteFolder</tt>
+	 * writes the albums and photo information to the <tt>rootSiteFolder</tt>
 	 */
 	private void writeInformationToDisk() {
-
+		FileOperations.FileWriter writer = new FileOperations.FileWriter(rootSiteFolder.getAbsolutePath() + File.separator + ALBUM_DATA_FILE_NAME);
+		writer.write("#This file contains information regarding albums.\n#Whitespace is ignored when parsing this file when it occurs at either end of a line");
+		for (Iterator<Album> iterator = albumList.iterator(); iterator.hasNext();) {
+			Album album = iterator.next();
+			writer.writeln(KEYWORDS.ALBUM_NAME + ": " + album.getAlbumName());
+			writer.writeln("\t" + KEYWORDS.ALBUM_LOCATION + ": " + album.getAlbumFolder().getAbsolutePath());
+			writer.writeln("\t" + KEYWORDS.ALBUM_COVER + ": " + album.getAlbumCover().getAbsolutePath());
+			writer.writeln("\t" + KEYWORDS.ALBUM_DESCRIPTION + ": " + album.getAlbumDescription());
+			album.getPhotoController().writeDataToDisk();
+		}
+		writer.close();
 	}
 
 	/**
