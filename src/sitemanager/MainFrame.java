@@ -159,7 +159,7 @@ public class MainFrame extends JFrame {
 	 * instructs the update the active album with information from the display
 	 */
 	void updateActiveAlbum() {
-		siteController.updateDisplayForActiveElement();
+		siteController.updateActiveElement();
 	}
 
 	/**

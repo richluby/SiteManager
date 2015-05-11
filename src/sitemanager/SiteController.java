@@ -8,6 +8,7 @@ package sitemanager;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JButton;
@@ -51,7 +52,7 @@ public class SiteController implements Tabulate, Runnable {
 		 */
 		ALBUM_COVER,
 		/**
-		 * the text description of the album. This description may be multiple lines.
+		 * the text description of the album. This description may NOT be multiple lines.
 		 */
 		ALBUM_DESCRIPTION
 	};
@@ -112,10 +113,10 @@ public class SiteController implements Tabulate, Runnable {
 	 */
 	public void setRootSiteFolder(File rootAlbumFolder) {
 		this.rootSiteFolder = rootAlbumFolder;
-		Thread thread = new Thread(this);
+		Thread thread = new Thread(this, "Updating Primary Data");
 		thread.start();
 	}
-
+	
 	@Override
 	public Object getDataForColumn(int rowIndex, int columnIndex) {
 		switch (COLUMN_NAMES[columnIndex]) {
@@ -127,29 +128,29 @@ public class SiteController implements Tabulate, Runnable {
 				return "";
 		}
 	}
-
+	
 	@Override
 	public String[] getColumnNames() {
 		return COLUMN_NAMES;
 	}
-
+	
 	@Override
 	public int getNumberOfRows() {
 		return albumList.size();
 	}
-
+	
 	@Override
 	public Class<?> getColumnClass(int col) {
 		return String.class;
 	}
-
+	
 	@Override
 	public void removeElement(int rowIndex) {
 		if (rowIndex < albumList.size()) {
 			albumList.remove(rowIndex);
 		}
 	}
-
+	
 	@Override
 	public void addElement() {
 		Album album = new Album();
@@ -159,13 +160,13 @@ public class SiteController implements Tabulate, Runnable {
 			album.setAlbumName(albumName);
 			albumList.add(album);
 		}
-
+		
 	}
-
+	
 	@Override
 	public void updateElement(int rowIndex) {
 	}
-
+	
 	@Override
 	public void updateDisplayForElement(int rowIndex) {
 		indexOfCurrentAlbum = rowIndex;
@@ -175,12 +176,17 @@ public class SiteController implements Tabulate, Runnable {
 		if (album.getAlbumFolder() != null) {
 			albumPanel.setLocation(album.getAlbumFolder().getAbsolutePath());
 		}
+		if (album.getAlbumCover() != null) {
+			albumCoverLocation.setText(album.getAlbumCover().getAbsolutePath());
+		} else {
+			albumCoverLocation.setText("");
+		}
 		albumPanel.setDisplayedImage(album.getAlbumCover(),
 			"east",
 			.5, .8);
 		photoPane.setController(album.getPhotoController());
 	}
-
+	
 	@Override
 	public JPanel initDetailComponent() {
 		JPanel detailPanel = new JPanel(new GridBagLayout());
@@ -200,14 +206,14 @@ public class SiteController implements Tabulate, Runnable {
 		button = new JButton("Save");
 		button.addActionListener(Listeners.createUpdateAlbum());
 		albumPanel.add(button, "skip 1");
-
+		
 		GridBagConstraints gbConstraints = new GridBagConstraints();
 		gbConstraints.weighty = .2;
 		gbConstraints.gridy = 0;
 		gbConstraints.weightx = 1;
 		gbConstraints.fill = GridBagConstraints.BOTH;
 		detailPanel.add(albumPanel, gbConstraints);
-
+		
 		photoPane = new MasterDetailPane<>(new PhotoController(null));
 		gbConstraints.weighty = .8;
 		gbConstraints.gridy = 1;
@@ -239,12 +245,35 @@ public class SiteController implements Tabulate, Runnable {
 
 	/**
 	 * reads the file <tt>ALBUM_DATA_FILE_NAME</tt> to discern album information.
+	 * <p>
+	 * This method expects every album to start by listing the name first. The remainder
+	 * of the attributes can be in any order. The name signifies that this is the
+	 * beginning of a new album.
 	 */
 	private void populateAlbumList() {
-		FileOperations.FileReader reader = new FileOperations.FileReader(rootSiteFolder);
+		FileOperations.FileReader reader = new FileOperations.FileReader(rootSiteFolder + File.separator + ALBUM_DATA_FILE_NAME);
 		String tempLine = "";
+		albumList = new ArrayList<>();//clear previous data
+		Album album = new Album();
 		while ((tempLine = reader.readLine()) != null) {
-
+			tempLine = tempLine.trim();
+			if (!tempLine.startsWith("#")) {//filter out comments
+				if (tempLine.startsWith(KEYWORDS.ALBUM_COVER.toString())) {
+					tempLine = tempLine.substring(KEYWORDS.ALBUM_COVER.toString().length() + 2);
+					album.setAlbumCover(new File(tempLine));
+				} else if (tempLine.startsWith(KEYWORDS.ALBUM_DESCRIPTION.toString())) {
+					tempLine = tempLine.substring(KEYWORDS.ALBUM_DESCRIPTION.toString().length() + 2);
+					album.setAlbumDescription(tempLine);
+				} else if (tempLine.startsWith(KEYWORDS.ALBUM_LOCATION.toString())) {
+					tempLine = tempLine.substring(KEYWORDS.ALBUM_LOCATION.toString().length() + 2);
+					album.setAlbumFolder(new File(tempLine));
+				} else if (tempLine.startsWith(KEYWORDS.ALBUM_NAME.toString())) {
+					tempLine = tempLine.substring(KEYWORDS.ALBUM_NAME.toString().length() + 2);
+					album = new Album();
+					albumList.add(album);
+					album.setAlbumName(tempLine);
+				}
+			}
 		}
 	}
 
@@ -255,13 +284,17 @@ public class SiteController implements Tabulate, Runnable {
 		try {
 			FileOperations.FileWriter writer = new FileOperations.FileWriter(rootSiteFolder.getAbsolutePath() + File.separator + ALBUM_DATA_FILE_NAME);
 			writer.writeln("#This file contains information regarding albums.\n#Whitespace is ignored when parsing this file if it occurs at either end of a line.");
-			for (Iterator<Album> iterator = albumList.iterator(); iterator.hasNext();) {
-				Album album = iterator.next();
-				writer.writeln(KEYWORDS.ALBUM_NAME + ": " + album.getAlbumName());
-				writer.writeln("\t" + KEYWORDS.ALBUM_LOCATION + ": " + album.getAlbumFolder().getAbsolutePath());
-				writer.writeln("\t" + KEYWORDS.ALBUM_COVER + ": " + album.getAlbumCover().getAbsolutePath());
-				writer.writeln("\t" + KEYWORDS.ALBUM_DESCRIPTION + ": " + album.getAlbumDescription());
-				album.getPhotoController().writeDataToDisk();
+			try {
+				for (Iterator<Album> iterator = albumList.iterator(); iterator.hasNext();) {
+					Album album = iterator.next();
+					writer.writeln(KEYWORDS.ALBUM_NAME + ": " + album.getAlbumName());
+					writer.writeln("\t" + KEYWORDS.ALBUM_LOCATION + ": " + album.getAlbumFolder().getCanonicalPath());
+					writer.writeln("\t" + KEYWORDS.ALBUM_COVER + ": " + album.getAlbumCover().getCanonicalPath());
+					writer.writeln("\t" + KEYWORDS.ALBUM_DESCRIPTION + ": " + album.getAlbumDescription());
+					album.getPhotoController().writeDataToDisk();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 			writer.close();
 		} catch (NullPointerException e) {
@@ -327,11 +360,10 @@ public class SiteController implements Tabulate, Runnable {
 	 * instructs the controller to update the active album with information from the
 	 * display
 	 */
-	void updateDisplayForActiveElement() {
+	void updateActiveElement() {
 		Album album = albumList.get(indexOfCurrentAlbum);
 		album.setAlbumName(albumPanel.getTitle());
 		album.setAlbumDescription(albumPanel.getDescription());
-
 	}
-
+	
 }

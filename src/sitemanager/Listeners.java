@@ -68,7 +68,7 @@ public class Listeners {
 	 */
 	static ActionListener createUpdateAlbum() {
 		return (ActionEvent e) -> {
-			mainFrame.getSiteController().updateDisplayForActiveElement();
+			mainFrame.getSiteController().updateActiveElement();
 			mainFrame.fireAlbumTableDataChanged();
 		};
 	}

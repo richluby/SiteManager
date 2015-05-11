@@ -141,6 +141,8 @@ class InformationPanel extends JPanel {
 			System.out.println("Improper image format passed to infoPanel");
 			if (imageLabel != null) {
 				imageLabel.removeAll();
+				imageLabel.revalidate();
+				imageLabel.repaint();
 			}
 			return false;
 		}
