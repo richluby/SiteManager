@@ -149,16 +149,6 @@ public class MainFrame extends JFrame {
 	}
 
 	/**
-	 * loads the site controller with data from the currently selected root folder
-	 */
-	public void loadSiteControllerData() {
-		siteController.setRootSiteFolder(new File(
-			rootSiteFolder.getAbsolutePath()));
-		Thread thread = new Thread(siteController, "initSiteControllerData");
-		thread.start();
-	}
-
-	/**
 	 * instructs the album table to update due to data changes
 	 */
 	public void fireAlbumTableDataChanged() {

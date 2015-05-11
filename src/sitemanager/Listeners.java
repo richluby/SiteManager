@@ -44,7 +44,6 @@ public class Listeners {
 				"Choose Root Folder");
 			if (rootFolder != null) {
 				mainFrame.getSiteController().setRootSiteFolder(rootFolder);
-				mainFrame.loadSiteControllerData();
 			}
 		};
 	}
