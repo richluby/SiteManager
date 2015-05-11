@@ -177,7 +177,7 @@ public class SiteController implements Tabulate, Runnable {
 		}
 		albumPanel.setDisplayedImage(album.getAlbumCover(),
 			"east",
-			.5, 1);
+			.5, .8);
 		photoPane.setController(album.getPhotoController());
 	}
 

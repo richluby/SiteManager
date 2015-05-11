@@ -118,7 +118,6 @@ class PhotoController implements Tabulate {
 	public void updateDisplayForElement(int rowIndex) {
 		if (rowIndex < photoList.size()) {
 			Photo activePhoto = photoList.get(rowIndex);
-			System.out.println("infoPanel: " + informationPanel);
 			informationPanel.setTitle(activePhoto.getPhotoName());
 			informationPanel.setDescription(activePhoto.getPhotoDescription());
 			informationPanel.setLocation(activePhoto.getPhotoFile().getAbsolutePath());
