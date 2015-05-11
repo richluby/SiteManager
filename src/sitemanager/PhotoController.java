@@ -128,6 +128,11 @@ class PhotoController implements Tabulate {
 			informationPanel.setDescription(activePhoto.getPhotoDescription());
 			informationPanel.setLocation(activePhoto.getPhotoFile().getAbsolutePath());
 			informationPanel.setDisplayedImage(activePhoto.getPhotoFile(), "south", CONSTRAINTS[0], CONSTRAINTS[1]);
+		} else {//clear display
+			informationPanel.setTitle("");
+			informationPanel.setDescription("");
+			informationPanel.setLocation("");
+			informationPanel.setDisplayedImage(null, "south", CONSTRAINTS[0], CONSTRAINTS[1]);
 		}
 	}
 

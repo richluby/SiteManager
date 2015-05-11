@@ -72,7 +72,7 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 				}
 				return c;
 			}
-
+			
 		};
 		masterTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		//movieTable.setCellSelectionEnabled(true);
@@ -104,7 +104,7 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 	public void fireTableDataChanged() {
 		((DefaultTableModel) masterTable.getModel()).fireTableDataChanged();
 	}
-
+	
 	private void setupPopupMenu() {
 		listener = new Listener(controller, masterTable);
 		JPopupMenu rightClick = new JPopupMenu();
@@ -130,5 +130,6 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 		this.controller = controller;
 		((MasterTable) masterTable.getModel()).setController(controller);
 		((MasterTable) masterTable.getModel()).fireTableDataChanged();
+		controller.updateDisplayForElement(0);
 	}
 }
