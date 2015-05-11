@@ -41,7 +41,7 @@ public class Listeners {
 	static ActionListener createRootFolderForSiteChooser() {
 		return (ActionEvent e) -> {
 			File rootFolder = openDialogChooser(FILE_TYPE.DIRECTORY.ordinal(),
-				"Choose Root Folder");
+				"Choose Root Folder", new File("./"));
 			if (rootFolder != null) {
 				mainFrame.getSiteController().setRootSiteFolder(rootFolder);
 			}
@@ -54,7 +54,7 @@ public class Listeners {
 	static ActionListener createBrowseForAlbumFolder() {
 		return (ActionEvent e) -> {
 			File albumFolder = openDialogChooser(FILE_TYPE.DIRECTORY.ordinal(),
-				"Choose Album Folder");
+				"Choose Album Folder", mainFrame.getSiteController().getRootSiteFolder());
 			if (albumFolder != null) {
 				mainFrame.getSiteController().setAlbumLocation(albumFolder);
 			}
@@ -81,7 +81,7 @@ public class Listeners {
 	 */
 	static ActionListener createBrowseForAlbumCover() {
 		return (ActionEvent e) -> {
-			File file = openDialogChooser(FILE_TYPE.FILE.ordinal(), "Choose an Album Cover");
+			File file = openDialogChooser(FILE_TYPE.FILE.ordinal(), "Choose an Album Cover", mainFrame.getSiteController().getActiveAlbum().getAlbumFolder());
 			if (file != null) {
 				mainFrame.getSiteController().setActiveAlbumCoverFile(file);
 			}
@@ -93,8 +93,8 @@ public class Listeners {
 	 * <p>
 	 * @return returns the file selected from the user, or null if no file was selected
 	 */
-	private static File openDialogChooser(int fileType, String title) {
-		JFileChooser chooser = new JFileChooser(new File("." + File.separator));
+	private static File openDialogChooser(int fileType, String title, File startFolder) {
+		JFileChooser chooser = new JFileChooser(startFolder);
 		chooser.setDialogTitle(title);
 		if (fileType == FILE_TYPE.DIRECTORY.ordinal()) {
 			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

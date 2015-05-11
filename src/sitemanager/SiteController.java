@@ -304,6 +304,25 @@ public class SiteController implements Tabulate, Runnable {
 	}
 
 	/**
+	 * returns the active album
+	 * <p>
+	 * @return returns the currently selected album
+	 */
+	public Album getActiveAlbum() {
+		if (indexOfCurrentAlbum < albumList.size()) {
+			return albumList.get(indexOfCurrentAlbum);
+		}
+		return null;
+	}
+
+	/**
+	 * returns the root directory of the selected site
+	 */
+	File getRootSiteFolder() {
+		return rootSiteFolder;
+	}
+
+	/**
 	 * instructs the controller to update the active album with information from the
 	 * display
 	 */
