@@ -149,4 +149,14 @@ class PhotoController implements Tabulate {
 		photoList.get(activePhotoIndex).setPhotoFile(imageFile);
 		informationPanel.setDisplayedImage(imageFile, "south", CONSTRAINTS[0], CONSTRAINTS[1]);
 	}
+
+	/**
+	 * instructs the controller to update the active photo with the information from the
+	 * view
+	 */
+	void updateActiveElement() {
+		Photo photo = photoList.get(activePhotoIndex);
+		photo.setPhotoName(informationPanel.getTitle());
+		photo.setPhotoDescription(informationPanel.getDescription());
+	}
 }

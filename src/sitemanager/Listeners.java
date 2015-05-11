@@ -172,6 +172,8 @@ public class Listeners {
 	 *         information
 	 */
 	static ActionListener creatUpdatePhoto() {
-		return null;
+		return (ActionEvent e) -> {
+			mainFrame.getSiteController().getActiveAlbum().getPhotoController().updateActiveElement();
+		};
 	}
 }
