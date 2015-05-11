@@ -188,4 +188,13 @@ public class MainFrame extends JFrame {
 	void updateActiveAlbum() {
 		siteController.updateDisplayForActiveElement();
 	}
+
+	/**
+	 * returns the current site controller for this application
+	 * <p>
+	 * @return the active site controller for the application
+	 */
+	public SiteController getSiteController() {
+		return siteController;
+	}
 }

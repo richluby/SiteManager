@@ -166,7 +166,7 @@ public class SiteController implements Tabulate, Runnable {
 		albumCoverLocation = new JTextField();
 		albumCoverLocation.setFocusable(false);
 		JButton button = new JButton("Browse");
-		button.addActionListener(null);
+		button.addActionListener(Listeners.createBrowseForAlbumCover());
 		albumPanel.add(coverLabel);
 		albumPanel.add(albumCoverLocation, "span 3, growx");
 		albumPanel.add(button, "wrap");
@@ -234,18 +234,31 @@ public class SiteController implements Tabulate, Runnable {
 			albumPanel.setLocation(albumFolder.getAbsolutePath());
 			albumList.get(indexOfCurrentAlbum).setAlbumFolder(albumFolder);
 			//USED FOR DEBUGGING PURPOSES. SHOULD BE SELECTED BASED ON ALBUM COVER
-			albumPanel.setDisplayedImage(new File(
-				albumFolder.getAbsolutePath() + File.separator + "Naboo.jpg"),
+			if (albumPanel.setDisplayedImage(albumList.get(indexOfCurrentAlbum).getAlbumCover(),
 				"east",
-				.5,
-				1);
+				.6,
+				1)) {
+				mainFrame.setNotification(
+					"Album location set to \"" + albumFolder.getAbsolutePath() + "\"");
+			} else {
+				mainFrame.setNotification("No valid album cover was found.");
+			}
 
-			mainFrame.setNotification(
-				"Album location set to \"" + albumFolder.getAbsolutePath() + "\"");
 		} else {
 			mainFrame.setNotification(
 				"The selected album could not be found. Try choosing a different album.");
 		}
+	}
+
+	/**
+	 * sets the cover for the active album to the selected file
+	 * <p>
+	 * @param albumCover the file to which to set the active album cover
+	 */
+	public void setActiveAlbumCoverFile(File albumCover) {
+		albumList.get(indexOfCurrentAlbum).setAlbumCover(albumCover);
+		albumCoverLocation.setText(albumCover.getAbsolutePath());
+		albumPanel.setDisplayedImage(albumCover, "east", .6, 1);
 	}
 
 	/**

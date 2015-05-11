@@ -67,8 +67,23 @@ public class Listeners {
 	 */
 	static ActionListener createUpdateAlbum() {
 		return (ActionEvent e) -> {
-			mainFrame.updateActiveAlbum();
+			mainFrame.getSiteController().updateDisplayForActiveElement();
 			mainFrame.fireAlbumTableDataChanged();
+		};
+	}
+
+	/**
+	 * instructs the controller to update the active album with the selected album cover
+	 * <p>
+	 * @return returns a listener that instructs the controller to set the album cover of
+	 *         the active album with a user selected file
+	 */
+	static ActionListener createBrowseForAlbumCover() {
+		return (ActionEvent e) -> {
+			File file = openDialogChooser(FILE_TYPE.FILE.ordinal(), "Choose an Album Cover");
+			if (file != null) {
+				mainFrame.getSiteController().setActiveAlbumCoverFile(file);
+			}
 		};
 	}
 

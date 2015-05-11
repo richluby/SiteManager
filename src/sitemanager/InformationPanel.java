@@ -4,8 +4,6 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -116,6 +114,7 @@ class InformationPanel extends JPanel {
 	 *                    image
 	 * @param heightScale the proportion of vertical space to use in the panel for the
 	 *                    image
+	 * @return returns true if the image was successfully set, false otherwise
 	 */
 	public boolean setDisplayedImage(File photo, String constraints, double widthScale,
 		double heightScale) {
@@ -133,10 +132,10 @@ class InformationPanel extends JPanel {
 			add(imageLabel, "gapleft 10px, " + constraints);
 			return true;
 		} catch (IOException ex) {
-			Logger.getLogger(InformationPanel.class.getName()).log(Level.SEVERE, null, ex);
+			System.out.println("No image found for infoPanel");
 			return false;
 		} catch (NullPointerException | IllegalArgumentException e) {
-			Logger.getLogger(InformationPanel.class.getName()).log(Level.INFO, null, e);
+			System.out.println("Improper image format passed to infoPanel");
 			return false;
 		}
 	}
