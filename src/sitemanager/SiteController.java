@@ -34,7 +34,7 @@ public class SiteController implements Tabulate, Runnable {
 	private static final String COLUMN_NAMES[] = new String[]{"Album Name", "Description"};
 
 	/**
-	 * the list of keywords used when parsing through the file
+	 * the list of keywords used when parsing through the file.
 	 */
 	private static enum KEYWORDS {
 
@@ -240,13 +240,17 @@ public class SiteController implements Tabulate, Runnable {
 	 * reads the file <tt>ALBUM_DATA_FILE_NAME</tt> to discern album information.
 	 */
 	private void populateAlbumList() {
-		//read files HERE
+		FileOperations.FileReader reader = new FileOperations.FileReader(rootSiteFolder);
+		String tempLine = "";
+		while ((tempLine = reader.readLine()) != null) {
+
+		}
 	}
 
 	/**
 	 * writes the albums and photo information to the <tt>rootSiteFolder</tt>
 	 */
-	private void writeInformationToDisk() {
+	public void writeInformationToDisk() {
 		FileOperations.FileWriter writer = new FileOperations.FileWriter(rootSiteFolder.getAbsolutePath() + File.separator + ALBUM_DATA_FILE_NAME);
 		writer.write("#This file contains information regarding albums.\n#Whitespace is ignored when parsing this file when it occurs at either end of a line");
 		for (Iterator<Album> iterator = albumList.iterator(); iterator.hasNext();) {

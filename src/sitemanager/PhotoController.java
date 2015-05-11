@@ -8,6 +8,7 @@ import masterDetail.Tabulate;
 
 /**
  * This class acts as a controller for all photos in a given album
+ * <p>
  * @author Richard Luby, Copyright 2015
  */
 class PhotoController implements Tabulate {
@@ -33,6 +34,7 @@ class PhotoController implements Tabulate {
 	 * the information panel to be displayed in the detail pane
 	 */
 	private InformationPanel informationPanel;
+
 	/**
 	 * initializes the controller
 	 */
@@ -55,18 +57,20 @@ class PhotoController implements Tabulate {
 
 	/**
 	 * builds the list of photos based on the selected directory
+	 * <p>
 	 * @param af the album folder in which to find photos.
 	 */
 	void populatePhotoList(File af) {
 		this.albumFolder = af;
 		File[] files = albumFolder.listFiles((File pathname) -> {
 			return pathname.getName().endsWith("jpg") || pathname.getName().endsWith(
-					"jpeg");
+				"jpeg");
 		});
 		System.out.println("files: " + Arrays.toString(files));
 		//read photos
 
 	}
+
 	@Override
 	public String[] getColumnNames() {
 		return COLUMN_NAMES;
@@ -102,5 +106,12 @@ class PhotoController implements Tabulate {
 	public JPanel initDetailComponent() {
 		informationPanel = new InformationPanel("Photo Information", null, null);
 		return informationPanel;
+	}
+
+	/**
+	 * writes the data of the photos to disk
+	 */
+	void writeDataToDisk() {
+
 	}
 }

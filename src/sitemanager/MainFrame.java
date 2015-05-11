@@ -81,6 +81,7 @@ public class MainFrame extends JFrame {
 		initMenuBar();
 		initMainPanel();
 		initNotificationArea();
+		addWindowListener(Listeners.createUpdateOnClose());
 		setVisible(true);
 	}
 
@@ -101,7 +102,7 @@ public class MainFrame extends JFrame {
 		viewHelp.addActionListener(HelpClass.createNewHelpWindowListener(this));
 		helpMenu.add(viewHelp);
 		menuBar.add(helpMenu);
-
+		
 		setMenuBar(menuBar);
 	}
 
@@ -124,7 +125,7 @@ public class MainFrame extends JFrame {
 		siteMasterDetailPane = new MasterDetailPane(siteController);
 		siteMasterDetailPane.setDividerLocation((int) (getWidth() * DIVIDER_LOCATION));
 		tabbedPane.addTab("Site", siteMasterDetailPane);
-
+		
 		tabbedPane.addTab("Accounts", new JPanel());
 	}
 

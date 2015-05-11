@@ -2,6 +2,8 @@ package sitemanager;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import javax.swing.JFileChooser;
 
@@ -108,4 +110,43 @@ public class Listeners {
 		return null;
 	}
 
+	/**
+	 * creates a listener that updates the album file on close
+	 * <p>
+	 * @return the listener that executes on program close. this listener instructs the
+	 *         controller to write information to the disk
+	 */
+	static WindowListener createUpdateOnClose() {
+		return new WindowListener() {
+
+			@Override
+			public void windowOpened(WindowEvent e) {
+			}
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				mainFrame.getSiteController().writeInformationToDisk();
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {
+			}
+
+			@Override
+			public void windowIconified(WindowEvent e) {
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+			}
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+			}
+		};
+	}
 }
