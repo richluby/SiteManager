@@ -19,6 +19,7 @@
 	transition: all 0.5s;
 	/*Lets add a shadow*/
 	box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.75);
+	z-index: 10000;
 }
 
 .slider input[name='slide_switch'] {
