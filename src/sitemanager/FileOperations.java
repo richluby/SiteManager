@@ -71,6 +71,19 @@ public class FileOperations {
 		}
 
 		/**
+		 * opens a buffered writer for the file
+		 * <p>
+		 * @param file the file to which to write
+		 */
+		public FileWriter(File file) {
+			try {
+				fileWriter = new BufferedWriter(new java.io.FileWriter(file));
+			} catch (IOException ex) {
+				handleError(ex, MODE);
+			}
+		}
+
+		/**
 		 * writes a single piece of data to the file associated with this object
 		 * <p>
 		 * @param data the data to be written to file
