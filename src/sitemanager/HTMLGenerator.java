@@ -36,8 +36,8 @@ public class HTMLGenerator implements Runnable {
 		"ListLength:Album",//10
 		"ListLength:Photo",//11
 		"Math",//12
-		"SequentialID",//13
-		"INC",//14
+		"SequentialID:ALBUM",//13
+		"SequentialID:PHOTO",//14
 		"PHOTODATA"};//15 used by the progam to substitute
 
 	/**
@@ -132,7 +132,7 @@ public class HTMLGenerator implements Runnable {
 	 */
 	private void writeIndexTemplateData(StringBuilder builder) {
 		FileOperations.FileWriter writer = new FileOperations.FileWriter(siteFolder.getAbsoluteFile() + File.separator + "index.html");
-		writer.write(builder.toString());
+		//writer.write(builder.toString());
 		writer.close();
 	}
 
@@ -141,10 +141,13 @@ public class HTMLGenerator implements Runnable {
 	 * <p>
 	 * @param builder the album information to write
 	 */
-	private void writeAlbumData(StringBuilder[] builder) {
+	private void writeAlbumData(final StringBuilder[] builder) {
 		FileOperations.FileWriter writer = null;
 		File albumFolder = null;
 		Album album = null;
+		HashMap<String, String> photoDataHashMap = new HashMap<>(1);
+		StrSubstitutor photoDataSubber = new StrSubstitutor(photoDataHashMap);
+		String subbedTemplate = "";
 		/*
 		 * writeBuilder contains the entire file contents, photoBuilder contains the photo
 		 * information in a list to be placed into writeBuilder @ <tt>PHOTODATA</tt>
@@ -152,22 +155,29 @@ public class HTMLGenerator implements Runnable {
 		final StringBuilder writeBuilder = new StringBuilder(), photoBuilder = new StringBuilder();
 		StringBuilder tempBuilder = new StringBuilder();
 		for (int i = 0; i < controller.getNumberOfRows(); i++) {//go through all albums
-			tempBuilder.delete(0, tempBuilder.length());
+			tempBuilder.delete(0, tempBuilder.length());//
+			photoBuilder.delete(0, photoBuilder.length());//clear buffer from previous loop
+			writeBuilder.delete(0, writeBuilder.length());
+			writeBuilder.append(builder[0]);//initialize the file with the default template
 			album = controller.getALbum(i);
 			albumFolder = new File(LOCATION.ALBUM_FOLDER(album));
 			loadAlbumDataIntoMap(album);
+			//subbedTemplate = substituteAlbumDataForVariables(writeBuilder, album);
 			if (!albumFolder.exists()) {
 				albumFolder.mkdirs();
 			}
-			for (int j = 1; j < album.getPhotoController().getNumberOfRows(); j++) {//go through all photos
-				tempBuilder.delete(0, tempBuilder.length());
-				loadPhotoDataIntoMap(j, album);
-				photoBuilder.append(subsitutePhotoDataForVariables(tempBuilder.append(builder[1]), album, j)).append("\n");
-
+			for (int j = 0; j < album.getPhotoController().getNumberOfRows(); j++) {//go through all photos
+				//tempBuilder.delete(0, tempBuilder.length());//clear previous photo text
+				photoBuilder.append(subsitutePhotoDataForVariables(builder[1], album, j)).append("\n");
+				//append this photo's information to the list of photo stuff
 			}
-			writer = new FileOperations.FileWriter(albumFolder.getAbsolutePath() + File.separator + album.getName() + ".html");
-			writer.write(writeBuilder.toString());
-			writer.close();
+			stringMap.put(KEYWORDS[15], photoBuilder.toString());//place into hashmap so that
+			//it will be replaced in the write section
+			//writer = new FileOperations.FileWriter(albumFolder.getAbsolutePath() + File.separator + album.getName() + ".html");
+			//writer.write(substituteAlbumDataForVariables(writeBuilder, album));
+			//writer.close();
+			System.out.println(substituteAlbumDataForVariables(writeBuilder, album));
+			stringMap.remove(KEYWORDS[15]);
 
 		}
 		album = null;
@@ -192,10 +202,9 @@ public class HTMLGenerator implements Runnable {
 					defaultTemplate.append("${").append(KEYWORDS[15]).append("}\n");//use as placeholder for photo data
 					while ((tempLine = reader.readLine()) != null) {
 						if (!tempLine.trim().startsWith("${" + KEYWORDS[9])) {
-							defaultPhotoTemplate.append(tempLine);
+							defaultPhotoTemplate.append(tempLine).append("\n");
 						} else {
 							break;
-
 						}
 					}
 				}
@@ -331,6 +340,7 @@ public class HTMLGenerator implements Runnable {
 		stringMap.put(KEYWORDS[3], LOCATION.ALBUM_FOLDER(album)); //the source for the hrefs; does not end in file separator
 		stringMap.put(KEYWORDS[10], controller.getNumberOfRows() + "");//album length
 		stringMap.put(KEYWORDS[11], album.getPhotoController().getNumberOfRows() + "");//number of photos in this album
+		stringMap.put(KEYWORDS[13], album.getId() + "");
 	}
 
 	/**
@@ -340,11 +350,15 @@ public class HTMLGenerator implements Runnable {
 	 */
 	private void loadPhotoDataIntoMap(int photoIndex, Album album) {
 		Photo photo = album.getPhotoController().getPhoto(photoIndex);
+		if (photo.getId() < 0) {
+			photo.setId(r.nextInt(1000000));
+		}
 		stringMap.put(KEYWORDS[11], album.getPhotoController().getNumberOfRows() + "");//number of photos in this album
 		String photoLocation = LOCATION.ALBUM_FOLDER(album) + File.separator + photo.getName();
 		stringMap.put(KEYWORDS[4], photoLocation);
 		stringMap.put(KEYWORDS[5], photo.getName());
 		stringMap.put(KEYWORDS[6], photo.getDescription());
+		stringMap.put(KEYWORDS[14], photo.getId() + "");
 	}
 
 	/**
