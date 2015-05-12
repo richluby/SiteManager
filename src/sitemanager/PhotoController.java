@@ -219,4 +219,17 @@ class PhotoController implements Tabulate {
 		photo.setPhotoName(informationPanel.getTitle());
 		photo.setPhotoDescription(informationPanel.getDescription());
 	}
+
+	/**
+	 * returns a photo at the given index
+	 * <p>
+	 * @param photoIndex the index at which to retrieve the photo
+	 * @return the photo at the given index
+	 */
+	Photo getPhoto(int photoIndex) {
+		if (photoIndex < photoList.size() && photoIndex >= 0) {
+			return photoList.get(photoIndex);
+		}
+		return null;
+	}
 }
