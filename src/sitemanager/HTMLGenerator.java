@@ -132,7 +132,7 @@ public class HTMLGenerator implements Runnable {
 	 */
 	private void writeIndexTemplateData(StringBuilder builder) {
 		FileOperations.FileWriter writer = new FileOperations.FileWriter(siteFolder.getAbsoluteFile() + File.separator + "index.html");
-		//writer.write(builder.toString());
+		writer.write(builder.toString());
 		writer.close();
 	}
 
@@ -164,7 +164,7 @@ public class HTMLGenerator implements Runnable {
 			loadAlbumDataIntoMap(album);
 			//subbedTemplate = substituteAlbumDataForVariables(writeBuilder, album);
 			if (!albumFolder.exists()) {
-				//albumFolder.mkdirs();
+				albumFolder.mkdirs();
 			}
 			for (int j = 0; j < album.getPhotoController().getNumberOfRows(); j++) {//go through all photos
 				photoBuilder.append(subsitutePhotoDataForVariables(builder[1], album, j)).append("\n");
@@ -172,10 +172,10 @@ public class HTMLGenerator implements Runnable {
 			}
 			stringMap.put(KEYWORDS[15], photoBuilder.toString());//place into hashmap so that
 			//it will be replaced in the write section
-			//writer = new FileOperations.FileWriter(albumFolder.getAbsolutePath() + File.separator + album.getName() + ".html");
-			//writer.write(substituteAlbumDataForVariables(writeBuilder, album));
-			//writer.close();
-			System.out.println(substituteAlbumDataForVariables(writeBuilder, album));
+			writer = new FileOperations.FileWriter(albumFolder.getAbsolutePath() + File.separator + album.getName() + ".html");
+			writer.write(substituteAlbumDataForVariables(writeBuilder, album));
+			writer.close();
+			//System.out.println(substituteAlbumDataForVariables(writeBuilder, album));
 			stringMap.remove(KEYWORDS[15]);
 
 		}
@@ -320,8 +320,7 @@ public class HTMLGenerator implements Runnable {
 	private String subsitutePhotoDataForVariables(StringBuilder builder, Album album, int photoIndex) {
 		loadPhotoDataIntoMap(photoIndex, album);
 		StrSubstitutor subber = new StrSubstitutor(stringMap);
-		subber.replace(builder);
-		return builder.toString();
+		return subber.replace(builder);
 	}
 
 	/**
