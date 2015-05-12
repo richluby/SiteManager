@@ -146,7 +146,7 @@ public class HTMLGenerator implements Runnable {
 				} else {
 					//handle previously built data, if exist
 					if (builder.length() > 0) {
-						finalBuilder.append(substituteAlbumDataForVariables(builder, 0)).append("\n");
+						finalBuilder.append(substituteStaticDataForVariables(builder)).append("\n");
 						builder.delete(0, builder.length());
 					}
 					//run looping ops until end
@@ -154,11 +154,11 @@ public class HTMLGenerator implements Runnable {
 						if (!temp.trim().startsWith("${" + KEYWORDS[9])) {
 							//build data up for the str substitution to handle per album
 							builder.append(temp).append("\n");
-
 						} else {
 							for (int i = 0; i < controller.getNumberOfRows(); i++) {
-								finalBuilder.append(substituteAlbumDataForVariables(new StringBuilder(builder.toString()), i));
+								finalBuilder.append(substituteAlbumDataForVariables(new StringBuilder(builder.toString()), controller.getALbum(i)));
 							}//at worst, performance is O(m*n), m is file length, n is list length
+							builder.delete(0, builder.length());
 							break;
 						}
 					}
@@ -166,7 +166,7 @@ public class HTMLGenerator implements Runnable {
 			}
 			//finish last build, if exist
 			if (builder.length() > 0) {
-				finalBuilder.append(substituteAlbumDataForVariables(builder, 0)).append("\n");
+				finalBuilder.append(substituteStaticDataForVariables(builder)).append("\n");
 				builder = null;
 			}
 			return finalBuilder;
@@ -192,17 +192,60 @@ public class HTMLGenerator implements Runnable {
 	 * @return returns a string with all items substituted. NOTE: this will modify the
 	 *         original builder
 	 */
-	private String substituteAlbumDataForVariables(StringBuilder builder, int index) {
+	private String substituteAlbumDataForVariables(StringBuilder builder, Album album) {
+		loadAlbumDataIntoMap(album);
+		StrSubstitutor subber = new StrSubstitutor(stringMap);
+		subber.replaceIn(builder);
+		return builder.toString();
+	}
+
+	/**
+	 * substitutes all static, non-changing variables in the builder
+	 * <p>
+	 * @param builder the string in which to replace the text
+	 * @return the modified string. NOTE: this will modify the original builder
+	 */
+	private String substituteStaticDataForVariables(StringBuilder builder) {
+		loadStaticDataIntoMap();
+		StrSubstitutor subber = new StrSubstitutor(stringMap);
+		subber.replace(builder);
+		return builder.toString();
+	}
+
+	/**
+	 * loads all album data into the map
+	 * <p>
+	 * @param index the album to load into the map
+	 */
+	private void loadAlbumDataIntoMap(Album album) {
 		int id = r.nextInt(10000);
-		Album album = controller.getALbum(index);
 		album.setId(id);
 		stringMap.put(KEYWORDS[0], album.getName());
 		stringMap.put(KEYWORDS[1], album.getDescription());
 		stringMap.put(KEYWORDS[2], album.getAlbumCover().getName());
 		stringMap.put(KEYWORDS[3], LOCATION.albumData.toString() + File.separator + id + "-" + album.getName()); //the source for the hrefs; does not end in file separator
 		stringMap.put(KEYWORDS[10], controller.getNumberOfRows() + "");//album length
-		StrSubstitutor subber = new StrSubstitutor(stringMap);
-		subber.replaceIn(builder);
-		return builder.toString();
+		stringMap.put(KEYWORDS[11], album.getPhotoController().getNumberOfRows() + "");//number of photos in this album
+	}
+
+	/**
+	 * loads all photo data into the map
+	 * <p>
+	 * @param photoIndex the photo to load into memory
+	 */
+	private void loadPhotoDataIntoMap(int photoIndex, Album album) {
+		Photo photo = album.getPhotoController().getPhoto(photoIndex);
+		stringMap.put(KEYWORDS[11], album.getPhotoController().getNumberOfRows() + "");//number of photos in this album
+		String photoLocation = LOCATION.albumData.toString() + File.separator + album.getId() + "-" + photo.getName();
+		stringMap.put(KEYWORDS[4], photoLocation);
+		stringMap.put(KEYWORDS[5], photo.getName());
+		stringMap.put(KEYWORDS[6], photo.getDescription());
+	}
+
+	/**
+	 * loads all static data into the map
+	 */
+	private void loadStaticDataIntoMap() {
+		stringMap.put(KEYWORDS[10], controller.getNumberOfRows() + "");
 	}
 }
