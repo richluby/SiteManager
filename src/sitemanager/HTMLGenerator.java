@@ -118,18 +118,25 @@ public class HTMLGenerator implements Runnable {
 	 * uses the <tt>siteFolder</tt> to use as the root directory for the site
 	 */
 	private void createWebsite() {
-		loadIndexTemplateData();
+		writeIndexTemplateData(loadIndexTemplateData());
+	}
 
+	/**
+	 * writes the data from the given string builder into an html file
+	 */
+	private void writeIndexTemplateData(StringBuilder builder) {
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	/**
 	 * loads the template data into memory
 	 */
-	private void loadIndexTemplateData() {
+	private StringBuilder loadIndexTemplateData() {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(LOCATION.INDEX_TEMPLATE())));
 		try {
 			String temp = "";
 			StringBuilder builder = new StringBuilder(), finalBuilder = new StringBuilder();
+			int albumIndex = 0;
 			while ((temp = reader.readLine()) != null) {
 				if (!temp.trim().startsWith("${" + KEYWORDS[7])) {
 					//build data up for the str substitution to handle at once
@@ -141,7 +148,18 @@ public class HTMLGenerator implements Runnable {
 						builder.delete(0, builder.length());
 					}
 					//run looping ops until end
+					while ((temp = reader.readLine()) != null) {//build a loop set until the end of the loop
+						if (!temp.trim().startsWith(KEYWORDS[9])) {
+							//build data up for the str substitution to handle per album
+							builder.append(temp).append("\n");
 
+						} else {
+							for (int i = 0; i < controller.getNumberOfRows(); i++) {
+								finalBuilder.append(substituteAlbumDataForVariables(new StringBuilder(builder.toString()), i));
+							}//at worst, performance is O(m*n), m is file length, n is list length
+							break;
+						}
+					}
 				}
 			}
 			//finish last build, if exist
@@ -149,8 +167,7 @@ public class HTMLGenerator implements Runnable {
 				finalBuilder.append(substituteAlbumDataForVariables(builder, 0)).append("\n");
 				builder = null;
 			}
-			System.out.println(finalBuilder.toString());
-
+			return finalBuilder;
 		} catch (IOException ex) {
 			Logger.getLogger(HTMLGenerator.class.getName()).log(Level.INFO, null, ex);
 		} finally {
@@ -160,6 +177,7 @@ public class HTMLGenerator implements Runnable {
 				Logger.getLogger(HTMLGenerator.class.getName()).log(Level.INFO, null, ex);
 			}
 		}
+		return null;
 	}
 
 	/**
@@ -169,14 +187,16 @@ public class HTMLGenerator implements Runnable {
 	 * @param number  the index at which to find the item of interest. a negative number
 	 *                indicates that static variables are the only ones changing. This
 	 *                index will be appended to the end of an ID code if found.
-	 * @return returns a string with all items substituted
+	 * @return returns a string with all items substituted. NOTE: this will modify the
+	 *         original builder
 	 */
 	private String substituteAlbumDataForVariables(StringBuilder builder, int index) {
 		int id = r.nextInt(10000);
 		Album album = controller.getALbum(index);
 		stringMap.put(KEYWORDS[0], album.getName());
 		stringMap.put(KEYWORDS[1], album.getDescription());
-		stringMap.put(KEYWORDS[2], LOCATION.albumData.toString() + File.separator + id + "-" + album.getAlbumCover().getName());
+		stringMap.put(KEYWORDS[2], album.getAlbumCover().getName());
+		stringMap.put(KEYWORDS[3], LOCATION.albumData.toString() + File.separator + id + "-" + album.getName()); //the source for the hrefs; does not end in file separator
 		stringMap.put(KEYWORDS[10], controller.getNumberOfRows() + "");//album length
 		StrSubstitutor subber = new StrSubstitutor(stringMap);
 		subber.replaceIn(builder);
