@@ -119,6 +119,7 @@ public class HTMLGenerator implements Runnable {
 	 */
 	private void createWebsite() {
 		writeIndexTemplateData(loadIndexTemplateData());
+		writeAlbumData(loadAlbumData());
 	}
 
 	/**
@@ -128,6 +129,24 @@ public class HTMLGenerator implements Runnable {
 		FileOperations.FileWriter writer = new FileOperations.FileWriter(siteFolder.getAbsoluteFile() + File.separator + "index.html");
 		writer.write(builder.toString());
 		writer.close();
+	}
+
+	/**
+	 * writes the data for each album to disk
+	 * <p>
+	 * @param builder the album information to write
+	 */
+	private void writeAlbumData(StringBuilder builder) {
+
+	}
+
+	/**
+	 * loads the template data
+	 */
+	private StringBuilder loadAlbumData() {
+		StringBuilder builder = new StringBuilder();
+
+		return builder;
 	}
 
 	/**
@@ -213,17 +232,34 @@ public class HTMLGenerator implements Runnable {
 	}
 
 	/**
+	 * replaces photo related information in the given builder
+	 * <p>
+	 * @param builder    the builder in which to replace keywords
+	 * @param album      the album from which to pull photo data
+	 * @param photoIndex the index of the photo to use
+	 * @return the modified string. NOTE: this will modify the original builder
+	 */
+	private String subsitutePhotoDataForVariables(StringBuilder builder, Album album, int photoIndex) {
+		loadAlbumDataIntoMap(album);
+		loadPhotoDataIntoMap(photoIndex, album);
+		StrSubstitutor subber = new StrSubstitutor(stringMap);
+		subber.replace(builder);
+		return builder.toString();
+	}
+
+	/**
 	 * loads all album data into the map
 	 * <p>
 	 * @param index the album to load into the map
 	 */
 	private void loadAlbumDataIntoMap(Album album) {
-		int id = r.nextInt(10000);
-		album.setId(id);
+		if (album.getId() < 0) {
+			album.setId(r.nextInt(1000000));
+		}
 		stringMap.put(KEYWORDS[0], album.getName());
 		stringMap.put(KEYWORDS[1], album.getDescription());
 		stringMap.put(KEYWORDS[2], album.getAlbumCover().getName());
-		stringMap.put(KEYWORDS[3], LOCATION.albumData.toString() + File.separator + id + "-" + album.getName()); //the source for the hrefs; does not end in file separator
+		stringMap.put(KEYWORDS[3], LOCATION.albumData.toString() + File.separator + album.getId() + "-" + album.getName()); //the source for the hrefs; does not end in file separator
 		stringMap.put(KEYWORDS[10], controller.getNumberOfRows() + "");//album length
 		stringMap.put(KEYWORDS[11], album.getPhotoController().getNumberOfRows() + "");//number of photos in this album
 	}

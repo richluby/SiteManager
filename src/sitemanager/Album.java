@@ -46,6 +46,7 @@ public class Album implements CommonAccess {
 		albumFolder = null;
 		albumCover = null;
 		photoController = new PhotoController(this);
+		id = -1;//placeholder
 	}
 
 	/**
