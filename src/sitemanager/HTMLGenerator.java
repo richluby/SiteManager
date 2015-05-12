@@ -125,7 +125,9 @@ public class HTMLGenerator implements Runnable {
 	 * writes the data from the given string builder into an html file
 	 */
 	private void writeIndexTemplateData(StringBuilder builder) {
-		throw new UnsupportedOperationException("Not supported yet.");
+		FileOperations.FileWriter writer = new FileOperations.FileWriter(siteFolder.getAbsoluteFile() + File.separator + "index.html");
+		writer.write(builder.toString());
+		writer.close();
 	}
 
 	/**
@@ -149,7 +151,7 @@ public class HTMLGenerator implements Runnable {
 					}
 					//run looping ops until end
 					while ((temp = reader.readLine()) != null) {//build a loop set until the end of the loop
-						if (!temp.trim().startsWith(KEYWORDS[9])) {
+						if (!temp.trim().startsWith("${" + KEYWORDS[9])) {
 							//build data up for the str substitution to handle per album
 							builder.append(temp).append("\n");
 
@@ -193,6 +195,7 @@ public class HTMLGenerator implements Runnable {
 	private String substituteAlbumDataForVariables(StringBuilder builder, int index) {
 		int id = r.nextInt(10000);
 		Album album = controller.getALbum(index);
+		album.setId(id);
 		stringMap.put(KEYWORDS[0], album.getName());
 		stringMap.put(KEYWORDS[1], album.getDescription());
 		stringMap.put(KEYWORDS[2], album.getAlbumCover().getName());

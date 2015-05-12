@@ -32,6 +32,10 @@ public class Album implements CommonAccess {
 	 * the list of photos contained in this album
 	 */
 	private PhotoController photoController;
+	/**
+	 * a unique id with which to id this album
+	 */
+	private int id;
 
 	/**
 	 * initializes the class
@@ -85,6 +89,24 @@ public class Album implements CommonAccess {
 	 */
 	public void setAlbumDescription(String albumDescription) {
 		this.albumDescription = albumDescription;
+	}
+
+	/**
+	 * get the unique id for this album
+	 * <p>
+	 * @return returns the unique id for this album
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * sets the unique id for this album
+	 * <p>
+	 * @param id the unique id to set for this album
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	/**
