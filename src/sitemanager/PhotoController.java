@@ -2,6 +2,7 @@ package sitemanager;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.JPanel;
 import masterDetail.Tabulate;
 
@@ -26,6 +27,26 @@ class PhotoController implements Tabulate {
 	 * must be in the same folder as the albumFolder passed to the controller
 	 */
 	private final static String FILE_PHOTO_INFORMATION = "PhotoData";
+
+	/**
+	 * the keywords used through the file. The <tt>Name</tt> keyword is used to separate
+	 * photo instances
+	 */
+	private static enum KEYWORDS {
+
+		/**
+		 * the name of the photo. this keyword must be at the beginning of a photo
+		 */
+		PHOTO_NAME,
+		/**
+		 * the description of the photo
+		 */
+		PHOTO_DESCRIPTION,
+		/**
+		 * the location on disk of the photo
+		 */
+		PHOTO_LOCATION
+	};
 	/**
 	 * the folder in which these photos reside
 	 */
@@ -145,7 +166,14 @@ class PhotoController implements Tabulate {
 	 * writes the data of the photos to disk
 	 */
 	void writeDataToDisk() {
-
+		FileOperations.FileWriter writer = new FileOperations.FileWriter(albumFolder.getAbsolutePath() + File.separator + FILE_PHOTO_INFORMATION);
+		writer.writeln("#This file contains information regarding the photos in this album.\n#Whitespace is ignored when parsing this file if it occurs at either end of a line.");
+		for (Iterator<Photo> iterator = photoList.iterator(); iterator.hasNext();) {
+			Photo photo = iterator.next();
+			writer.writeln(KEYWORDS.PHOTO_NAME + ": " + photo.getPhotoName());
+			writer.writeln("\t" + KEYWORDS.PHOTO_DESCRIPTION + ": " + photo.getPhotoDescription());
+			writer.writeln("\t" + KEYWORDS.PHOTO_LOCATION + ": " + photo.getPhotoFile().getAbsolutePath());
+		}
 	}
 
 	/**
