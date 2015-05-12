@@ -146,8 +146,8 @@ public class HTMLGenerator implements Runnable {
 		File albumFolder = null;
 		Album album = null;
 		HashMap<String, String> photoDataHashMap = new HashMap<>(1);
-		StrSubstitutor photoDataSubber = new StrSubstitutor(photoDataHashMap);
-		String subbedTemplate = "";
+		//StrSubstitutor photoDataSubber = new StrSubstitutor(photoDataHashMap);
+		//String subbedTemplate = "";
 		/*
 		 * writeBuilder contains the entire file contents, photoBuilder contains the photo
 		 * information in a list to be placed into writeBuilder @ <tt>PHOTODATA</tt>
@@ -160,14 +160,13 @@ public class HTMLGenerator implements Runnable {
 			writeBuilder.delete(0, writeBuilder.length());
 			writeBuilder.append(builder[0]);//initialize the file with the default template
 			album = controller.getALbum(i);
-			albumFolder = new File(LOCATION.ALBUM_FOLDER(album));
+			albumFolder = new File(siteFolder.getAbsoluteFile() + File.separator + LOCATION.ALBUM_FOLDER(album));
 			loadAlbumDataIntoMap(album);
 			//subbedTemplate = substituteAlbumDataForVariables(writeBuilder, album);
 			if (!albumFolder.exists()) {
-				albumFolder.mkdirs();
+				//albumFolder.mkdirs();
 			}
 			for (int j = 0; j < album.getPhotoController().getNumberOfRows(); j++) {//go through all photos
-				//tempBuilder.delete(0, tempBuilder.length());//clear previous photo text
 				photoBuilder.append(subsitutePhotoDataForVariables(builder[1], album, j)).append("\n");
 				//append this photo's information to the list of photo stuff
 			}
