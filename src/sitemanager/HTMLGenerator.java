@@ -37,7 +37,8 @@ public class HTMLGenerator implements Runnable {
 		"ListLength:Photo",//11
 		"Math",//12
 		"SequentialID",//13
-		"INC"};//14
+		"INC",//14
+		"PHOTODATA"};//15 used by the progam to substitute
 
 	/**
 	 * the LOCATIONS in which html data is stored
@@ -61,6 +62,10 @@ public class HTMLGenerator implements Runnable {
 		 */
 		public static String ALBUM_TEMPLATE() {
 			return File.separator + "webFiles" + File.separator + "albumTemplate.html";
+		}
+
+		public static String ALBUM_FOLDER(Album album) {
+			return LOCATION.albumData.toString() + File.separator + album.getId() + "-" + album.getName();
 		}
 	};
 	/**
@@ -136,17 +141,73 @@ public class HTMLGenerator implements Runnable {
 	 * <p>
 	 * @param builder the album information to write
 	 */
-	private void writeAlbumData(StringBuilder builder) {
+	private void writeAlbumData(StringBuilder[] builder) {
+		FileOperations.FileWriter writer = null;
+		File albumFolder = null;
+		Album album = null;
+		/**
+		 * writeBuilder contains the entire file contents, photoBuilder contains the photo
+		 * information in a list to be placed into writeBuilder @ <tt>PHOTODATA</tt>
+		 */
+		final StringBuilder writeBuilder = new StringBuilder(), photoBuilder = new StringBuilder();
+		StringBuilder tempBuilder = new StringBuilder();
+		for (int i = 0; i < controller.getNumberOfRows(); i++) {//go through all albums
+			tempBuilder.delete(0, tempBuilder.length());
+			album = controller.getALbum(i);
+			albumFolder = new File(LOCATION.ALBUM_FOLDER(album));
+			if (!albumFolder.exists()) {
+				albumFolder.mkdirs();
+			}
+			//handle the first photo
 
+			for (int j = 1; j < album.getPhotoController().getNumberOfRows(); j++) {//go through all photos
+				tempBuilder.delete(0, tempBuilder.length());
+				loadPhotoDataIntoMap(j, album);
+			}
+			writer = new FileOperations.FileWriter(albumFolder.getAbsolutePath() + File.separator + album.getName() + ".html");
+			writer.write(writeBuilder.toString());
+			writer.close();
+
+		}
+		album = null;
 	}
 
 	/**
 	 * loads the template data
+	 * <p>
+	 * @return returns the two builders. [0] holds the default template, [1] holds the
+	 *         photo loop information
 	 */
-	private StringBuilder loadAlbumData() {
-		StringBuilder builder = new StringBuilder();
-
-		return builder;
+	private StringBuilder[] loadAlbumData() {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(LOCATION.ALBUM_TEMPLATE())));
+		StringBuilder defaultTemplate = new StringBuilder(), defaultPhotoTemplate = new StringBuilder();
+		String tempLine = "";
+		Album album = null;
+		try {
+			while ((tempLine = reader.readLine()) != null) {
+				if (!tempLine.trim().startsWith("${" + KEYWORDS[8])) {
+					defaultTemplate.append(tempLine).append('\n');
+				} else {//handle the photo loop
+					defaultTemplate.append("${").append(KEYWORDS[15]).append("}\n");//use as placeholder for photo data
+					while ((tempLine = reader.readLine()) != null) {
+						if (!tempLine.trim().startsWith("${" + KEYWORDS[9])) {
+							defaultPhotoTemplate.append(tempLine);
+						} else {
+							break;
+						}
+					}
+				}
+			}
+		} catch (IOException ex) {
+			Logger.getLogger(HTMLGenerator.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			try {
+				reader.close();
+			} catch (IOException ex) {
+				Logger.getLogger(HTMLGenerator.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
+		return new StringBuilder[]{defaultTemplate, defaultPhotoTemplate};
 	}
 
 	/**
@@ -259,7 +320,7 @@ public class HTMLGenerator implements Runnable {
 		stringMap.put(KEYWORDS[0], album.getName());
 		stringMap.put(KEYWORDS[1], album.getDescription());
 		stringMap.put(KEYWORDS[2], album.getAlbumCover().getName());
-		stringMap.put(KEYWORDS[3], LOCATION.albumData.toString() + File.separator + album.getId() + "-" + album.getName()); //the source for the hrefs; does not end in file separator
+		stringMap.put(KEYWORDS[3], LOCATION.ALBUM_FOLDER(album)); //the source for the hrefs; does not end in file separator
 		stringMap.put(KEYWORDS[10], controller.getNumberOfRows() + "");//album length
 		stringMap.put(KEYWORDS[11], album.getPhotoController().getNumberOfRows() + "");//number of photos in this album
 	}
@@ -272,7 +333,7 @@ public class HTMLGenerator implements Runnable {
 	private void loadPhotoDataIntoMap(int photoIndex, Album album) {
 		Photo photo = album.getPhotoController().getPhoto(photoIndex);
 		stringMap.put(KEYWORDS[11], album.getPhotoController().getNumberOfRows() + "");//number of photos in this album
-		String photoLocation = LOCATION.albumData.toString() + File.separator + album.getId() + "-" + photo.getName();
+		String photoLocation = LOCATION.ALBUM_FOLDER(album) + File.separator + photo.getName();
 		stringMap.put(KEYWORDS[4], photoLocation);
 		stringMap.put(KEYWORDS[5], photo.getName());
 		stringMap.put(KEYWORDS[6], photo.getDescription());

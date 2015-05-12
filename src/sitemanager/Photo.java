@@ -23,6 +23,10 @@ public class Photo implements CommonAccess {
 	 * the location of this photo
 	 */
 	private File photoFile;
+	/**
+	 * a unique id with which to id this photo
+	 */
+	private int id;
 
 	/**
 	 * initializes this photo
@@ -31,6 +35,7 @@ public class Photo implements CommonAccess {
 		photoFile = null;
 		photoName = "";
 		photoDescription = "";
+		id = -1;
 	}
 
 	/**
@@ -85,6 +90,24 @@ public class Photo implements CommonAccess {
 	 */
 	public void setPhotoFile(File photoFile) {
 		this.photoFile = photoFile;
+	}
+
+	/**
+	 * get the unique id for this photo
+	 * <p>
+	 * @return returns the unique id for this photo
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * sets the unique id for this photo
+	 * <p>
+	 * @param id the unique id to set for this photo
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	/**
