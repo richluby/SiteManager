@@ -7,10 +7,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
 
 /**
@@ -64,6 +66,23 @@ public class HTMLGenerator implements Runnable {
 			return File.separator + "webFiles" + File.separator + "albumTemplate.html";
 		}
 
+		/**
+		 * returns the location for the <tt>main.css</tt> within the jar
+		 */
+		public static String MAIN_CSS_TEMPLATE() {
+			return File.separator + "webFiles" + File.separator + "main.css";
+		}
+
+		/**
+		 * returns the location for the <tt>album.css</tt> within the jar
+		 */
+		public static String ALBUM_CSS_TEMPLATE() {
+			return File.separator + "webFiles" + File.separator + "albumStyles.css";
+		}
+
+		/**
+		 * returns the location for the album folder within the jar
+		 */
 		public static String ALBUM_FOLDER(Album album) {
 			return LOCATION.albumData.toString() + File.separator + album.getId() + "-" + album.getName();
 		}
@@ -125,6 +144,51 @@ public class HTMLGenerator implements Runnable {
 	private void createWebsite() {
 		writeIndexTemplateData(loadIndexTemplateData());
 		writeAlbumData(loadAlbumData());
+		writeCSSData();
+		writePhotosToDirectory();
+	}
+
+	/**
+	 * copies the photos from their current location to the correct location for site
+	 * referencing
+	 */
+	private void writePhotosToDirectory() {
+		Album album = null;
+		URL inputUrl = null;
+		File dest = null;
+		PhotoController photoController = null;
+		Photo photo = null;
+		try {
+			for (int i = 0; i < controller.getNumberOfRows(); i++) {
+				album = controller.getALbum(i);
+				photoController = album.getPhotoController();
+				for (int j = 0; j < photoController.getNumberOfRows(); j++) {
+					photo = photoController.getPhoto(j);
+					dest = new File(siteFolder.getAbsolutePath() + File.separator + LOCATION.ALBUM_FOLDER(album) + File.separator + photo.getName());
+					FileUtils.copyFile(photo.getLocationFile(), dest);
+					//System.out.println("PhotoDest: " + dest.getAbsolutePath());
+					//throw new IOException("because");
+				}
+			}
+		} catch (IOException ex) {
+			Logger.getLogger(HTMLGenerator.class.getName()).log(Level.INFO, null, ex);
+		}
+	}
+
+	/**
+	 * places the CSS data into the proper place
+	 */
+	private void writeCSSData() {
+		try {
+			URL inputUrl = getClass().getResource(LOCATION.MAIN_CSS_TEMPLATE());
+			File dest = new File(siteFolder.getAbsolutePath() + File.separator + "main.css");
+			FileUtils.copyURLToFile(inputUrl, dest);
+			inputUrl = getClass().getResource(LOCATION.ALBUM_CSS_TEMPLATE());
+			dest = new File(siteFolder.getAbsolutePath() + File.separator + LOCATION.albumData + File.separator + "albumStyles.css");
+			FileUtils.copyURLToFile(inputUrl, dest);
+		} catch (IOException ex) {
+			Logger.getLogger(HTMLGenerator.class.getName()).log(Level.INFO, null, ex);
+		}
 	}
 
 	/**
@@ -352,8 +416,8 @@ public class HTMLGenerator implements Runnable {
 			photo.setId(r.nextInt(1000000));
 		}
 		stringMap.put(KEYWORDS[11], album.getPhotoController().getNumberOfRows() + "");//number of photos in this album
-		String photoLocation = LOCATION.ALBUM_FOLDER(album) + File.separator + photo.getName();
-		stringMap.put(KEYWORDS[4], photoLocation);
+		//String photoLocation = LOCATION.ALBUM_FOLDER(album) + File.separator + photo.getName();
+		stringMap.put(KEYWORDS[4], photo.getName());
 		stringMap.put(KEYWORDS[5], photo.getName());
 		stringMap.put(KEYWORDS[6], photo.getDescription());
 		stringMap.put(KEYWORDS[14], photo.getId() + "");
