@@ -30,12 +30,14 @@ public class HTMLGenerator implements Runnable {
 		"PhotoSource",//4
 		"PhotoTitle",//5
 		"PhotoDescription",//6
-		"BeginLoop:Album|Photo",//7
-		"EndLoop",//8
-		"ListLength:Album|Photo",//9
-		"Math",//10
-		"SequentialID",//11
-		"INC"};//12
+		"BeginLoop:Album",//7
+		"BeginLoop:Photo",//8
+		"EndLoop",//9
+		"ListLength:Album",//10
+		"ListLength:Photo",//11
+		"Math",//12
+		"SequentialID",//13
+		"INC"};//14
 
 	/**
 	 * the LOCATIONS in which html data is stored
@@ -117,7 +119,7 @@ public class HTMLGenerator implements Runnable {
 	 */
 	private void createWebsite() {
 		loadIndexTemplateData();
-		
+
 	}
 
 	/**
@@ -148,7 +150,7 @@ public class HTMLGenerator implements Runnable {
 				builder = null;
 			}
 			System.out.println(finalBuilder.toString());
-			
+
 		} catch (IOException ex) {
 			Logger.getLogger(HTMLGenerator.class.getName()).log(Level.INFO, null, ex);
 		} finally {
@@ -175,7 +177,9 @@ public class HTMLGenerator implements Runnable {
 		stringMap.put(KEYWORDS[0], album.getName());
 		stringMap.put(KEYWORDS[1], album.getDescription());
 		stringMap.put(KEYWORDS[2], LOCATION.albumData.toString() + File.separator + id + "-" + album.getAlbumCover().getName());
+		stringMap.put(KEYWORDS[10], controller.getNumberOfRows() + "");//album length
 		StrSubstitutor subber = new StrSubstitutor(stringMap);
+		subber.replaceIn(builder);
 		return builder.toString();
 	}
 }
