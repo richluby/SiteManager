@@ -1,21 +1,24 @@
 /*see http://thecodeplayer.com/walkthrough/css3-image-slider-with-stylized-thumbnails*/
 /*Time for the CSS*/
 .slider {
-	width: 640px; /*Same as width of the large image*/
+	width: min-content; /*Same as width of the large image*/
 	position: relative;
 	/*Instead of height we will use padding*/
 	padding-top: 320px; /*That helps bring the labels down*/
 	/*margin for the entire gallery*/
-	/*Lets add a shadow*/
-	box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.75);
 }
 
 
 /*Last thing remaining is to add transitions*/
 .slider>img{
-	position: absolute;
-	left: 0; top: 0;
+	position: fixed;
+	left: 10%; 
+	top: 7em;/*offset for header*/
+	float: left;
+	height: 300px;
 	transition: all 0.5s;
+	/*Lets add a shadow*/
+	box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.75);
 }
 
 .slider input[name='slide_switch'] {
@@ -67,7 +70,7 @@
 /*see http://jsfiddle.net/UB3UQ/
 selects the first element with an overlay class to apply to this checked item*/
 .slider input[name='slide_switch']:hover:checked + label + img + .overlay {
-    width:100%;
+    width:min-content;
     background:rgba(0,0,0,.5);
     /*border:10px solid red;*/
     position:absolute;

@@ -165,9 +165,12 @@ public class HTMLGenerator implements Runnable {
 				for (int j = 0; j < photoController.getNumberOfRows(); j++) {
 					photo = photoController.getPhoto(j);
 					dest = new File(siteFolder.getAbsolutePath() + File.separator + LOCATION.ALBUM_FOLDER(album) + File.separator + photo.getName());
-					FileUtils.copyFile(photo.getLocationFile(), dest);
+					if (!dest.exists()) {
+						System.out.println(photo.getName() + " copied.");
+						FileUtils.copyFile(photo.getLocationFile(), dest);
+					}
 					//System.out.println("PhotoDest: " + dest.getAbsolutePath());
-					//throw new IOException("because");
+					//throw new IOException("No need to refactor to generate all stuff");
 				}
 			}
 		} catch (IOException ex) {
