@@ -100,16 +100,40 @@ class PhotoController implements Tabulate {
 	 */
 	public void populatePhotoList(File af) {
 		this.albumFolder = af;
-		File[] files = albumFolder.listFiles((File pathname) -> {
-			return pathname.getName().endsWith("jpg") || pathname.getName().endsWith(
-				"jpeg");
-		});
-		Photo photo = null;
-		for (File file : files) {
-			photo = new Photo();
-			photo.setPhotoFile(file);
-			photo.setPhotoName(file.getName());
-			photoList.add(photo);
+		File photoData = new File(albumFolder.getAbsoluteFile() + File.separator + FILE_PHOTO_INFORMATION);
+		if (!photoData.exists()) {
+			File[] files = albumFolder.listFiles((File pathname) -> {
+				return pathname.getName().endsWith("jpg") || pathname.getName().endsWith(
+					"jpeg");
+			});
+			Photo photo = null;
+			for (File file : files) {
+				photo = new Photo();
+				photo.setPhotoFile(file);
+				photo.setPhotoName(file.getName());
+				photoList.add(photo);
+			}
+		} else {
+			//read from the photo data file already present
+			String tempLine = "";
+			Photo photo = new Photo();
+			FileOperations.FileReader reader = new FileOperations.FileReader(photoData);
+			while ((tempLine = reader.readLine()) != null) {
+				tempLine = tempLine.trim();
+				if (tempLine.startsWith(KEYWORDS.PHOTO_NAME.toString())) {
+					tempLine = tempLine.substring(KEYWORDS.PHOTO_NAME.toString().length() + 2);
+					photo = new Photo();
+					photo.setPhotoName(tempLine);
+					photoList.add(photo);
+				} else if (tempLine.startsWith(KEYWORDS.PHOTO_DESCRIPTION.toString()) && tempLine.length() > KEYWORDS.PHOTO_DESCRIPTION.toString().length() + 2) {
+					tempLine = tempLine.substring(KEYWORDS.PHOTO_DESCRIPTION.toString().length() + 2);
+					photo.setPhotoDescription(tempLine);
+				} else if (tempLine.startsWith(KEYWORDS.PHOTO_LOCATION.toString())) {
+					tempLine = tempLine.substring(KEYWORDS.PHOTO_LOCATION.toString().length() + 2);
+					photo.setPhotoFile(new File(tempLine));
+				}
+			}
+			reader.close();
 		}
 	}
 
@@ -173,7 +197,9 @@ class PhotoController implements Tabulate {
 			writer.writeln(KEYWORDS.PHOTO_NAME + ": " + photo.getPhotoName());
 			writer.writeln("\t" + KEYWORDS.PHOTO_DESCRIPTION + ": " + photo.getPhotoDescription());
 			writer.writeln("\t" + KEYWORDS.PHOTO_LOCATION + ": " + photo.getPhotoFile().getAbsolutePath());
+			//System.out.println("{" + photo.getPhotoName() + "} was written.");
 		}
+		writer.close();
 	}
 
 	/**

@@ -102,6 +102,7 @@ public class FileOperations {
 		 */
 		public void close() {
 			try {
+				fileWriter.flush();
 				fileWriter.close();
 			} catch (IOException e) {
 				handleError(e, MODE);

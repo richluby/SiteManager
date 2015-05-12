@@ -116,7 +116,7 @@ public class SiteController implements Tabulate, Runnable {
 		Thread thread = new Thread(this, "Updating Primary Data");
 		thread.start();
 	}
-	
+
 	@Override
 	public Object getDataForColumn(int rowIndex, int columnIndex) {
 		switch (COLUMN_NAMES[columnIndex]) {
@@ -128,29 +128,29 @@ public class SiteController implements Tabulate, Runnable {
 				return "";
 		}
 	}
-	
+
 	@Override
 	public String[] getColumnNames() {
 		return COLUMN_NAMES;
 	}
-	
+
 	@Override
 	public int getNumberOfRows() {
 		return albumList.size();
 	}
-	
+
 	@Override
 	public Class<?> getColumnClass(int col) {
 		return String.class;
 	}
-	
+
 	@Override
 	public void removeElement(int rowIndex) {
 		if (rowIndex < albumList.size()) {
 			albumList.remove(rowIndex);
 		}
 	}
-	
+
 	@Override
 	public void addElement() {
 		Album album = new Album();
@@ -160,13 +160,13 @@ public class SiteController implements Tabulate, Runnable {
 			album.setAlbumName(albumName);
 			albumList.add(album);
 		}
-		
+
 	}
-	
+
 	@Override
 	public void updateElement(int rowIndex) {
 	}
-	
+
 	@Override
 	public void updateDisplayForElement(int rowIndex) {
 		indexOfCurrentAlbum = rowIndex;
@@ -188,7 +188,7 @@ public class SiteController implements Tabulate, Runnable {
 			.5, .8);
 		photoPane.setController(album.getPhotoController());
 	}
-	
+
 	@Override
 	public JPanel initDetailComponent() {
 		JPanel detailPanel = new JPanel(new GridBagLayout());
@@ -208,14 +208,14 @@ public class SiteController implements Tabulate, Runnable {
 		button = new JButton("Save");
 		button.addActionListener(Listeners.createUpdateAlbum());
 		albumPanel.add(button, "skip 1");
-		
+
 		GridBagConstraints gbConstraints = new GridBagConstraints();
 		gbConstraints.weighty = .2;
 		gbConstraints.gridy = 0;
 		gbConstraints.weightx = 1;
 		gbConstraints.fill = GridBagConstraints.BOTH;
 		detailPanel.add(albumPanel, gbConstraints);
-		
+
 		photoPane = new MasterDetailPane<>(new PhotoController(null));
 		gbConstraints.weighty = .8;
 		gbConstraints.gridy = 1;
@@ -263,7 +263,7 @@ public class SiteController implements Tabulate, Runnable {
 				if (tempLine.startsWith(KEYWORDS.ALBUM_COVER.toString())) {
 					tempLine = tempLine.substring(KEYWORDS.ALBUM_COVER.toString().length() + 2);
 					album.setAlbumCover(new File(tempLine));
-				} else if (tempLine.startsWith(KEYWORDS.ALBUM_DESCRIPTION.toString())) {
+				} else if (tempLine.startsWith(KEYWORDS.ALBUM_DESCRIPTION.toString()) && tempLine.length() > KEYWORDS.ALBUM_DESCRIPTION.toString().length() + 2) {
 					tempLine = tempLine.substring(KEYWORDS.ALBUM_DESCRIPTION.toString().length() + 2);
 					album.setAlbumDescription(tempLine);
 				} else if (tempLine.startsWith(KEYWORDS.ALBUM_LOCATION.toString())) {
@@ -277,6 +277,7 @@ public class SiteController implements Tabulate, Runnable {
 				}
 			}
 		}
+		reader.close();
 	}
 
 	/**
@@ -367,5 +368,5 @@ public class SiteController implements Tabulate, Runnable {
 		album.setAlbumName(albumPanel.getTitle());
 		album.setAlbumDescription(albumPanel.getDescription());
 	}
-	
+
 }
