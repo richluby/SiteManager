@@ -92,9 +92,14 @@ public class MainFrame extends JFrame {
 		MenuBar menuBar = new MenuBar();
 		//set up File menu
 		Menu fileMenu = new Menu("File");
-		MenuItem chooseAlbum = new MenuItem("Choose Site Folder");
-		chooseAlbum.addActionListener(Listeners.createRootFolderForSiteChooser());
-		fileMenu.add(chooseAlbum);
+		MenuItem menuItem = new MenuItem("Choose Site Folder");
+		menuItem.addActionListener(Listeners.createRootFolderForSiteChooser());
+		fileMenu.add(menuItem);
+
+		menuItem = new MenuItem("Generate HTML");
+		menuItem.addActionListener(Listeners.createGenerateHTML());
+		fileMenu.add(menuItem);
+
 		menuBar.add(fileMenu);
 		//set up Help menu
 		Menu helpMenu = new Menu("Help");

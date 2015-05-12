@@ -176,4 +176,15 @@ public class Listeners {
 			mainFrame.getSiteController().getActiveAlbum().getPhotoController().updateActiveElement();
 		};
 	}
+
+	/**
+	 * creates a listener that starts building html
+	 * <p>
+	 * @return listener to start building hmtl
+	 */
+	static ActionListener createGenerateHTML() {
+		return (ActionEvent e) -> {
+
+		};
+	}
 }
