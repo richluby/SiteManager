@@ -145,7 +145,7 @@ public class HTMLGenerator implements Runnable {
 		FileOperations.FileWriter writer = null;
 		File albumFolder = null;
 		Album album = null;
-		/**
+		/*
 		 * writeBuilder contains the entire file contents, photoBuilder contains the photo
 		 * information in a list to be placed into writeBuilder @ <tt>PHOTODATA</tt>
 		 */
@@ -155,14 +155,15 @@ public class HTMLGenerator implements Runnable {
 			tempBuilder.delete(0, tempBuilder.length());
 			album = controller.getALbum(i);
 			albumFolder = new File(LOCATION.ALBUM_FOLDER(album));
+			loadAlbumDataIntoMap(album);
 			if (!albumFolder.exists()) {
 				albumFolder.mkdirs();
 			}
-			//handle the first photo
-
 			for (int j = 1; j < album.getPhotoController().getNumberOfRows(); j++) {//go through all photos
 				tempBuilder.delete(0, tempBuilder.length());
 				loadPhotoDataIntoMap(j, album);
+				photoBuilder.append(subsitutePhotoDataForVariables(tempBuilder.append(builder[1]), album, j)).append("\n");
+
 			}
 			writer = new FileOperations.FileWriter(albumFolder.getAbsolutePath() + File.separator + album.getName() + ".html");
 			writer.write(writeBuilder.toString());
@@ -194,17 +195,21 @@ public class HTMLGenerator implements Runnable {
 							defaultPhotoTemplate.append(tempLine);
 						} else {
 							break;
+
 						}
 					}
 				}
 			}
 		} catch (IOException ex) {
-			Logger.getLogger(HTMLGenerator.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(HTMLGenerator.class
+				.getName()).log(Level.SEVERE, null, ex);
 		} finally {
 			try {
 				reader.close();
+
 			} catch (IOException ex) {
-				Logger.getLogger(HTMLGenerator.class.getName()).log(Level.SEVERE, null, ex);
+				Logger.getLogger(HTMLGenerator.class
+					.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
 		return new StringBuilder[]{defaultTemplate, defaultPhotoTemplate};
@@ -250,13 +255,17 @@ public class HTMLGenerator implements Runnable {
 				builder = null;
 			}
 			return finalBuilder;
+
 		} catch (IOException ex) {
-			Logger.getLogger(HTMLGenerator.class.getName()).log(Level.INFO, null, ex);
+			Logger.getLogger(HTMLGenerator.class
+				.getName()).log(Level.INFO, null, ex);
 		} finally {
 			try {
 				reader.close();
+
 			} catch (IOException ex) {
-				Logger.getLogger(HTMLGenerator.class.getName()).log(Level.INFO, null, ex);
+				Logger.getLogger(HTMLGenerator.class
+					.getName()).log(Level.INFO, null, ex);
 			}
 		}
 		return null;
@@ -301,7 +310,6 @@ public class HTMLGenerator implements Runnable {
 	 * @return the modified string. NOTE: this will modify the original builder
 	 */
 	private String subsitutePhotoDataForVariables(StringBuilder builder, Album album, int photoIndex) {
-		loadAlbumDataIntoMap(album);
 		loadPhotoDataIntoMap(photoIndex, album);
 		StrSubstitutor subber = new StrSubstitutor(stringMap);
 		subber.replace(builder);

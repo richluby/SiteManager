@@ -8,45 +8,45 @@
         <link rel="stylesheet" type="text/css" href="../../main.css">
     </head>
     <body text="#c0c0c0" vlink="#6666cc" alink="#ff6666" link="#00cccc">
-        <style>
-            .slider {
-                margin: 1em auto ${MATH:${ListeLength:Photo}/5*70}px;/*bottom of 1st row of thumbs is at 70px*/
-            }
-        </style>
-        <div id="header">
-            <h1>${AlbumTitle}</h1>
-            <h6><i>${AlbumDescription}</i></h6>
-        </div>
-        <div class="contentData">
-            <div class="blockData">
-                <div class="slider">
-                     <!--Lets show the first image by default on page load-->
-                    <input type="radio" name="slide_switch" id="${SequentialID}" checked="checked"/>
-                    <label for="${SequentialID}">${INC}
-                       <img src="${PhotoSource}" width="100"/>
-                    </label>
-                    <img src="${PhotoSource}"/>
-                    <div class="overlay">${PhotoDescription}</div>
+	<style>
+		.slider {
+			margin: 1em auto ${MATH:${ListeLength:Photo}/5*70}px;/*bottom of 1st row of thumbs is at 70px*/
+		}
+	</style>
+	<div id="header">
+		<h1>${AlbumTitle}</h1>
+		<h6><i>${AlbumDescription}</i></h6>
+	</div>
+	<div class="contentData">
+		<div class="blockData">
+			<div class="slider">
+				<!--Lets show the first image by default on page load
+			   <input type="radio" name="slide_switch" id="${SequentialID}" checked="checked"/>
+			   <label for="${SequentialID}">${INC}
+				  <img src="${PhotoSource}" width="100"/>
+			   </label>
+			   <img src="${PhotoSource}"/>
+			   <div class="overlay">${PhotoDescription}</div>-->
 
-                    ${BeginLoop}
-                    <input type="radio" name="slide_switch" id="${SequentialID}"/>
-                    <label for="${SequentialID}">${INC}
-                       <img src="${PhotoSource}" width="100"/>
-                    </label>
-                    <img src="${PhotoSource}"/>
-                    <div class="overlay">${PhotoDescription}</div>
-                    ${EndLoop}
+				${BeginLoop}
+				<input type="radio" name="slide_switch" id="${SequentialID}"/>
+				<label for="${SequentialID}">${INC}
+					<img src="${PhotoSource}" width="100"/>
+				</label>
+				<img src="${PhotoSource}"/>
+				<div class="overlay">${PhotoDescription}</div>
+				${EndLoop}
 
-                </div>
-            </div>
+			</div>
+		</div>
 
-            <!-- End of page data-->
-            <div class="blockData">
-                <center>
-                    <a href="../../index.html">Return Home</a>
-                    <h6>Copyright 2015, All Rights Reserved</h6>
-                </center>
-            </div>
-        </div>
-    </body>
+		<!-- End of page data-->
+		<div class="blockData">
+			<center>
+				<a href="../../index.html">Return Home</a>
+				<h6>Copyright 2015, All Rights Reserved</h6>
+			</center>
+		</div>
+	</div>
+</body>
 </html>
