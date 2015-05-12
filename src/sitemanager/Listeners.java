@@ -40,7 +40,7 @@ public class Listeners {
 	 */
 	static ActionListener createRootFolderForSiteChooser() {
 		return (ActionEvent e) -> {
-			File rootFolder = openDialogChooser(FILE_TYPE.DIRECTORY.ordinal(),
+			File rootFolder = openDialogChooser(FILE_TYPE.DIRECTORY,
 				"Choose Root Folder", new File(System.getProperty("user.home")));
 			if (rootFolder != null) {
 				mainFrame.getSiteController().setRootSiteFolder(rootFolder);
@@ -53,7 +53,7 @@ public class Listeners {
 	 */
 	static ActionListener createBrowseForAlbumFolder() {
 		return (ActionEvent e) -> {
-			File albumFolder = openDialogChooser(FILE_TYPE.DIRECTORY.ordinal(),
+			File albumFolder = openDialogChooser(FILE_TYPE.DIRECTORY,
 				"Choose Album Folder", mainFrame.getSiteController().getRootSiteFolder());
 			if (albumFolder != null) {
 				mainFrame.getSiteController().setAlbumLocation(albumFolder);
@@ -81,7 +81,7 @@ public class Listeners {
 	 */
 	static ActionListener createBrowseForAlbumCover() {
 		return (ActionEvent e) -> {
-			File file = openDialogChooser(FILE_TYPE.FILE.ordinal(), "Choose an Album Cover", mainFrame.getSiteController().getActiveAlbum().getAlbumFolder());
+			File file = openDialogChooser(FILE_TYPE.FILE, "Choose an Album Cover", mainFrame.getSiteController().getActiveAlbum().getAlbumFolder());
 			if (file != null) {
 				mainFrame.getSiteController().setActiveAlbumCoverFile(file);
 			}
@@ -93,12 +93,12 @@ public class Listeners {
 	 * <p>
 	 * @return returns the file selected from the user, or null if no file was selected
 	 */
-	private static File openDialogChooser(int fileType, String title, File startFolder) {
+	private static File openDialogChooser(FILE_TYPE fileType, String title, File startFolder) {
 		JFileChooser chooser = new JFileChooser(startFolder);
 		chooser.setDialogTitle(title);
-		if (fileType == FILE_TYPE.DIRECTORY.ordinal()) {
+		if (fileType == FILE_TYPE.DIRECTORY) {
 			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		} else if (fileType == FILE_TYPE.FILE.ordinal()) {
+		} else if (fileType == FILE_TYPE.FILE) {
 			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		}
 		chooser.setMultiSelectionEnabled(false);
@@ -157,7 +157,7 @@ public class Listeners {
 	static ActionListener createBrowseForPhoto() {
 		return (ActionEvent e) -> {
 			PhotoController controller = mainFrame.getSiteController().getActiveAlbum().getPhotoController();
-			File image = openDialogChooser(FILE_TYPE.FILE.ordinal(), "Choose a Photo", mainFrame.getSiteController().getActiveAlbum().getAlbumFolder());
+			File image = openDialogChooser(FILE_TYPE.FILE, "Choose a Photo", mainFrame.getSiteController().getActiveAlbum().getAlbumFolder());
 			if (image != null) {
 				controller.setPhotoLocationForActivePhoto(image);
 			}
@@ -184,7 +184,11 @@ public class Listeners {
 	 */
 	static ActionListener createGenerateHTML() {
 		return (ActionEvent e) -> {
-
+			File siteFolder = openDialogChooser(FILE_TYPE.DIRECTORY, "Choose a Site Folder", mainFrame.getSiteController().getRootSiteFolder());
+			if (siteFolder != null) {
+				HTMLGenerator generator = new HTMLGenerator(mainFrame.getSiteController());
+				generator.generateHTMLData(siteFolder);
+			}
 		};
 	}
 }
