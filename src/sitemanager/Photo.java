@@ -9,7 +9,7 @@ import java.io.File;
  *
  * @author RLuby
  */
-public class Photo {
+public class Photo implements CommonAccess {
 
 	/**
 	 * the name of this photo
@@ -38,7 +38,7 @@ public class Photo {
 	 * <p>
 	 * @return returns the name of this photo
 	 */
-	public String getPhotoName() {
+	public String getName() {
 		return photoName;
 	}
 
@@ -56,7 +56,7 @@ public class Photo {
 	 * <p>
 	 * @return returns the description of this photo
 	 */
-	public String getPhotoDescription() {
+	public String getDescription() {
 		return photoDescription;
 	}
 
@@ -74,7 +74,7 @@ public class Photo {
 	 * <p>
 	 * @return returns the file for this photo
 	 */
-	public File getPhotoFile() {
+	public File getLocationFile() {
 		return photoFile;
 	}
 

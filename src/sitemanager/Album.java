@@ -10,7 +10,7 @@ import java.io.File;
  * <p>
  * @author RLuby
  */
-public class Album {
+public class Album implements CommonAccess {
 
 	/**
 	 * the name for this album
@@ -56,7 +56,7 @@ public class Album {
 	 * <p>
 	 * @return the name or title of this album
 	 */
-	public String getAlbumName() {
+	public String getName() {
 		return albumName;
 	}
 
@@ -74,7 +74,7 @@ public class Album {
 	 * <p>
 	 * @return the description of this album
 	 */
-	public String getAlbumDescription() {
+	public String getDescription() {
 		return albumDescription;
 	}
 
@@ -92,7 +92,7 @@ public class Album {
 	 * <p>
 	 * @return the folder in which this album resides
 	 */
-	public File getAlbumFolder() {
+	public File getLocationFile() {
 		return albumFolder;
 	}
 

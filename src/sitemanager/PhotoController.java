@@ -85,9 +85,9 @@ class PhotoController implements Tabulate {
 	public Object getDataForColumn(int rowIndex, int columnIndex) {
 		switch (COLUMN_NAMES[columnIndex]) {
 			case "Name":
-				return photoList.get(rowIndex).getPhotoName();
+				return photoList.get(rowIndex).getName();
 			case "Location":
-				return photoList.get(rowIndex).getPhotoFile().getAbsolutePath();
+				return photoList.get(rowIndex).getLocationFile().getAbsolutePath();
 			default:
 				return "";
 		}
@@ -169,10 +169,10 @@ class PhotoController implements Tabulate {
 		if (rowIndex < photoList.size()) {
 			activePhotoIndex = rowIndex;
 			Photo activePhoto = photoList.get(rowIndex);
-			informationPanel.setTitle(activePhoto.getPhotoName());
-			informationPanel.setDescription(activePhoto.getPhotoDescription());
-			informationPanel.setLocation(activePhoto.getPhotoFile().getAbsolutePath());
-			informationPanel.setDisplayedImage(activePhoto.getPhotoFile(), "south", CONSTRAINTS[0], CONSTRAINTS[1]);
+			informationPanel.setTitle(activePhoto.getName());
+			informationPanel.setDescription(activePhoto.getDescription());
+			informationPanel.setLocation(activePhoto.getLocationFile().getAbsolutePath());
+			informationPanel.setDisplayedImage(activePhoto.getLocationFile(), "south", CONSTRAINTS[0], CONSTRAINTS[1]);
 		} else {//clear display
 			informationPanel.setTitle("");
 			informationPanel.setDescription("");
@@ -194,10 +194,10 @@ class PhotoController implements Tabulate {
 		writer.writeln("#This file contains information regarding the photos in this album.\n#Whitespace is ignored when parsing this file if it occurs at either end of a line.");
 		for (Iterator<Photo> iterator = photoList.iterator(); iterator.hasNext();) {
 			Photo photo = iterator.next();
-			writer.writeln(KEYWORDS.PHOTO_NAME + ": " + photo.getPhotoName());
-			writer.writeln("\t" + KEYWORDS.PHOTO_DESCRIPTION + ": " + photo.getPhotoDescription());
-			writer.writeln("\t" + KEYWORDS.PHOTO_LOCATION + ": " + photo.getPhotoFile().getAbsolutePath());
-			//System.out.println("{" + photo.getPhotoName() + "} was written.");
+			writer.writeln(KEYWORDS.PHOTO_NAME + ": " + photo.getName());
+			writer.writeln("\t" + KEYWORDS.PHOTO_DESCRIPTION + ": " + photo.getDescription());
+			writer.writeln("\t" + KEYWORDS.PHOTO_LOCATION + ": " + photo.getLocationFile().getAbsolutePath());
+			//System.out.println("{" + photo.getName() + "} was written.");
 		}
 		writer.close();
 	}

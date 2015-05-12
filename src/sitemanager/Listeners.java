@@ -81,7 +81,7 @@ public class Listeners {
 	 */
 	static ActionListener createBrowseForAlbumCover() {
 		return (ActionEvent e) -> {
-			File file = openDialogChooser(FILE_TYPE.FILE, "Choose an Album Cover", mainFrame.getSiteController().getActiveAlbum().getAlbumFolder());
+			File file = openDialogChooser(FILE_TYPE.FILE, "Choose an Album Cover", mainFrame.getSiteController().getActiveAlbum().getLocationFile());
 			if (file != null) {
 				mainFrame.getSiteController().setActiveAlbumCoverFile(file);
 			}
@@ -157,7 +157,7 @@ public class Listeners {
 	static ActionListener createBrowseForPhoto() {
 		return (ActionEvent e) -> {
 			PhotoController controller = mainFrame.getSiteController().getActiveAlbum().getPhotoController();
-			File image = openDialogChooser(FILE_TYPE.FILE, "Choose a Photo", mainFrame.getSiteController().getActiveAlbum().getAlbumFolder());
+			File image = openDialogChooser(FILE_TYPE.FILE, "Choose a Photo", mainFrame.getSiteController().getActiveAlbum().getLocationFile());
 			if (image != null) {
 				controller.setPhotoLocationForActivePhoto(image);
 			}

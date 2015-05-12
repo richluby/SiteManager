@@ -96,19 +96,36 @@ public class HTMLGenerator implements Runnable {
 	 * uses the <tt>siteFolder</tt> to use as the root directory for the site
 	 */
 	private void createWebsite() {
-		loadTemplateData();
+		loadIndexTemplateData();
 
 	}
 
 	/**
 	 * loads the template data into memory
 	 */
-	private void loadTemplateData() {
+	private void loadIndexTemplateData() {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(LOCATION.INDEX_TEMPLATE())));
 		try {
 			String temp = "";
+			StringBuilder builder = new StringBuilder(), finalBuilder = new StringBuilder();
 			while ((temp = reader.readLine()) != null) {
-				parseLine(temp);
+				if (!temp.trim().startsWith("${" + KEYWORDS[7])) {
+					//build data up for the str substitution to handle at once
+					builder.append(temp);
+				} else {
+					//handle previously built data, if exist
+					if (builder.length() > 0) {
+						finalBuilder.append(substituteDataForVariables(builder));
+						builder.delete(0, builder.length());
+					}
+					//run looping ops until end
+
+				}
+			}
+			//finish last build, if exist
+			if (builder.length() > 0) {
+				finalBuilder.append(substituteDataForVariables(builder));
+				builder = null;
 			}
 
 		} catch (IOException ex) {
@@ -123,13 +140,10 @@ public class HTMLGenerator implements Runnable {
 	}
 
 	/**
-	 * parses the given line for a substitution
+	 * builds a map and substitutes the appropriate data into the builder
 	 */
-	private void parseLine(String dataLine) {
-		String trimmed = dataLine.trim();
-		String[] tokens = dataLine.split("\\$\\{");
-		for (String token : tokens) {
-			System.out.println("token: " + token);
-		}
+	private String substituteDataForVariables(StringBuilder builder) {
+
+		return builder.toString();
 	}
 }

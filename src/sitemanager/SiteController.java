@@ -121,9 +121,9 @@ public class SiteController implements Tabulate, Runnable {
 	public Object getDataForColumn(int rowIndex, int columnIndex) {
 		switch (COLUMN_NAMES[columnIndex]) {
 			case "Album Name":
-				return albumList.get(rowIndex).getAlbumName();
+				return albumList.get(rowIndex).getName();
 			case "Description":
-				return albumList.get(rowIndex).getAlbumDescription();
+				return albumList.get(rowIndex).getDescription();
 			default:
 				return "";
 		}
@@ -171,10 +171,10 @@ public class SiteController implements Tabulate, Runnable {
 	public void updateDisplayForElement(int rowIndex) {
 		indexOfCurrentAlbum = rowIndex;
 		Album album = albumList.get(rowIndex);
-		albumPanel.setTitle(album.getAlbumName());
-		albumPanel.setDescription(album.getAlbumDescription());
-		if (album.getAlbumFolder() != null) {
-			albumPanel.setLocation(album.getAlbumFolder().getAbsolutePath());
+		albumPanel.setTitle(album.getName());
+		albumPanel.setDescription(album.getDescription());
+		if (album.getLocationFile() != null) {
+			albumPanel.setLocation(album.getLocationFile().getAbsolutePath());
 		} else {
 			albumPanel.setLocation("");
 		}
@@ -290,10 +290,10 @@ public class SiteController implements Tabulate, Runnable {
 			try {
 				for (Iterator<Album> iterator = albumList.iterator(); iterator.hasNext();) {
 					Album album = iterator.next();
-					writer.writeln(KEYWORDS.ALBUM_NAME + ": " + album.getAlbumName());
-					writer.writeln("\t" + KEYWORDS.ALBUM_LOCATION + ": " + album.getAlbumFolder().getCanonicalPath());
+					writer.writeln(KEYWORDS.ALBUM_NAME + ": " + album.getName());
+					writer.writeln("\t" + KEYWORDS.ALBUM_LOCATION + ": " + album.getLocationFile().getCanonicalPath());
 					writer.writeln("\t" + KEYWORDS.ALBUM_COVER + ": " + album.getAlbumCover().getCanonicalPath());
-					writer.writeln("\t" + KEYWORDS.ALBUM_DESCRIPTION + ": " + album.getAlbumDescription());
+					writer.writeln("\t" + KEYWORDS.ALBUM_DESCRIPTION + ": " + album.getDescription());
 					album.getPhotoController().writeDataToDisk();
 				}
 			} catch (IOException e) {
