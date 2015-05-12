@@ -10,7 +10,8 @@
     <body text="#c0c0c0" vlink="#6666cc" alink="#ff6666" link="#00cccc">
 	<style>
 		.slider {
-			margin: 1em auto ${MATH:${ListeLength:Photo}/5*70}px;/*bottom of 1st row of thumbs is at 70px*/
+			margin: 1em auto ${MATH:${ListLength:Photo} 5 / 70 *}px;/*bottom of 1st row of thumbs is at 70px
+			program expects RPN notation*/
 		}
 	</style>
 	<div id="header">
