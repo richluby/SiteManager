@@ -12,7 +12,6 @@
 /*Last thing remaining is to add transitions*/
 .slider>img{
 	position: fixed;
-	left: 10%; 
 	top: 7em;/*offset for header*/
 	float: left;
 	height: 300px;
@@ -20,6 +19,9 @@
 	/*Lets add a shadow*/
 	box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.75);
 	z-index: 10000;
+	left: 30%;
+	transform: translate(-50%, -50%);
+	margin-right: -50%;
 }
 
 .slider input[name='slide_switch'] {
