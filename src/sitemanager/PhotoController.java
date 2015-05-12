@@ -45,7 +45,11 @@ class PhotoController implements Tabulate {
 		/**
 		 * the location on disk of the photo
 		 */
-		PHOTO_LOCATION
+		PHOTO_LOCATION,
+		/**
+		 * the unique id for this photo
+		 */
+		PHOTO_ID
 	};
 	/**
 	 * the folder in which these photos reside
@@ -131,6 +135,9 @@ class PhotoController implements Tabulate {
 				} else if (tempLine.startsWith(KEYWORDS.PHOTO_LOCATION.toString())) {
 					tempLine = tempLine.substring(KEYWORDS.PHOTO_LOCATION.toString().length() + 2);
 					photo.setPhotoFile(new File(tempLine));
+				} else if (tempLine.startsWith(KEYWORDS.PHOTO_ID.toString())) {
+					tempLine = tempLine.substring(KEYWORDS.PHOTO_ID.toString().length() + 2);
+					photo.setId(Integer.parseInt(tempLine));
 				}
 			}
 			reader.close();
@@ -197,6 +204,7 @@ class PhotoController implements Tabulate {
 			writer.writeln(KEYWORDS.PHOTO_NAME + ": " + photo.getName());
 			writer.writeln("\t" + KEYWORDS.PHOTO_DESCRIPTION + ": " + photo.getDescription());
 			writer.writeln("\t" + KEYWORDS.PHOTO_LOCATION + ": " + photo.getLocationFile().getAbsolutePath());
+			writer.writeln("\t" + KEYWORDS.PHOTO_ID + ": " + photo.getId());
 			//System.out.println("{" + photo.getName() + "} was written.");
 		}
 		writer.close();

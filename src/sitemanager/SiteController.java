@@ -54,7 +54,11 @@ public class SiteController implements Tabulate, Runnable {
 		/**
 		 * the text description of the album. This description may NOT be multiple lines.
 		 */
-		ALBUM_DESCRIPTION
+		ALBUM_DESCRIPTION,
+		/**
+		 * the id for the album
+		 */
+		ALBUM_ID
 	};
 	/**
 	 * the name of the file that this class checks in order to discover album data.
@@ -274,6 +278,9 @@ public class SiteController implements Tabulate, Runnable {
 					album = new Album();
 					albumList.add(album);
 					album.setAlbumName(tempLine);
+				} else if (tempLine.startsWith(KEYWORDS.ALBUM_ID.toString())) {
+					tempLine = tempLine.substring(KEYWORDS.ALBUM_ID.toString().length() + 2);
+					album.setId(Integer.parseInt(tempLine));
 				}
 			}
 		}
@@ -294,6 +301,7 @@ public class SiteController implements Tabulate, Runnable {
 					writer.writeln("\t" + KEYWORDS.ALBUM_LOCATION + ": " + album.getLocationFile().getCanonicalPath());
 					writer.writeln("\t" + KEYWORDS.ALBUM_COVER + ": " + album.getAlbumCover().getCanonicalPath());
 					writer.writeln("\t" + KEYWORDS.ALBUM_DESCRIPTION + ": " + album.getDescription());
+					writer.writeln("\t" + KEYWORDS.ALBUM_ID + ": " + album.getId());
 					album.getPhotoController().writeDataToDisk();
 				}
 			} catch (IOException e) {
