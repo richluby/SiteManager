@@ -369,4 +369,13 @@ public class SiteController implements Tabulate, Runnable {
 		album.setAlbumDescription(albumPanel.getDescription());
 	}
 
+	/**
+	 * returns the album at the selected index
+	 */
+	Album getALbum(int index) {
+		if (index < albumList.size()) {
+			return albumList.get(index);
+		}
+		return null;
+	}
 }

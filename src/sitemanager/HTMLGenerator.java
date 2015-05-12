@@ -7,8 +7,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.text.StrSubstitutor;
 
 /**
  * This class generates HTML based on given templates and a controller.
@@ -39,8 +42,14 @@ public class HTMLGenerator implements Runnable {
 	 */
 	private static enum LOCATION {
 
-		;
-		/**returns the location for the index template within the JAR*/
+		/**
+		 * the folder in which the album files are all placed
+		 */
+		albumData;
+
+		/**
+		 * returns the location for the index template within the JAR
+		 */
 		public static String INDEX_TEMPLATE() {
 			return File.separator + "webFiles" + File.separator + "indexTemplate.html";
 		}
@@ -60,6 +69,15 @@ public class HTMLGenerator implements Runnable {
 	 * the folder in which to place the html data
 	 */
 	private File siteFolder;
+	/**
+	 * the map to use in the string substitution
+	 */
+	private HashMap<String, String> stringMap;
+	/**
+	 * the random object to use in this generator. this object is used for folder names
+	 * and id generation
+	 */
+	private Random r;
 
 	/**
 	 * initializes the variables for the class
@@ -69,6 +87,8 @@ public class HTMLGenerator implements Runnable {
 	public HTMLGenerator(SiteController ctrl) {
 		controller = ctrl;
 		siteFolder = new File("./");
+		stringMap = new HashMap<>(KEYWORDS.length);
+		r = new Random();
 	}
 
 	/**
@@ -97,7 +117,7 @@ public class HTMLGenerator implements Runnable {
 	 */
 	private void createWebsite() {
 		loadIndexTemplateData();
-
+		
 	}
 
 	/**
@@ -111,11 +131,11 @@ public class HTMLGenerator implements Runnable {
 			while ((temp = reader.readLine()) != null) {
 				if (!temp.trim().startsWith("${" + KEYWORDS[7])) {
 					//build data up for the str substitution to handle at once
-					builder.append(temp);
+					builder.append(temp).append("\n");
 				} else {
 					//handle previously built data, if exist
 					if (builder.length() > 0) {
-						finalBuilder.append(substituteDataForVariables(builder));
+						finalBuilder.append(substituteAlbumDataForVariables(builder, 0)).append("\n");
 						builder.delete(0, builder.length());
 					}
 					//run looping ops until end
@@ -124,10 +144,11 @@ public class HTMLGenerator implements Runnable {
 			}
 			//finish last build, if exist
 			if (builder.length() > 0) {
-				finalBuilder.append(substituteDataForVariables(builder));
+				finalBuilder.append(substituteAlbumDataForVariables(builder, 0)).append("\n");
 				builder = null;
 			}
-
+			System.out.println(finalBuilder.toString());
+			
 		} catch (IOException ex) {
 			Logger.getLogger(HTMLGenerator.class.getName()).log(Level.INFO, null, ex);
 		} finally {
@@ -141,9 +162,20 @@ public class HTMLGenerator implements Runnable {
 
 	/**
 	 * builds a map and substitutes the appropriate data into the builder
+	 * <p>
+	 * @param builder the builder object in which to replace strings
+	 * @param number  the index at which to find the item of interest. a negative number
+	 *                indicates that static variables are the only ones changing. This
+	 *                index will be appended to the end of an ID code if found.
+	 * @return returns a string with all items substituted
 	 */
-	private String substituteDataForVariables(StringBuilder builder) {
-
+	private String substituteAlbumDataForVariables(StringBuilder builder, int index) {
+		int id = r.nextInt(10000);
+		Album album = controller.getALbum(index);
+		stringMap.put(KEYWORDS[0], album.getName());
+		stringMap.put(KEYWORDS[1], album.getDescription());
+		stringMap.put(KEYWORDS[2], LOCATION.albumData.toString() + File.separator + id + "-" + album.getAlbumCover().getName());
+		StrSubstitutor subber = new StrSubstitutor(stringMap);
 		return builder.toString();
 	}
 }
