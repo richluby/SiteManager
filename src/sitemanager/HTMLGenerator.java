@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.SwingUtilities;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
 
@@ -101,6 +102,10 @@ public class HTMLGenerator implements Runnable {
 	 */
 	private SiteController controller;
 	/**
+	 * the primary application window
+	 */
+	private MainFrame mainFrame;
+	/**
 	 * the folder in which to place the html data
 	 */
 	private File siteFolder;
@@ -119,8 +124,9 @@ public class HTMLGenerator implements Runnable {
 	 * <p>
 	 * @param ctrl the controller associated with this generator
 	 */
-	public HTMLGenerator(SiteController ctrl) {
-		controller = ctrl;
+	public HTMLGenerator(MainFrame mf) {
+		mainFrame = mf;
+		controller = mf.getSiteController();
 		siteFolder = new File("./");
 		stringMap = new HashMap<>(KEYWORDS.length);
 		r = new Random();
@@ -134,7 +140,7 @@ public class HTMLGenerator implements Runnable {
 	public void generateHTMLData(File folder) {
 		if (folder != null) {
 			siteFolder = folder;
-			Thread thread = new Thread(this);
+			Thread thread = new Thread(this, "writeDataOut");
 			thread.start();
 		}
 	}
@@ -145,6 +151,9 @@ public class HTMLGenerator implements Runnable {
 	@Override
 	public void run() {
 		createWebsite();
+		SwingUtilities.invokeLater(() -> {
+			mainFrame.setNotification("Website succesfully generated. See \"" + siteFolder.getAbsolutePath() + "\".");
+		});
 	}
 
 	/**
@@ -268,7 +277,7 @@ public class HTMLGenerator implements Runnable {
 		Matcher matcher = pattern.matcher(builder);
 		String temp = "";
 		Stack<Character> stack = new Stack<>();
-		HashMap<String, Integer> resultsMap = new HashMap<>(20);
+		HashMap<String, Double> resultsMap = new HashMap<>(20);
 		StrSubstitutor subber = new StrSubstitutor(resultsMap);
 		subber.setEnableSubstitutionInVariables(true);
 		int lengthOfExpression = 0, startOfMatch = 0;
@@ -304,13 +313,18 @@ public class HTMLGenerator implements Runnable {
 	 * @param expression the expression to be parsed. This method assumes that the
 	 *                   expression is valid
 	 */
-	private int parseMathExpression(String expression) {
+	private Double parseMathExpression(String expression) {
 		String[] tokens = expression.split(" ");
+		System.out.println("expr: " + expression);
 		RPNModel model = new RPNModel();
 		for (String token : tokens) {
-
+			if (Character.isDigit(token.charAt(0))) {
+				model.push(Double.parseDouble(token));
+			} else {
+				model.parseAction(token.charAt(0));
+			}
 		}
-		return 0;
+		return model.getTopStack();
 	}
 
 	/**

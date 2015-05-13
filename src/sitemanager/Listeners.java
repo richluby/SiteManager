@@ -186,7 +186,7 @@ public class Listeners {
 		return (ActionEvent e) -> {
 			File siteFolder = openDialogChooser(FILE_TYPE.DIRECTORY, "Choose a Site Folder", mainFrame.getSiteController().getRootSiteFolder());
 			if (siteFolder != null) {
-				HTMLGenerator generator = new HTMLGenerator(mainFrame.getSiteController());
+				HTMLGenerator generator = new HTMLGenerator(mainFrame);
 				generator.generateHTMLData(siteFolder);
 			}
 		};
