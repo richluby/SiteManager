@@ -13,6 +13,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ *
+ * @author RLuby
+ */
 public class FileOperations {
 
 	/**
@@ -21,7 +25,20 @@ public class FileOperations {
 	 */
 	public static enum MODE_SELECT {
 
-		SILENT, THROW_EXCEPTION, PRINT_ERROR
+		/**
+		 *
+		 */
+		SILENT,
+
+		/**
+		 *
+		 */
+		THROW_EXCEPTION,
+
+		/**
+		 *
+		 */
+		PRINT_ERROR
 	};
 
 	/**

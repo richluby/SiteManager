@@ -51,6 +51,8 @@ public class Album implements CommonAccess {
 
 	/**
 	 * returns the photoController that handles the photos for this album
+	 * <p>
+	 * @return returns the controller responsible for this album
 	 */
 	public PhotoController getPhotoController() {
 		return photoController;

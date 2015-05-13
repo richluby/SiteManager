@@ -306,7 +306,10 @@ public class HTMLGenerator implements Runnable {
 	 */
 	private int parseMathExpression(String expression) {
 		String[] tokens = expression.split(" ");
+		RPNModel model = new RPNModel();
+		for (String token : tokens) {
 
+		}
 		return 0;
 	}
 

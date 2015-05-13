@@ -48,8 +48,7 @@ public class Person extends SimplePerson implements Serializable {
     public SimplePerson getSignificantOther(){
         return significantOther;
     }
-    /** set the significant other for this person
-     * @param significant Other the significantOther to set */
+    /** set the significant other for this person */
     public void setSignificantOther(SimplePerson significantOther){
         this.significantOther = significantOther;
     }
