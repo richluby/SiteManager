@@ -9,9 +9,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.util.Random;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
 
@@ -87,6 +91,11 @@ public class HTMLGenerator implements Runnable {
 			return LOCATION.albumData.toString() + File.separator + album.getId() + "-" + album.getName();
 		}
 	};
+	/**
+	 * the pattern to use for searching for math expressions
+	 */
+	private final static Pattern pattern = Pattern.compile("\\Q${" + KEYWORDS[12] + "Math:\\E");
+	;
 	/**
 	 * the controller related to this generator
 	 */
@@ -239,14 +248,66 @@ public class HTMLGenerator implements Runnable {
 			}
 			stringMap.put(KEYWORDS[15], photoBuilder.toString());//place into hashmap so that
 			//it will be replaced in the write section
+			tempBuilder.append(substituteAlbumDataForVariables(writeBuilder, album));
+			checkForMath(tempBuilder);
 			writer = new FileOperations.FileWriter(albumFolder.getAbsolutePath() + File.separator + album.getName() + ".html");
-			writer.write(substituteAlbumDataForVariables(writeBuilder, album));
+			writer.write(tempBuilder.toString());
 			writer.close();
 			//System.out.println(substituteAlbumDataForVariables(writeBuilder, album));
 			stringMap.remove(KEYWORDS[15]);
 
 		}
 		album = null;
+	}
+
+	/**
+	 * replaces any math commands with the appropriate result. The builder is modified
+	 * during this replacement
+	 */
+	private void checkForMath(StringBuilder builder) {
+		Matcher matcher = pattern.matcher(builder);
+		String temp = "";
+		Stack<Character> stack = new Stack<>();
+		HashMap<String, Integer> resultsMap = new HashMap<>(20);
+		StrSubstitutor subber = new StrSubstitutor(resultsMap);
+		subber.setEnableSubstitutionInVariables(true);
+		int lengthOfExpression = 0, startOfMatch = 0;
+		char currentChar = '\n';
+		while (matcher.find()) {
+			try {
+				startOfMatch = matcher.start();
+				for (int i = 0; i < builder.length(); i++) {
+					currentChar = builder.charAt(i + startOfMatch);
+					if (currentChar == '{') {
+						stack.push('{');
+					} else if (currentChar == '}') {
+						stack.pop();
+					}
+					lengthOfExpression++;
+					if (stack.empty()) {//if the stack is empty, then the braces match
+						i = builder.length() + 1;
+					}
+				}
+				temp = builder.substring(matcher.start(), startOfMatch + lengthOfExpression);
+				resultsMap.put(temp.substring(2, temp.length() - 1), parseMathExpression(temp));
+			} catch (NoSuchElementException | NumberFormatException e) {
+				System.out.println("The expression <" + matcher.group() + "> could not be parsed due to "
+					+ e.getMessage() + ".");
+			}
+		}
+		subber.replaceIn(builder);
+	}
+
+	/**
+	 * parses the expression and returns a value based on RPN
+	 * <p>
+	 * @param expression the expression to be parsed. This method assumes that the
+	 *                   expression is valid
+	 */
+	private int parseMathExpression(String expression) {
+		String[] tokens = expression.split(" ");
+
+		return 0;
 	}
 
 	/**
@@ -259,16 +320,18 @@ public class HTMLGenerator implements Runnable {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(LOCATION.ALBUM_TEMPLATE())));
 		StringBuilder defaultTemplate = new StringBuilder(), defaultPhotoTemplate = new StringBuilder();
 		String tempLine = "";
-		Album album = null;
+		int lineCount = 0, lineLength = 0;
 		try {
 			while ((tempLine = reader.readLine()) != null) {
 				if (!tempLine.trim().startsWith("${" + KEYWORDS[8])) {
 					defaultTemplate.append(tempLine).append('\n');
+					lineCount++;
 				} else {//handle the photo loop
 					defaultTemplate.append("${").append(KEYWORDS[15]).append("}\n");//use as placeholder for photo data
 					while ((tempLine = reader.readLine()) != null) {
 						if (!tempLine.trim().startsWith("${" + KEYWORDS[9])) {
 							defaultPhotoTemplate.append(tempLine).append("\n");
+							lineCount++;
 						} else {
 							break;
 						}
@@ -372,6 +435,7 @@ public class HTMLGenerator implements Runnable {
 	private String substituteStaticDataForVariables(StringBuilder builder) {
 		loadStaticDataIntoMap();
 		StrSubstitutor subber = new StrSubstitutor(stringMap);
+		subber.setEnableSubstitutionInVariables(true);
 		subber.replace(builder);
 		return builder.toString();
 	}
@@ -387,6 +451,7 @@ public class HTMLGenerator implements Runnable {
 	private String subsitutePhotoDataForVariables(StringBuilder builder, Album album, int photoIndex) {
 		loadPhotoDataIntoMap(photoIndex, album);
 		StrSubstitutor subber = new StrSubstitutor(stringMap);
+		subber.setEnableSubstitutionInVariables(true);
 		return subber.replace(builder);
 	}
 
