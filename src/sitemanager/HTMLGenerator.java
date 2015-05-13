@@ -95,7 +95,7 @@ public class HTMLGenerator implements Runnable {
 	/**
 	 * the pattern to use for searching for math expressions
 	 */
-	private final static Pattern pattern = Pattern.compile("\\Q${" + KEYWORDS[12] + "Math:\\E");
+	private final static Pattern PATTERN = Pattern.compile("\\Q^{" + KEYWORDS[12] + ":\\E");
 	;
 	/**
 	 * the controller related to this generator
@@ -274,18 +274,23 @@ public class HTMLGenerator implements Runnable {
 	 * during this replacement
 	 */
 	private void checkForMath(StringBuilder builder) {
-		Matcher matcher = pattern.matcher(builder);
+		Matcher matcher = PATTERN.matcher(builder);
 		String temp = "";
 		Stack<Character> stack = new Stack<>();
 		HashMap<String, Double> resultsMap = new HashMap<>(20);
 		StrSubstitutor subber = new StrSubstitutor(resultsMap);
 		subber.setEnableSubstitutionInVariables(true);
+		subber.setVariablePrefix("^{");
 		int lengthOfExpression = 0, startOfMatch = 0;
+		final int OFFSET_FOR_COMMAND_PREFIX = 3;
 		char currentChar = '\n';
 		while (matcher.find()) {
+			stack.clear();
+			stack.push('{');//clear the stack, and then load the first brace
 			try {
 				startOfMatch = matcher.start();
-				for (int i = 0; i < builder.length(); i++) {
+				lengthOfExpression = 0;
+				for (int i = OFFSET_FOR_COMMAND_PREFIX; i < builder.length(); i++) {
 					currentChar = builder.charAt(i + startOfMatch);
 					if (currentChar == '{') {
 						stack.push('{');
@@ -297,10 +302,14 @@ public class HTMLGenerator implements Runnable {
 						i = builder.length() + 1;
 					}
 				}
-				temp = builder.substring(matcher.start(), startOfMatch + lengthOfExpression);
-				resultsMap.put(temp.substring(2, temp.length() - 1), parseMathExpression(temp));
+				System.out.println("match: " + matcher.group() + " lng: " + lengthOfExpression);
+				temp = builder.substring(startOfMatch + OFFSET_FOR_COMMAND_PREFIX - 1,
+					startOfMatch + lengthOfExpression + OFFSET_FOR_COMMAND_PREFIX - 1);
+				System.out.println("key: " + temp);
+				resultsMap.put(temp, //the ones remove the braces at the start and end of the string
+					parseMathExpression(temp.substring(1 + KEYWORDS[12].length())));
 			} catch (NoSuchElementException | NumberFormatException e) {
-				System.out.println("The expression <" + matcher.group() + "> could not be parsed due to "
+				System.out.println("The group <" + matcher.group() + "> could not be parsed due to "
 					+ e.getMessage() + ".");
 			}
 		}
@@ -439,6 +448,7 @@ public class HTMLGenerator implements Runnable {
 	private String substituteAlbumDataForVariables(StringBuilder builder, Album album) {
 		loadAlbumDataIntoMap(album);
 		StrSubstitutor subber = new StrSubstitutor(stringMap);
+		subber.setEnableSubstitutionInVariables(true);
 		subber.replaceIn(builder);
 		return builder.toString();
 	}
