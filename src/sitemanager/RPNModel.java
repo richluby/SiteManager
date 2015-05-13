@@ -96,6 +96,15 @@ public class RPNModel {
 	}
 
 	/**
+	 * returns the top stack item without popping it.
+	 * <p>
+	 * @return returns the top stack item by peeking
+	 */
+	public Double getTopStack() {
+		return stack.peek();
+	}
+
+	/**
 	 * returns the top two items on the stack
 	 * <p>
 	 * @return returns top two items on the stack
