@@ -29,12 +29,10 @@ public class FileOperations {
 		 *
 		 */
 		SILENT,
-
 		/**
 		 *
 		 */
 		THROW_EXCEPTION,
-
 		/**
 		 *
 		 */
@@ -219,7 +217,9 @@ public class FileOperations {
 		 */
 		public void close() {
 			try {
-				fileReader.close();
+				if (fileReader != null) {
+					fileReader.close();
+				}
 			} catch (IOException e) {
 				handleError(e, MODE);
 			}
