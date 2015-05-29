@@ -1,27 +1,20 @@
 package sitemanager;
 
 import help.HelpClass;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Menu;
-import java.awt.MenuBar;
-import java.awt.MenuItem;
-import java.awt.Toolkit;
-import java.io.File;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
 import masterDetail.MasterDetailPane;
+
+import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
+import java.awt.*;
+import java.io.File;
 
 /**
  * the main application window
  * <p>
+ *
  * @author Richard Luby, Copyright 2015
  */
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame{
 
 	/**
 	 * the location at which to start the divided
@@ -57,16 +50,16 @@ public class MainFrame extends JFrame {
 	/**
 	 * creates the main application window
 	 */
-	public MainFrame() {
+	public MainFrame(){
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		try {
-			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-				if ("Nimbus".equals(info.getName())) {
+		try{
+			for(LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()){
+				if("Nimbus".equals(info.getName())){
 					UIManager.setLookAndFeel(info.getClassName());
 					break;
 				}
 			}
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+		} catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e){
 			e.printStackTrace();
 		}
 		Dimension mainSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -88,7 +81,7 @@ public class MainFrame extends JFrame {
 	/**
 	 * generates a menu bar and adds it to the program
 	 */
-	private void initMenuBar() {
+	private void initMenuBar(){
 		MenuBar menuBar = new MenuBar();
 		//set up File menu
 		Menu fileMenu = new Menu("File");
@@ -114,7 +107,7 @@ public class MainFrame extends JFrame {
 	/**
 	 * generates and adds the main panel to the application
 	 */
-	private void initMainPanel() {
+	private void initMainPanel(){
 		JTabbedPane tabbedPane = new javax.swing.JTabbedPane();
 		initSitePanel(tabbedPane);
 		add(tabbedPane, BorderLayout.CENTER);
@@ -123,9 +116,10 @@ public class MainFrame extends JFrame {
 	/**
 	 * generates and adds a site management pane to the pane
 	 * <p>
+	 *
 	 * @param pane the pane to which to add the site managing layout
 	 */
-	private void initSitePanel(JTabbedPane tabbedPane) {
+	private void initSitePanel(JTabbedPane tabbedPane){
 		siteController = new SiteController(this);
 		siteMasterDetailPane = new MasterDetailPane(siteController);
 		siteMasterDetailPane.setDividerLocation((int) (getWidth() * DIVIDER_LOCATION));
@@ -138,7 +132,7 @@ public class MainFrame extends JFrame {
 	 * generates and places a JPanel at the base of the program window to display
 	 * notifications to the user
 	 */
-	private void initNotificationArea() {
+	private void initNotificationArea(){
 		notifPanel = new NotificationPanel();
 		notifPanel.setMessage("Welcome to the Site Manager Application");
 		add(notifPanel, BorderLayout.SOUTH);
@@ -147,32 +141,34 @@ public class MainFrame extends JFrame {
 	/**
 	 * sets the notification to the user
 	 * <p>
+	 *
 	 * @param message the message to send to the user
 	 */
-	public void setNotification(String message) {
+	public void setNotification(String message){
 		notifPanel.setMessage(message);
 	}
 
 	/**
 	 * instructs the album table to update due to data changes
 	 */
-	public void fireAlbumTableDataChanged() {
+	public void fireAlbumTableDataChanged(){
 		siteMasterDetailPane.fireTableDataChanged();
 	}
 
 	/**
 	 * instructs the update the active album with information from the display
 	 */
-	void updateActiveAlbum() {
+	void updateActiveAlbum(){
 		siteController.updateActiveElement();
 	}
 
 	/**
 	 * returns the current site controller for this application
 	 * <p>
+	 *
 	 * @return the active site controller for the application
 	 */
-	public SiteController getSiteController() {
+	public SiteController getSiteController(){
 		return siteController;
 	}
 }

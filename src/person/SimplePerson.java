@@ -7,17 +7,18 @@ import java.util.Date;
 /**
  * @author Richard Luby, Copyright 2013
  */
+
 /**
  * This is a class with the basics of a person
  */
-public class SimplePerson implements Serializable {
+public class SimplePerson implements Serializable{
 
 	/**
 	 * sentinel value to hold the blank date time
 	 */
 	@SuppressWarnings("deprecation")
 	final private static Date SENTDATE = new Date(3059,
-		12, 31);
+			12, 31);
 	/**
 	 * date format to display the date of birth
 	 */
@@ -81,7 +82,7 @@ public class SimplePerson implements Serializable {
 	/**
 	 * Initializes all values to blanks
 	 */
-	public SimplePerson() {
+	public SimplePerson(){
 		lastName = "";
 		firstName = "";
 		middleName = "";
@@ -97,103 +98,112 @@ public class SimplePerson implements Serializable {
 	/**
 	 * creates a blank person with the specified name
 	 * <p>
+	 *
 	 * @param lName the last name of this person
 	 * @param fName the first name of this person
 	 */
-	public SimplePerson(String lName, String fName) {
+	public SimplePerson(String lName, String fName){
 		this();
 		lastName = lName;
 		firstName = fName;
 	}
 
 	//begin getters and setters
+
 	/**
 	 * returns the last name of the person
 	 * <p>
+	 *
 	 * @return the name of the person
 	 */
-	public String getLastName() {
+	public String getLastName(){
 		return lastName;
 	}
 
 	/**
 	 * sets the last name of the person
 	 * <p>
+	 *
 	 * @param n the name to set
 	 */
-	public void setLastName(String n) {
+	public void setLastName(String n){
 		lastName = n;
 	}
 
 	/**
 	 * returns the middle name of the person
 	 * <p>
+	 *
 	 * @return returns the middle name of the person
 	 */
-	public String getMiddleName() {
+	public String getMiddleName(){
 		return middleName;
 	}
 
 	/**
 	 * sets the middle name of the person
 	 * <p>
+	 *
 	 * @param name the middle name to set
 	 */
-	public void setMiddleName(String name) {
+	public void setMiddleName(String name){
 		middleName = name;
 	}
 
 	/**
 	 * returns the first name of the person
 	 * <p>
+	 *
 	 * @return the first Name
 	 */
-	public String getFirstName() {
+	public String getFirstName(){
 		return firstName;
 	}
 
 	/**
 	 * sets the first name of the person
 	 * <p>
+	 *
 	 * @param firstName the first Name to set
 	 */
-	public void setFirstName(String firstName) {
+	public void setFirstName(String firstName){
 		this.firstName = firstName;
 	}
 
 	/**
 	 * sets both names of the person
 	 * <p>
+	 *
 	 * @param n   the first and last name of the person
 	 * @param ord the order in which the first and last name is listed, as
 	 *            specified by {FIRST_LAST_ORDER}
 	 */
-	public void setName(String n, int ord) {
+	public void setName(String n, int ord){
 		String[] names = n.trim().split("[\\W]");
-		try {
-			if (ord == FIRST_LAST_ORDER) {
+		try{
+			if(ord == FIRST_LAST_ORDER){
 				firstName = names[0];
-				for (int i = 1; i < names.length; i++) {//why is there a single-use loop?
-					if (names[i].matches("[\\w]+")) {//not sure what this checks
+				for(int i = 1; i < names.length; i++){//why is there a single-use loop?
+					if(names[i].matches("[\\w]+")){//not sure what this checks
 						lastName = names[i];
 						break;
 					}
 				}
-			} else if (ord == LAST_FIRST_ORDER) {
-				for (int i = 1; i < names.length; i++) {
-					if (names[i].matches("[\\w]+")) {
+			} else if(ord == LAST_FIRST_ORDER){
+				for(int i = 1; i < names.length; i++){
+					if(names[i].matches("[\\w]+")){
 						firstName = names[i];
 						break;
 					}
 
 				}
 				lastName = names[0];
-			} else if (ord == FIRST_MID_LAST_ORDER) {
+			} else if(ord == FIRST_MID_LAST_ORDER){
 				firstName = names[0];
 				middleName = names[1];
 				lastName = names[2];
 			}
-		} catch (ArrayIndexOutOfBoundsException e) {
+		} catch(ArrayIndexOutOfBoundsException e){
 			System.out.println("Improperly formatted name entered\n" + n + "\n" + names);
 		}
 	}
@@ -201,159 +211,177 @@ public class SimplePerson implements Serializable {
 	/**
 	 * gets the birthday of this person
 	 * <p>
+	 *
 	 * @return the birthday
 	 */
-	public Date getDateOfBirth() {
+	public Date getDateOfBirth(){
 		return dateOfBirth;
 	}
 
 	/**
 	 * gets a formatted date of birth
 	 * <p>
+	 *
 	 * @return returns the date of birth in a formatted manner
 	 */
-	public String getDateOfBirthFormatted() {
+	public String getDateOfBirthFormatted(){
 		return dateFormat.format(dateOfBirth);
 	}
 
 	/**
 	 * sets the birthday for this person
 	 * <p>
+	 *
 	 * @param dateOfBirth the birthday to set
 	 */
-	public void setDateOfBirth(Date dateOfBirth) {
+	public void setDateOfBirth(Date dateOfBirth){
 		this.dateOfBirth = dateOfBirth;
 	}
 
 	/**
 	 * returns the work address of this person
 	 * <p>
+	 *
 	 * @return the address
 	 */
-	public Address getWorkAddress() {
+	public Address getWorkAddress(){
 		return workAddress;
 	}
 
 	/**
 	 * sets the work address of this person
 	 * <p>
+	 *
 	 * @param a the work address to set
 	 */
-	public void setWorkAddress(Address a) {
+	public void setWorkAddress(Address a){
 		workAddress = a;
 	}
 
 	/**
 	 * returns the cell phone number of the person
 	 * <p>
+	 *
 	 * @return the cell the number of the person
 	 */
-	public int getCellPhoneNum() {
+	public int getCellPhoneNum(){
 		return cPhoneNum;
 	}
 
 	/**
 	 * sets the cell phone number of the person
 	 * <p>
+	 *
 	 * @param cPhoneNum the cell phone number to set
 	 */
-	public void setCellPhoneNum(int cPhoneNum) {
+	public void setCellPhoneNum(int cPhoneNum){
 		this.cPhoneNum = cPhoneNum;
 	}
 
 	/**
 	 * returns the work phone number of the person
 	 * <p>
+	 *
 	 * @return the work phone number
 	 */
-	public int getWorkPhoneNum() {
+	public int getWorkPhoneNum(){
 		return wPhoneNum;
 	}
 
 	/**
 	 * sets the work phone number
 	 * <p>
+	 *
 	 * @param wPhoneNum the work phone number to set
 	 */
-	public void setWorkPhoneNum(int wPhoneNum) {
+	public void setWorkPhoneNum(int wPhoneNum){
 		this.wPhoneNum = wPhoneNum;
 	}
 
 	/**
 	 * returns the work email of the person
 	 * <p>
+	 *
 	 * @return the work email
 	 */
-	public String getWorkEmail() {
+	public String getWorkEmail(){
 		return wEmail;
 	}
 
 	/**
 	 * sets the work email
 	 * <p>
+	 *
 	 * @param wEmail the work email to set
 	 */
-	public void setWorkEmail(String wEmail) {
+	public void setWorkEmail(String wEmail){
 		this.wEmail = wEmail;
 	}
 
 	/**
 	 * returns the home email
 	 * <p>
+	 *
 	 * @return the home email
 	 */
-	public String getHomeEmail() {
+	public String getHomeEmail(){
 		return hEmail;
 	}
 
 	/**
 	 * sets the home email
 	 * <p>
+	 *
 	 * @param hEmail the home email to set
 	 */
-	public void setHomeEmail(String hEmail) {
+	public void setHomeEmail(String hEmail){
 		this.hEmail = hEmail;
 	}
 
 	/**
 	 * returns the special notes of this person in a String
 	 * <p>
+	 *
 	 * @return the special Notes
 	 */
-	public String getSpecialNotes() {
+	public String getSpecialNotes(){
 		return specialNotes.toString();
 	}
 
 	/**
 	 * overrides the Special Notes for this person
 	 * <p>
+	 *
 	 * @param specialNotes the special Notes to set as an override
 	 */
-	public void setSpecialNotes(StringBuffer specialNotes) {
+	public void setSpecialNotes(StringBuffer specialNotes){
 		this.specialNotes = specialNotes;
 	}
 
 	/**
 	 * appends more notes to the end of the notes
 	 * <p>
+	 *
 	 * @param notes the content to append to the end of the special notes
 	 */
-	public void addSpecialNotes(String notes) {
+	public void addSpecialNotes(String notes){
 		specialNotes.append(notes);
 	}
 
 	//Begin comparison and utility functions
+
 	/**
 	 * compares the people by last name, and then by first name
 	 * <p>
+	 *
 	 * @param other the person to which to compare
 	 * @return returns the same results as a lexicographical comparison of the
-	 *         name
+	 * name
 	 */
-	public int compareToIgnoreCase(SimplePerson other) {
-		if (lastName.compareToIgnoreCase(other.getLastName()) != 0) {
+	public int compareToIgnoreCase(SimplePerson other){
+		if(lastName.compareToIgnoreCase(other.getLastName()) != 0){
 			return lastName
-				.compareToIgnoreCase(other.getLastName());
+					.compareToIgnoreCase(other.getLastName());
 		}
 		return firstName.compareToIgnoreCase(other.getFirstName());
 	}
@@ -361,23 +389,22 @@ public class SimplePerson implements Serializable {
 	/**
 	 * checks to see if the names are equal
 	 * <p>
+	 *
 	 * @param other the other person
 	 * @return returns true if the first name and the last name are equal
 	 */
-	public boolean equals(SimplePerson other) {
-		if (lastName.equals(other.getLastName()) && firstName
-			.equals(other.getFirstName())) {
-			return true;
-		}
-		return false;
+	public boolean equals(SimplePerson other){
+		return lastName.equals(other.getLastName()) && firstName
+				.equals(other.getFirstName());
 	}
 
 	/**
 	 * sets this person equal to the value of another
 	 * <p>
+	 *
 	 * @param other the other person to use as a source
 	 */
-	public void setEqual(SimplePerson other) {
+	public void setEqual(SimplePerson other){
 		lastName = other.getLastName();
 		firstName = other.getFirstName();
 		dateOfBirth = other.getDateOfBirth();
@@ -391,11 +418,12 @@ public class SimplePerson implements Serializable {
 	/**
 	 * returns the name of the person in Last, First format
 	 * <p>
+	 *
 	 * @return returns the name of the person in Last, First format
 	 */
 	@Override
-	public String toString() {
-		if (lastName.equals("") && firstName.equals("")) {
+	public String toString(){
+		if(lastName.equals("") && firstName.equals("")){
 			return "";
 		}
 		return lastName + ", " + firstName;
@@ -404,41 +432,42 @@ public class SimplePerson implements Serializable {
 	/**
 	 * returns all details of the person in a parsable format
 	 * <p>
+	 *
 	 * @return returns labeled items in a parsable format
 	 */
-	public String toLongString() {
+	public String toLongString(){
 		StringBuffer results = new StringBuffer();
-		if (!lastName.equals("")) {
+		if(!lastName.equals("")){
 			results.append("Last Name: ").append(lastName).append("\n");
 		}
-		if (!firstName.equals("")) {
+		if(!firstName.equals("")){
 			results.append("First Name: ").append(firstName).append("\n");
 		}
-		if (!middleName.equals("")) {
+		if(!middleName.equals("")){
 			results.append("Middle Name: ").append(middleName).append("\n");
 		}
-		if (!dateOfBirth.equals(SENTDATE)) {
+		if(!dateOfBirth.equals(SENTDATE)){
 			results.append("Date of Birth: ").append(
-				dateFormat.format(dateOfBirth)).append("\n");
+					dateFormat.format(dateOfBirth)).append("\n");
 		}
-		if (!workAddress.toString().equals("")) {
+		if(!workAddress.toString().equals("")){
 			results.append("Work Address: ").append(workAddress.toString()).append("\n");
 		}
-		if (cPhoneNum != 0) {
+		if(cPhoneNum != 0){
 			results.append("Cell Phone Number: ").append(cPhoneNum).append("\n");
 		}
-		if (wPhoneNum != 0) {
+		if(wPhoneNum != 0){
 			results.append("Work Phone Number: ").append(wPhoneNum).append("\n");
 		}
-		if (!wEmail.equals("")) {
+		if(!wEmail.equals("")){
 			results.append("Work email: ").append(wEmail).append("\n");
 		}
-		if (!hEmail.equals("")) {
+		if(!hEmail.equals("")){
 			results.append("Home email: ").append(hEmail).append("\n");
 		}
-		if (!specialNotes.toString().equals("")) {
+		if(!specialNotes.toString().equals("")){
 			results.append("Special Notes: ").append(specialNotes.toString())
-				.append("\n");
+					.append("\n");
 		}
 		return results.toString();
 	}

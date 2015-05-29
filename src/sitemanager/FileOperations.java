@@ -5,8 +5,10 @@ package sitemanager;
  * not throw an exception.
  * Future implementations may include limited optional exception handling.
  * <p>
+ *
  * @author Richard Luby, Copyright 2015
  */
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,16 +16,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- *
  * @author RLuby
  */
-public class FileOperations {
+public class FileOperations{
 
 	/**
 	 * determines which mode to select when an operation fails
 	 * the default is to print the errors
 	 */
-	public static enum MODE_SELECT {
+	public enum MODE_SELECT{
 
 		/**
 		 *
@@ -37,16 +38,17 @@ public class FileOperations {
 		 *
 		 */
 		PRINT_ERROR
-	};
+	}
 
 	/**
 	 * handles any errors that occur during the execution of the program.
 	 * <p>
+	 *
 	 * @param e    the error that is being handled
 	 * @param MODE the mode to use for handling exceptions
 	 */
-	protected static void handleError(Exception e, int MODE) {
-		if (MODE_SELECT.PRINT_ERROR.ordinal() == MODE) {
+	protected static void handleError(Exception e, int MODE){
+		if(MODE_SELECT.PRINT_ERROR.ordinal() == MODE){
 			e.printStackTrace();
 		}
 	}
@@ -56,7 +58,7 @@ public class FileOperations {
 	 * the filesystem. The class
 	 * writes files, currently accepting only strings.
 	 */
-	public static class FileWriter extends FileOperations {
+	public static class FileWriter extends FileOperations{
 
 		/**
 		 * the writer to use for this object
@@ -70,16 +72,17 @@ public class FileOperations {
 		/**
 		 * takes a string and opens a buffered writer to write information
 		 * <p>
+		 *
 		 * @param fileName the name of the file to be read
 		 */
-		public FileWriter(String fileName) {
+		public FileWriter(String fileName){
 			fileWriter = null;
-			try {
+			try{
 				fileWriter = new BufferedWriter(new java.io.FileWriter(fileName));
-			} catch (FileNotFoundException e) {
+			} catch(FileNotFoundException e){
 				// TODO Auto-generated catch block
 				handleError(e, MODE);
-			} catch (IOException e) {
+			} catch(IOException e){
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -88,12 +91,13 @@ public class FileOperations {
 		/**
 		 * opens a buffered writer for the file
 		 * <p>
+		 *
 		 * @param file the file to which to write
 		 */
-		public FileWriter(File file) {
-			try {
+		public FileWriter(File file){
+			try{
 				fileWriter = new BufferedWriter(new java.io.FileWriter(file));
-			} catch (IOException ex) {
+			} catch(IOException ex){
 				handleError(ex, MODE);
 			}
 		}
@@ -101,12 +105,13 @@ public class FileOperations {
 		/**
 		 * writes a single piece of data to the file associated with this object
 		 * <p>
+		 *
 		 * @param data the data to be written to file
 		 */
-		public void write(String data) {
-			try {
+		public void write(String data){
+			try{
 				fileWriter.write(data);
-			} catch (IOException e) {
+			} catch(IOException e){
 				handleError(e, MODE);
 			}
 		}
@@ -115,12 +120,13 @@ public class FileOperations {
 		 * writes a single piece of data to the file associated with this object, and then
 		 * appends a newline character
 		 * <p>
+		 *
 		 * @param data the data to be written to file
 		 */
-		public void writeln(String data) {
-			try {
+		public void writeln(String data){
+			try{
 				fileWriter.write(data + "\n");
-			} catch (IOException e) {
+			} catch(IOException e){
 				handleError(e, MODE);
 			}
 		}
@@ -128,11 +134,11 @@ public class FileOperations {
 		/**
 		 * flushes the writer and closes associated resources
 		 */
-		public void close() {
-			try {
+		public void close(){
+			try{
 				fileWriter.flush();
 				fileWriter.close();
-			} catch (IOException e) {
+			} catch(IOException e){
 				handleError(e, MODE);
 			}
 		}
@@ -143,7 +149,7 @@ public class FileOperations {
 	 * line upon command from the
 	 * program.
 	 */
-	public static class FileReader extends FileOperations {
+	public static class FileReader extends FileOperations{
 
 		/**
 		 * the reader to user for this object
@@ -157,13 +163,14 @@ public class FileOperations {
 		/**
 		 * takes a file and opens a buffered reader to receive information
 		 * <p>
+		 *
 		 * @param fileName the file to be read
 		 */
-		public FileReader(File fileName) {
+		public FileReader(File fileName){
 			fileReader = null;
-			try {
+			try{
 				fileReader = new BufferedReader(new java.io.FileReader(fileName));
-			} catch (FileNotFoundException e) {
+			} catch(FileNotFoundException e){
 				// TODO Auto-generated catch block
 				handleError(e, MODE);
 			}
@@ -172,13 +179,14 @@ public class FileOperations {
 		/**
 		 * takes a string and opens a buffered reader to receive information
 		 * <p>
+		 *
 		 * @param fileName the name of the file to be read
 		 */
-		public FileReader(String fileName) {
+		public FileReader(String fileName){
 			fileReader = null;
-			try {
+			try{
 				fileReader = new BufferedReader(new java.io.FileReader(fileName));
-			} catch (FileNotFoundException e) {
+			} catch(FileNotFoundException e){
 				// TODO Auto-generated catch block
 				handleError(e, MODE);
 			}
@@ -187,16 +195,17 @@ public class FileOperations {
 		/**
 		 * reads the next line from the file, and moves forward in the file
 		 * <p>
+		 *
 		 * @return returns the next line in the file. Null is returned if no line was
-		 *         found, or if an error occurred.
+		 * found, or if an error occurred.
 		 */
-		public String readLine() {
-			try {
-				if (fileReader != null && fileReader.ready()) {
+		public String readLine(){
+			try{
+				if(fileReader != null && fileReader.ready()){
 					return fileReader.readLine();
 				}
 				return null;
-			} catch (IOException e) {
+			} catch(IOException e){
 				// TODO Auto-generated catch block
 				handleError(e, MODE);
 				return null;
@@ -206,21 +215,22 @@ public class FileOperations {
 		/**
 		 * sets the mode to be used for this instance
 		 * <p>
+		 *
 		 * @param mode the mode to select for handling errors
 		 */
-		public void setMode(MODE_SELECT mode) {
+		public void setMode(MODE_SELECT mode){
 			MODE = mode.ordinal();
 		}
 
 		/**
 		 * closes associated resources
 		 */
-		public void close() {
-			try {
-				if (fileReader != null) {
+		public void close(){
+			try{
+				if(fileReader != null){
 					fileReader.close();
 				}
-			} catch (IOException e) {
+			} catch(IOException e){
 				handleError(e, MODE);
 			}
 		}

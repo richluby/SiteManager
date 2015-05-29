@@ -1,17 +1,19 @@
 package sitemanager;
 
+import masterDetail.Tabulate;
+
+import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
-import javax.swing.JPanel;
-import masterDetail.Tabulate;
 
 /**
  * This class acts as a controller for all photos in a given album
  * <p>
+ *
  * @author Richard Luby, Copyright 2015
  */
-class PhotoController implements Tabulate {
+class PhotoController implements Tabulate{
 
 	/**
 	 * the column names for the photos table
@@ -32,25 +34,26 @@ class PhotoController implements Tabulate {
 	 * the keywords used through the file. The <tt>Name</tt> keyword is used to separate
 	 * photo instances
 	 */
-	private static enum KEYWORDS {
-
+	private enum KEYWORDS{
+		;
 		/**
 		 * the name of the photo. this keyword must be at the beginning of a photo
 		 */
-		PHOTO_NAME,
+		static final public String PHOTO_NAME = "Photo Name";
 		/**
 		 * the description of the photo
 		 */
-		PHOTO_DESCRIPTION,
+		static final public String PHOTO_DESCRIPTION = "Photo Description";
 		/**
 		 * the location on disk of the photo
 		 */
-		PHOTO_LOCATION,
+		static final public String PHOTO_LOCATION = "Photo Location";
 		/**
 		 * the unique id for this photo
 		 */
-		PHOTO_ID
-	};
+		static final public String PHOTO_ID = "Photo ID";
+	}
+
 	/**
 	 * the folder in which these photos reside
 	 */
@@ -75,19 +78,19 @@ class PhotoController implements Tabulate {
 	/**
 	 * initializes the controller
 	 */
-	public PhotoController(Album parent) {
+	public PhotoController(Album parent){
 		albumFolder = null;
 		photoList = new ArrayList<>();
 		parentAlbum = parent;
 		activePhotoIndex = 0;
-		if (informationPanel == null) {
+		if(informationPanel == null){
 			informationPanel = new InformationPanel("Photo Information", Listeners.createBrowseForPhoto(), Listeners.creatUpdatePhoto());
 		}
 	}
 
 	@Override
-	public Object getDataForColumn(int rowIndex, int columnIndex) {
-		switch (COLUMN_NAMES[columnIndex]) {
+	public Object getDataForColumn(int rowIndex, int columnIndex){
+		switch(COLUMN_NAMES[columnIndex]){
 			case "Name":
 				return photoList.get(rowIndex).getName();
 			case "Location":
@@ -100,43 +103,44 @@ class PhotoController implements Tabulate {
 	/**
 	 * builds the list of photos based on the selected directory
 	 * <p>
+	 *
 	 * @param af the album folder in which to find photos.
 	 */
-	public void populatePhotoList(File af) {
+	public void populatePhotoList(File af){
 		this.albumFolder = af;
 		File photoData = new File(albumFolder.getAbsoluteFile() + File.separator + FILE_PHOTO_INFORMATION);
-		if (!photoData.exists()) {
-			File[] files = albumFolder.listFiles((File pathname) -> {
+		if(!photoData.exists()){
+			File[] files = albumFolder.listFiles((File pathname)->{
 				return pathname.getName().endsWith("jpg") || pathname.getName().endsWith(
-					"jpeg");
+						"jpeg");
 			});
 			Photo photo = null;
-			for (File file : files) {
+			for(File file : files){
 				photo = new Photo();
 				photo.setPhotoFile(file);
 				photo.setPhotoName(file.getName());
 				photoList.add(photo);
 			}
-		} else {
+		} else{
 			//read from the photo data file already present
 			String tempLine = "";
 			Photo photo = new Photo();
 			FileOperations.FileReader reader = new FileOperations.FileReader(photoData);
-			while ((tempLine = reader.readLine()) != null) {
+			while((tempLine = reader.readLine()) != null){
 				tempLine = tempLine.trim();
-				if (tempLine.startsWith(KEYWORDS.PHOTO_NAME.toString())) {
-					tempLine = tempLine.substring(KEYWORDS.PHOTO_NAME.toString().length() + 2);
+				if(tempLine.startsWith(KEYWORDS.PHOTO_NAME)){
+					tempLine = tempLine.substring(KEYWORDS.PHOTO_NAME.length() + 2);
 					photo = new Photo();
 					photo.setPhotoName(tempLine);
 					photoList.add(photo);
-				} else if (tempLine.startsWith(KEYWORDS.PHOTO_DESCRIPTION.toString()) && tempLine.length() > KEYWORDS.PHOTO_DESCRIPTION.toString().length() + 2) {
-					tempLine = tempLine.substring(KEYWORDS.PHOTO_DESCRIPTION.toString().length() + 2);
+				} else if(tempLine.startsWith(KEYWORDS.PHOTO_DESCRIPTION) && tempLine.length() > KEYWORDS.PHOTO_DESCRIPTION.length() + 2){
+					tempLine = tempLine.substring(KEYWORDS.PHOTO_DESCRIPTION.length() + 2);
 					photo.setPhotoDescription(tempLine);
-				} else if (tempLine.startsWith(KEYWORDS.PHOTO_LOCATION.toString())) {
-					tempLine = tempLine.substring(KEYWORDS.PHOTO_LOCATION.toString().length() + 2);
+				} else if(tempLine.startsWith(KEYWORDS.PHOTO_LOCATION)){
+					tempLine = tempLine.substring(KEYWORDS.PHOTO_LOCATION.length() + 2);
 					photo.setPhotoFile(new File(tempLine));
-				} else if (tempLine.startsWith(KEYWORDS.PHOTO_ID.toString())) {
-					tempLine = tempLine.substring(KEYWORDS.PHOTO_ID.toString().length() + 2);
+				} else if(tempLine.startsWith(KEYWORDS.PHOTO_ID)){
+					tempLine = tempLine.substring(KEYWORDS.PHOTO_ID.length() + 2);
 					photo.setId(Integer.parseInt(tempLine));
 				}
 			}
@@ -145,42 +149,42 @@ class PhotoController implements Tabulate {
 	}
 
 	@Override
-	public String[] getColumnNames() {
+	public String[] getColumnNames(){
 		return COLUMN_NAMES;
 	}
 
 	@Override
-	public int getNumberOfRows() {
+	public int getNumberOfRows(){
 		return photoList.size();
 	}
 
 	@Override
-	public Class<?> getColumnClass(int col) {
+	public Class<?> getColumnClass(int col){
 		return String.class;
 	}
 
 	@Override
-	public void removeElement(int rowIndex) {
+	public void removeElement(int rowIndex){
 	}
 
 	@Override
-	public void addElement() {
+	public void addElement(){
 	}
 
 	@Override
-	public void updateElement(int rowIndex) {
+	public void updateElement(int rowIndex){
 	}
 
 	@Override
-	public void updateDisplayForElement(int rowIndex) {
-		if (rowIndex < photoList.size()) {
+	public void updateDisplayForElement(int rowIndex){
+		if(rowIndex < photoList.size()){
 			activePhotoIndex = rowIndex;
 			Photo activePhoto = photoList.get(rowIndex);
 			informationPanel.setTitle(activePhoto.getName());
 			informationPanel.setDescription(activePhoto.getDescription());
 			informationPanel.setLocation(activePhoto.getLocationFile().getAbsolutePath());
 			informationPanel.setDisplayedImage(activePhoto.getLocationFile(), "south", CONSTRAINTS[0], CONSTRAINTS[1]);
-		} else {//clear display
+		} else{//clear display
 			informationPanel.setTitle("");
 			informationPanel.setDescription("");
 			informationPanel.setLocation("");
@@ -189,17 +193,17 @@ class PhotoController implements Tabulate {
 	}
 
 	@Override
-	public JPanel initDetailComponent() {
+	public JPanel initDetailComponent(){
 		return informationPanel;
 	}
 
 	/**
 	 * writes the data of the photos to disk
 	 */
-	void writeDataToDisk() {
+	void writeDataToDisk(){
 		FileOperations.FileWriter writer = new FileOperations.FileWriter(albumFolder.getAbsolutePath() + File.separator + FILE_PHOTO_INFORMATION);
 		writer.writeln("#This file contains information regarding the photos in this album.\n#Whitespace is ignored when parsing this file if it occurs at either end of a line.");
-		for (Iterator<Photo> iterator = photoList.iterator(); iterator.hasNext();) {
+		for(Iterator<Photo> iterator = photoList.iterator(); iterator.hasNext(); ){
 			Photo photo = iterator.next();
 			writer.writeln(KEYWORDS.PHOTO_NAME + ": " + photo.getName());
 			writer.writeln("\t" + KEYWORDS.PHOTO_DESCRIPTION + ": " + photo.getDescription());
@@ -213,7 +217,7 @@ class PhotoController implements Tabulate {
 	/**
 	 * sets the location for the image file for the currently active photo
 	 */
-	void setPhotoLocationForActivePhoto(File imageFile) {
+	void setPhotoLocationForActivePhoto(File imageFile){
 		photoList.get(activePhotoIndex).setPhotoFile(imageFile);
 		informationPanel.setDisplayedImage(imageFile, "south", CONSTRAINTS[0], CONSTRAINTS[1]);
 	}
@@ -222,7 +226,7 @@ class PhotoController implements Tabulate {
 	 * instructs the controller to update the active photo with the information from the
 	 * view
 	 */
-	void updateActiveElement() {
+	void updateActiveElement(){
 		Photo photo = photoList.get(activePhotoIndex);
 		photo.setPhotoName(informationPanel.getTitle());
 		photo.setPhotoDescription(informationPanel.getDescription());
@@ -231,11 +235,12 @@ class PhotoController implements Tabulate {
 	/**
 	 * returns a photo at the given index
 	 * <p>
+	 *
 	 * @param photoIndex the index at which to retrieve the photo
 	 * @return the photo at the given index
 	 */
-	Photo getPhoto(int photoIndex) {
-		if (photoIndex < photoList.size() && photoIndex >= 0) {
+	Photo getPhoto(int photoIndex){
+		if(photoIndex < photoList.size() && photoIndex >= 0){
 			return photoList.get(photoIndex);
 		}
 		return null;

@@ -6,9 +6,9 @@
 		<meta name="description" content="A view into the life and activities of myself.">
 		<link rel="stylesheet" href="main.css">
 	</head>
-    <body text="#c0c0c0" vlink="#6666cc" alink="#ff6666" link="#00cccc">
-	<style>
-		img {
+	<body text="#c0c0c0" vlink="#6666cc" alink="#ff6666" link="#00cccc">
+		<style>
+			img {
 			-webkit-animation: colorize 2s cubic-bezier(0, 0, .78, .36) 1;
 			animation: colorize 4s cubic-bezier(0, 0, .78, .36) 1;
 			background: transparent;
@@ -17,28 +17,28 @@
 			display: block;
 			margin: 1.3em auto;
 			max-width: 95%;
-		}
-	</style>
+			}
+		</style>
 
-	<div id="header">
-		<h1>A Life's Snapshot</h1>
-		<h6><i>A view into the life and activities of myself.</i></h6>
-	</div>
-	<div class="contentData">
-		${BeginLoop:Album}
-		<div class="blockData">
-			<h2><a href="${AlbumSource}/${AlbumTitle}.html">${AlbumTitle}</a></h2>
-			<img alt="${AlbumTitle}" title="${AlbumTitle}"
-				 src="${AlbumSource}/${AlbumCover}"
-				 width="400" height="200">
-			${AlbumDescription}
+		<div id="header">
+			<h1>A Life's Snapshot</h1>
+			<h6><i>A view into the life and activities of myself.</i></h6>
 		</div>
-		${EndLoop}
-		<div class="blockData">
-			<center>
-				<h6>Copyright 2015, All Rights Reserved</h6>
-			</center>
+		<div class="contentData">
+			${BeginLoop:Album}
+			<div class="blockData">
+				<h2><a href="${AlbumSource}/${AlbumTitle}.html">${AlbumTitle}</a></h2>
+				<img alt="${AlbumTitle}" title="${AlbumTitle}"
+				     src="${AlbumSource}/${AlbumCover}"
+				     width="400" height="200">
+				${AlbumDescription}
+			</div>
+			${EndLoop}
+			<div class="blockData">
+				<center>
+					<h6>Copyright 2015, All Rights Reserved</h6>
+				</center>
+			</div>
 		</div>
-	</div>
-</body>
+	</body>
 </html>

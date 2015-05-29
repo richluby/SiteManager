@@ -6,15 +6,14 @@
 package sitemanager;
 
 /**
- *
  * @author Richard Luby
  */
-public class MainPanel extends javax.swing.JPanel {
+public class MainPanel extends javax.swing.JPanel{
 
 	/**
 	 * Creates new form MasterPanel
 	 */
-	public MainPanel() {
+	public MainPanel(){
 		initComponents();
 	}
 
@@ -24,84 +23,83 @@ public class MainPanel extends javax.swing.JPanel {
 	 * Form Editor.
 	 */
 	@SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+	// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+	private void initComponents(){
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        masterDetailTab = new javax.swing.JSplitPane();
-        masterPanel = new javax.swing.JPanel();
-        detailPanel = new javax.swing.JPanel();
-        siteTab = new javax.swing.JPanel();
+		jTabbedPane1 = new javax.swing.JTabbedPane();
+		masterDetailTab = new javax.swing.JSplitPane();
+		masterPanel = new javax.swing.JPanel();
+		detailPanel = new javax.swing.JPanel();
+		siteTab = new javax.swing.JPanel();
 
-        masterPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+		masterPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        javax.swing.GroupLayout masterPanelLayout = new javax.swing.GroupLayout(masterPanel);
-        masterPanel.setLayout(masterPanelLayout);
-        masterPanelLayout.setHorizontalGroup(
-            masterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        masterPanelLayout.setVerticalGroup(
-            masterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 252, Short.MAX_VALUE)
-        );
+		javax.swing.GroupLayout masterPanelLayout = new javax.swing.GroupLayout(masterPanel);
+		masterPanel.setLayout(masterPanelLayout);
+		masterPanelLayout.setHorizontalGroup(
+				masterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGap(0, 0, Short.MAX_VALUE)
+		);
+		masterPanelLayout.setVerticalGroup(
+				masterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGap(0, 252, Short.MAX_VALUE)
+		);
 
-        masterDetailTab.setLeftComponent(masterPanel);
+		masterDetailTab.setLeftComponent(masterPanel);
 
-        detailPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Details"));
+		detailPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Details"));
 
-        javax.swing.GroupLayout detailPanelLayout = new javax.swing.GroupLayout(detailPanel);
-        detailPanel.setLayout(detailPanelLayout);
-        detailPanelLayout.setHorizontalGroup(
-            detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 348, Short.MAX_VALUE)
-        );
-        detailPanelLayout.setVerticalGroup(
-            detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 214, Short.MAX_VALUE)
-        );
+		javax.swing.GroupLayout detailPanelLayout = new javax.swing.GroupLayout(detailPanel);
+		detailPanel.setLayout(detailPanelLayout);
+		detailPanelLayout.setHorizontalGroup(
+				detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGap(0, 348, Short.MAX_VALUE)
+		);
+		detailPanelLayout.setVerticalGroup(
+				detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGap(0, 214, Short.MAX_VALUE)
+		);
 
-        masterDetailTab.setRightComponent(detailPanel);
+		masterDetailTab.setRightComponent(detailPanel);
 
-        jTabbedPane1.addTab("tab1", masterDetailTab);
+		jTabbedPane1.addTab("tab1", masterDetailTab);
 
-        javax.swing.GroupLayout siteTabLayout = new javax.swing.GroupLayout(siteTab);
-        siteTab.setLayout(siteTabLayout);
-        siteTabLayout.setHorizontalGroup(
-            siteTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 388, Short.MAX_VALUE)
-        );
-        siteTabLayout.setVerticalGroup(
-            siteTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 258, Short.MAX_VALUE)
-        );
+		javax.swing.GroupLayout siteTabLayout = new javax.swing.GroupLayout(siteTab);
+		siteTab.setLayout(siteTabLayout);
+		siteTabLayout.setHorizontalGroup(
+				siteTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGap(0, 388, Short.MAX_VALUE)
+		);
+		siteTabLayout.setVerticalGroup(
+				siteTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGap(0, 258, Short.MAX_VALUE)
+		);
 
-        jTabbedPane1.addTab("tab2", siteTab);
+		jTabbedPane1.addTab("tab2", siteTab);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-    }// </editor-fold>//GEN-END:initComponents
+		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+		this.setLayout(layout);
+		layout.setHorizontalGroup(
+				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(layout.createSequentialGroup()
+								.addContainerGap()
+								.addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addContainerGap())
+		);
+		layout.setVerticalGroup(
+				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(layout.createSequentialGroup()
+								.addContainerGap()
+								.addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								.addContainerGap())
+		);
+	}// </editor-fold>//GEN-END:initComponents
 
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel detailPanel;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JSplitPane masterDetailTab;
-    private javax.swing.JPanel masterPanel;
-    private javax.swing.JPanel siteTab;
-    // End of variables declaration//GEN-END:variables
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private javax.swing.JPanel detailPanel;
+	private javax.swing.JTabbedPane jTabbedPane1;
+	private javax.swing.JSplitPane masterDetailTab;
+	private javax.swing.JPanel masterPanel;
+	private javax.swing.JPanel siteTab;
+	// End of variables declaration//GEN-END:variables
 }

@@ -1,27 +1,23 @@
 package sitemanager;
 
+import net.miginfocom.swing.MigLayout;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
-import net.miginfocom.swing.MigLayout;
 
 /**
  * This class contains the frame work to display information common to both albums and
  * photos
  * <p>
+ *
  * @author Richard Luby, Copyright 2015
  */
-class InformationPanel extends JPanel {
+class InformationPanel extends JPanel{
 
 	/**
 	 * the textBox for the title
@@ -43,14 +39,15 @@ class InformationPanel extends JPanel {
 	/**
 	 * initializes the class
 	 * <p>
+	 *
 	 * @param title          the title to put around the border of this item
 	 * @param browseListener the listener attached to the browse button
 	 * @param saveListener   the listener attached to the save button. If this listener is
 	 *                       null, then no save button is added.
 	 */
 	public InformationPanel(String title,
-		ActionListener browseListener,
-		ActionListener saveListener) {
+	                        ActionListener browseListener,
+	                        ActionListener saveListener){
 		//init variables
 		titleField = new JTextField();
 
@@ -87,7 +84,7 @@ class InformationPanel extends JPanel {
 		scroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		add(scroller, "span, grow, wrap");
 		//add(tempPanel);
-		if (saveListener != null) {
+		if(saveListener != null){
 			button = new JButton("Save");
 			button.addActionListener(saveListener);
 			add(button, "skip 1");
@@ -98,18 +95,20 @@ class InformationPanel extends JPanel {
 	/**
 	 * sets the title of this item
 	 * <p>
+	 *
 	 * @param title the title to set
 	 */
-	public void setTitle(String title) {
+	public void setTitle(String title){
 		titleField.setText(title);
 	}
 
 	/**
 	 * sets the photo displayed by this panel
 	 * <p>
+	 *
 	 * @param photo       the photo to display
 	 * @param constraints the constraints to be applied to this photo, based on
-	 * <tt>MiGLayout</tt>
+	 *                    <tt>MiGLayout</tt>
 	 * @param widthScale  the proportion of horizontal space to use in the panel for the
 	 *                    image
 	 * @param heightScale the proportion of vertical space to use in the panel for the
@@ -117,34 +116,34 @@ class InformationPanel extends JPanel {
 	 * @return returns true if the image was successfully set, false otherwise
 	 */
 	public boolean setDisplayedImage(File photo, String constraints, double widthScale,
-		double heightScale) {
-		try {
+	                                 double heightScale){
+		try{
 			BufferedImage img = ImageIO.read(photo);
 			ImageIcon icon = new ImageIcon(img.getScaledInstance(
-				(int) (getWidth() * widthScale),
-				(int) (getHeight() * heightScale),
-				BufferedImage.SCALE_DEFAULT));
-			if (imageLabel == null) {
+					(int) (getWidth() * widthScale),
+					(int) (getHeight() * heightScale),
+					BufferedImage.SCALE_DEFAULT));
+			if(imageLabel == null){
 				imageLabel = new JLabel(icon);
 				add(imageLabel, "gapleft 10px, " + constraints);
-			} else {
+			} else{
 				imageLabel.setIcon(icon);
 				imageLabel.revalidate();
 				imageLabel.repaint();
 			}
 
 			return true;
-		} catch (IOException ex) {
+		} catch(IOException ex){
 			System.out.println("No image found for infoPanel");
-			if (imageLabel != null) {
+			if(imageLabel != null){
 				imageLabel.setIcon(null);
 				imageLabel.revalidate();
 				imageLabel.repaint();
 			}
 			return false;
-		} catch (NullPointerException | IllegalArgumentException e) {
+		} catch(NullPointerException | IllegalArgumentException e){
 			System.out.println("Improper image format passed to infoPanel");
-			if (imageLabel != null) {
+			if(imageLabel != null){
 				imageLabel.setIcon(null);
 				imageLabel.revalidate();
 				imageLabel.repaint();
@@ -156,36 +155,40 @@ class InformationPanel extends JPanel {
 	/**
 	 * sets the description of this item
 	 * <p>
+	 *
 	 * @param description the description to set
 	 */
-	public void setDescription(String description) {
+	public void setDescription(String description){
 		descriptionArea.setText(description);
 	}
 
 	/**
 	 * sets the description of this item
 	 * <p>
+	 *
 	 * @param description the description to set
 	 */
-	public void setLocation(String location) {
+	public void setLocation(String location){
 		locationField.setText(location);
 	}
 
 	/**
 	 * returns the text in the title of this item
 	 * <p>
+	 *
 	 * @return returns the text in the titleBox of this item
 	 */
-	public String getTitle() {
+	public String getTitle(){
 		return titleField.getText();
 	}
 
 	/**
 	 * returns the field in the description box of this item
 	 * <p>
+	 *
 	 * @return returns the current description text of this item
 	 */
-	public String getDescription() {
+	public String getDescription(){
 		return descriptionArea.getText();
 	}
 }

@@ -1,23 +1,18 @@
 package masterDetail;
 
-import java.awt.Color;
-import java.awt.Component;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
+import java.awt.*;
 
 /**
  * This class embeds a Master-Detail view JSplitPane.
  * <p>
+ *
  * @author Richard Luby, Copyright 2015
  */
-public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
+public class MasterDetailPane<T extends Tabulate> extends JSplitPane{
 
 	/**
 	 * the left panel with the jtable
@@ -39,9 +34,10 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 	/**
 	 * initializes the JTable for the class. the RIGHT component must be set manually
 	 * <p>
+	 *
 	 * @param controller the object controller for this Pane
 	 */
-	public MasterDetailPane(T controller) {
+	public MasterDetailPane(T controller){
 		super();
 		this.controller = controller;
 		setRightComponent(controller.initDetailComponent());
@@ -51,8 +47,8 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 	/**
 	 * sets up the table for this Pane, and sets it as the left component of the pane
 	 */
-	private void setupTable() {
-		masterTable = new JTable(new MasterTable(controller)) {
+	private void setupTable(){
+		masterTable = new JTable(new MasterTable(controller)){
 			/**
 			 * Create alternating, colored rows, with the active row a different color
 			 * <p>
@@ -61,23 +57,23 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 			 */
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int row,
-				int column) {
+			                                 int column){
 				Component c = super.prepareRenderer(renderer, row, column);
 
 				//  Alternate row color, set active row to med Gray
-				if (!isRowSelected(row)) {
+				if(!isRowSelected(row)){
 					c.setBackground((row % 2) == 0 ? getBackground() : Color.LIGHT_GRAY);
-				} else {
+				} else{
 					c.setBackground(Color.GRAY);
 				}
 				return c;
 			}
-			
+
 		};
 		masterTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		//movieTable.setCellSelectionEnabled(true);
 		masterTable.setRowSelectionAllowed(true);
-		if (masterTable.getModel().getRowCount() > 0) {
+		if(masterTable.getModel().getRowCount() > 0){
 			masterTable.setRowSelectionInterval(0, 0);
 		}
 		masterTable.setUpdateSelectionOnSort(true);
@@ -101,11 +97,11 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 	/**
 	 * tells the pane to update the table due to data modification
 	 */
-	public void fireTableDataChanged() {
+	public void fireTableDataChanged(){
 		((DefaultTableModel) masterTable.getModel()).fireTableDataChanged();
 	}
-	
-	private void setupPopupMenu() {
+
+	private void setupPopupMenu(){
 		listener = new Listener(controller, masterTable);
 		JPopupMenu rightClick = new JPopupMenu();
 		//create add element menu item
@@ -123,9 +119,10 @@ public class MasterDetailPane<T extends Tabulate> extends JSplitPane {
 	/**
 	 * sets the controller for this table, and fires a property change event
 	 * <p>
+	 *
 	 * @param controller the new controller to set
 	 */
-	public void setController(T controller) {
+	public void setController(T controller){
 		listener.setController(controller);
 		this.controller = controller;
 		((MasterTable) masterTable.getModel()).setController(controller);

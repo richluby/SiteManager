@@ -1,8 +1,12 @@
 package help;
 
 import sitemanager.MainFrame;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+
+import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -14,18 +18,10 @@ import java.io.InputStreamReader;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.border.EtchedBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+/** @author Richard Luby, Copyright 2013 */
 
-/**@author Richard Luby, Copyright 2013*/
-/**this class is used to generate a frame with help options for the user*/
-public class HelpClass {
+/** this class is used to generate a frame with help options for the user */
+public class HelpClass{
 	/** a boolean value to determine if the frame has already been created */
 	private static boolean isCreated;
 	/** the JFrame component responsible for running the application */
@@ -44,33 +40,47 @@ public class HelpClass {
 	private JList<String> titleList;
 	/** JFrame to show the help window */
 	private JFrame helpFrame;
+
 	/** Constructor to build an display the window frame */
-	public HelpClass(MainFrame f) {
-		if (!isCreated) {
+	public HelpClass(MainFrame f){
+		if(!isCreated){
 			mainFrame = f;
 			//controller = c;
 			helpFrame = new JFrame("Help");
 			helpFrame.setLocationRelativeTo(mainFrame);
 			helpFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			//listener to update isCreated in order to ensure only 1 window is open
-			helpFrame.addWindowListener(new WindowListener() {
-				
-				@Override public void windowOpened(WindowEvent e){
-					isCreated =true;
+			helpFrame.addWindowListener(new WindowListener(){
+
+				@Override
+				public void windowOpened(WindowEvent e){
+					isCreated = true;
 				}
-				@Override public void windowClosed(WindowEvent e){
+
+				@Override
+				public void windowClosed(WindowEvent e){
 				}
-				@Override public void windowIconified(WindowEvent arg0){
+
+				@Override
+				public void windowIconified(WindowEvent arg0){
 				}
-				@Override public void windowDeiconified(WindowEvent arg0){
+
+				@Override
+				public void windowDeiconified(WindowEvent arg0){
 				}
-				@Override public void windowDeactivated(WindowEvent arg0){
+
+				@Override
+				public void windowDeactivated(WindowEvent arg0){
 				}
-				@Override public void windowClosing(WindowEvent arg0){
+
+				@Override
+				public void windowClosing(WindowEvent arg0){
 					isCreated = false;
 					helpFrame.dispose();
 				}
-				@Override public void windowActivated(WindowEvent arg0){
+
+				@Override
+				public void windowActivated(WindowEvent arg0){
 				}
 			});
 			Dimension dim = mainFrame.getSize();
@@ -86,35 +96,37 @@ public class HelpClass {
 			helpFrame.setVisible(true);
 		}
 	}
+
 	/** function to read the data off the disk */
 	private void getData(){
 		//information is keyed with title, data values
 		dataTable = new Hashtable<String, String>();
 		InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream(
 				"HelpFile"));//helpFile is stored in the jar
-		try {
+		try{
 			StringBuffer buffer = new StringBuffer();
-			while (reader.ready()) {
+			while(reader.ready()){
 				buffer.append((char) reader.read());
 			}
 			String[] rawArr = buffer.toString().split("\\|");//delimiter used between lines of (title, data) keys
 			int hashTagIndex = 0;
-			for (int i = 0; i < rawArr.length; i++) { //loop through all data splits until finished
+			for(int i = 0; i < rawArr.length; i++){ //loop through all data splits until finished
 				hashTagIndex = rawArr[i].indexOf("#");
 				dataTable.put(rawArr[i].substring(0, hashTagIndex).trim(), rawArr[i]
 						.substring(hashTagIndex + 1));
 			}
-			
-		} catch (IOException e) {
+
+		} catch(IOException e){
 			e.printStackTrace();
-		} finally {
-			try {
+		} finally{
+			try{
 				reader.close();
-			} catch (IOException e) {
+			} catch(IOException e){
 				e.printStackTrace();
 			}
 		}
 	}
+
 	/** Function to create a JPanel with the individual topic data */
 	private void createDetailPanel(){
 		dataArea = new JTextArea(dataTable.get("About the Program"));
@@ -130,36 +142,47 @@ public class HelpClass {
 		detailPanel = new JPanel();
 		detailPanel.add(scroller);
 	}
+
 	/** function to create JPanel with an index of help topics */
 	private void createTopicPanel(){
 		helpTopics = new JPanel();
 		Enumeration<String> keys = dataTable.keys();
 		String[] temp = new String[dataTable.size()];
-		for (int i = 0; keys.hasMoreElements(); i++) {
+		for(int i = 0; keys.hasMoreElements(); i++){
 			temp[i] = keys.nextElement().trim();
 		}
 		titleList = new JList<String>(temp);
-		titleList.addListSelectionListener(new ListSelectionListener() {
-			@Override public void valueChanged(ListSelectionEvent arg0){
-				if (titleList.getSelectedValue() != null) {
-					dataArea.setText(dataTable.get((String) titleList.getSelectedValue()));
+		titleList.addListSelectionListener(new ListSelectionListener(){
+			@Override
+			public void valueChanged(ListSelectionEvent arg0){
+				if(titleList.getSelectedValue() != null){
+					dataArea.setText(dataTable.get(titleList.getSelectedValue()));
 					dataArea.validate();
 					dataArea.repaint();
 				}
 			}
 		});
-		titleList.addMouseListener(new MouseListener() {
-			@Override public void mouseReleased(MouseEvent arg0){
+		titleList.addMouseListener(new MouseListener(){
+			@Override
+			public void mouseReleased(MouseEvent arg0){
 			}
-			@Override public void mousePressed(MouseEvent arg0){
+
+			@Override
+			public void mousePressed(MouseEvent arg0){
 			}
-			@Override public void mouseExited(MouseEvent arg0){
+
+			@Override
+			public void mouseExited(MouseEvent arg0){
 			}
-			@Override public void mouseEntered(MouseEvent arg0){
+
+			@Override
+			public void mouseEntered(MouseEvent arg0){
 			}
-			@Override public void mouseClicked(MouseEvent arg0){
-				if (titleList.getSelectedValue() != null) {
-					dataArea.setText(dataTable.get((String) titleList.getSelectedValue()));
+
+			@Override
+			public void mouseClicked(MouseEvent arg0){
+				if(titleList.getSelectedValue() != null){
+					dataArea.setText(dataTable.get(titleList.getSelectedValue()));
 					dataArea.validate();
 					dataArea.repaint();
 				}
@@ -167,15 +190,17 @@ public class HelpClass {
 		});
 		helpTopics.add(titleList);
 	}
+
 	/** Inner class to begin the help function */
 	public static ActionListener createNewHelpWindowListener(MainFrame mf){
 		mainFrame = mf;
 		//controller = c;
-		return new ActionListener() {
-			
-			@Override public void actionPerformed(ActionEvent arg0){
+		return new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0){
 				new HelpClass(mainFrame);
-				
+
 			}
 		};
 	}
