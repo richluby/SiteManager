@@ -7,6 +7,8 @@ import javax.swing.*;
  * programmers to quickly create a notification area
  *
  * @author Richard Luby, Copyright 2015
+ * This code may be redistributed, modified, or used in other projects provided that
+ * this notice is included, and any contributing authors are mentioned.
  */
 public class NotificationPanel extends JPanel{
 
