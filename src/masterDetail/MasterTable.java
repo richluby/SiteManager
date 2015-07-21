@@ -7,6 +7,8 @@ import javax.swing.table.DefaultTableModel;
  *
  * @param <T> the Object Controller that contains the data for this table
  * @author Richard Luby, Copyright 2015
+ * This code may be redistributed, modified, or used in other projects provided that
+ * this notice is included, and any contributing authors are mentioned.
  */
 public class MasterTable<T extends Tabulate> extends DefaultTableModel{
 	/**
