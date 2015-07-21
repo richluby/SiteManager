@@ -7,6 +7,8 @@ import javax.swing.*;
  * Controller object. The interface allows an * object to be applied directly to the master-detail pane.
  *
  * @author Richard Luby, Copyright 2015
+ * This code may be redistributed, modified, or used in other projects provided that
+ * this notice is included, and any contributing authors are mentioned.
  */
 public interface Tabulate{
 
